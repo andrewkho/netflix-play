@@ -1,14 +1,12 @@
+import cPickle
+import os
 import unittest
 
-import os
 import numpy as np
 
-import cPickle
-
 from core.flixdata import FlixData
-from solvers.kFoldsCrossValidator import KFolds
 from core.ratings import Ratings
-
+from solvers.kFoldsCrossValidator import KFolds
 from solvers.knn.knn_solver import KNNSolver
 
 flix_data_root = "../../../data/arrays/"
@@ -47,8 +45,8 @@ class TestStringMethods(unittest.TestCase):
         knn = KNNSolver(k=15, dist="cov")
         knn.train(train_set)
 
-        #print knn._cov.sum(axis=1)
-        #print knn._cov.shape
+        print knn._cov.sum(axis=0)
+        print knn._cov.shape
 
         assert True
 
