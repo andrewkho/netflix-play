@@ -5,41 +5,7 @@ from solvers.testResult import TestResult
 
 from core.ratings import Ratings
 
-
-def rating_cov(ratings):
-    # type: (Ratings) -> np.matrix
-    cov = np.zeros(shape=(ratings.num_rows, ratings.num_rows), dtype=np.float32)
-
-    for i in range(ratings.num_rows):
-        if i % 100 == 0:
-            print("  Progress: %04d / %04d" % (i, ratings.num_rows))
-        user_row = ratings.get_coo_matrix().getrow(i)
-        for j in range(ratings.num_rows):
-            other_row = ratings.get_coo_matrix().getrow(j)
-            cov[i,j] = get_cov(user_row, other_row)
-
-    return cov
-
-
-def get_cov(user_row, other_row):
-    ixn = np.intersect1d(user_row.nonzero()[1], other_row.nonzero()[1])
-    if ixn.size <= 1:
-        return 0
-
-    mean_user = 0
-    mean_other = 0
-    for i in ixn:
-        mean_user += user_row[0,i]
-        mean_other += user_row[0,i]
-    mean_user /= ixn.size
-    mean_other /= ixn.size
-
-    cov = 0
-    for i in ixn:
-        cov += (user_row[0,i] - mean_user)*(other_row[0,i] - mean_other)
-
-    return cov / ixn.size - 1
-
+from rating_cov import rating_cov
 
 class KNNSolver(RecommenderAlgorithm):
     """

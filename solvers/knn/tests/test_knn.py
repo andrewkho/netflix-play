@@ -29,7 +29,7 @@ class TestStringMethods(unittest.TestCase):
 
             np.random.seed(12345)
             idx = np.random.choice(fd.userIDsForUsers.size, size=fd.userIDsForUsers.size, replace=False)
-            N = int(1e6)
+            N = int(1e5)
             self.ratings = Ratings(fd.userIDsForUsers[idx[:N]],
                                    fd.movieIDs[idx[:N]],
                                    fd.userRatings[idx[:N]])
@@ -46,6 +46,9 @@ class TestStringMethods(unittest.TestCase):
 
         knn = KNNSolver(k=15, dist="cov")
         knn.train(train_set)
+
+        #print knn._cov.sum(axis=1)
+        #print knn._cov.shape
 
         assert True
 
