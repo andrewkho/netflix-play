@@ -1,11 +1,10 @@
 import numpy as np
-
-from solvers.recommenderAlgorithm import RecommenderAlgorithm
-from solvers.testResult import TestResult
+import scipy.sparse
 
 from core.ratings import Ratings
-
 from rating_cov import rating_cov
+from solvers.recommenderAlgorithm import RecommenderAlgorithm
+
 
 class KNNSolver(RecommenderAlgorithm):
     """
@@ -14,44 +13,56 @@ class KNNSolver(RecommenderAlgorithm):
 
     def __init__(self, k, dist="cov"):
         # type: (int, str) -> None
-        self.k = k
-        self.dist = dist
-        self._ratings = None
-        self._cov = None
+        self.k = k  # type: int
+        self.dist = dist  # type: str
+        self._ratings = None  # type: Ratings
+        self._cov = None  # type: scipy.sparse.csr_matrix
 
     def train(self, ratings):
         # type: (Ratings) -> None
 
         self._ratings = ratings
-        self._cov = rating_cov(self._ratings)
+        self._cov = rating_cov(self._ratings).tocsr()
 
-    def get_rating(self, ratings, userId, movieId):
-        # type: (Ratings, int, int) -> float
-        user_idx = ratings.get_idx_user(userId)
-        movie_idx = ratings.get_idx_movie(movieId)
+    def predict(self, ratings):
+        # type: (Ratings) -> np.array
+        pass
 
-        user_row = self._cov[user_idx]
+    def predict_single(self, uid, mid):
+        # type: (int, int) -> float
 
-        neighbours = [-1] * self.k
+        try:
+            user_idx, movie_idx = self._ratings.translate(uid, mid)
+        except ValueError:
+            print "Value Error: " + str((uid, mid))
+            return None
+        except KeyError:
+            print "Key Error: " + str((uid, mid))
+            return None
+
+        uindices = self._cov.indices[self._cov.indptr[user_idx]:self._cov.indptr[user_idx+1]]
+        ucovar = self._cov.data[self._cov.indptr[user_idx]:self._cov.indptr[user_idx+1]]
+
+        neighbours = {}
+
         counter = 0
-        sorted_neighbours = user_row.argsort()[::-1]
+        sorted_neighbours = ucovar.argsort()[::-1]
         for nei_idx in sorted_neighbours:
-            neiId = ratings.get_idx_user(nei_idx)
-            rating = ratings.get(neiId, movieId)
-            if rating is None:
+            neiidx = uindices[nei_idx]
+            rating = self._ratings.get_csr_matrix()[neiidx, movie_idx]
+            if rating == 0 or rating is None: # Neighbour hasn't rated movie
                 continue
-            neighbours[counter] = neiId
+            neighbours[neiidx] = rating
             counter += 1
             if counter >= self.k:
                 break
 
-        print('counter ' + str(counter))
+        if counter < self.k:
+            print('Warning: not enough neighbours for k, counter: ' + str(counter))
 
         # Just try an average
         tot = 0.
-        for neiId in neighbours:
-            if neiId == -1:
-                break
-            tot = tot + self.data[neiId][movieId]
+        for neiId, rating in neighbours.items():
+            tot += rating
 
         return tot / counter

@@ -1,5 +1,6 @@
+import numpy as np
+
 from core.ratings import Ratings
-from solvers.testResult import TestResult
 
 
 class RecommenderAlgorithm(object):
@@ -10,6 +11,7 @@ class RecommenderAlgorithm(object):
         # type: (Ratings) -> None
         raise RuntimeError("Not implemented!")
 
-    def test(self, ratings):
-        # type: (Ratings) -> TestResult
+    def predict(self, ratings):
+        # type: (Ratings) -> np.array
         raise RuntimeError("Not implemented!")
+
