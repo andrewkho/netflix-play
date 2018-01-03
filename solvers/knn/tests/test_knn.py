@@ -2,6 +2,8 @@ import cPickle
 import os
 import unittest
 
+import cProfile
+
 import numpy as np
 
 from core.flixdata import FlixData
@@ -48,14 +50,14 @@ class TestStringMethods(unittest.TestCase):
         print knn._cov.sum(axis=0)
         print knn._cov.shape
 
-        for pred_item in range(100):
-            uidx = train_set.get_coo_matrix().row[pred_item]
-            midx = train_set.get_coo_matrix().col[pred_item]
-            real_data = train_set.get_coo_matrix().data[pred_item]
-            uid, mid = train_set.reverse_translate(uidx, midx)
-            print "predicting %d, %d, %f" % (uid, mid, real_data)
-            pred = knn.predict_single(uid, mid)
-            print "prediction: %f" % pred
+        print "Generating prediction"
+        y = train_set.get_coo_matrix().data
+        pred = knn.predict(train_set)
+        print "Done!"
+
+        print "SSE: %f" % np.sum((y-pred)**2)
+        print "MSE: %f" % np.mean((y-pred)**2)
+        print "RMS: %f" % np.sqrt(np.mean((y-pred)**2))
 
         assert True
 

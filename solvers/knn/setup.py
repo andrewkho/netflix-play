@@ -8,9 +8,15 @@ ext_modules = [Extension("rating_cov",
                          ["rating_cov.pyx"],
                          include_dirs=[numpy.get_include()],
                          language="c++",
-                         )]
+                         ),
+               Extension("predict_knn",
+                         ["predict_knn.pyx"],
+                         include_dirs=[numpy.get_include()],
+                         #language="c++",
+                         )
+               ]
 
 core.setup(
-    name='Netflix Prize - rating_cov',
+    name='Netflix Prize',
     ext_modules=cythonize(ext_modules),
 )

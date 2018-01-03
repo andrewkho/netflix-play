@@ -26,19 +26,22 @@ class KNNSolver(RecommenderAlgorithm):
 
     def predict(self, ratings):
         # type: (Ratings) -> np.array
-        pass
+        n = ratings.get_coo_matrix().row.shape[0]
+        pred = np.zeros(n)
+        #dok_matrix = self._ratings.get_coo_matrix().todok()  ## DoK matrix is faster but different MSE (!@?!?!?!)
+        dok_matrix = self._ratings.get_coo_matrix().tocsr()
+        for i in range(n):
+            uidx = ratings.get_coo_matrix().row[i]
+            midx = ratings.get_coo_matrix().col[i]
+            uid, mid = ratings.reverse_translate(uidx, midx)
+            pred[i] = self.predict_single(dok_matrix, uid, mid)
 
-    def predict_single(self, uid, mid):
+        return pred
+
+    def predict_single(self, dok_matrix, uid, mid):
         # type: (int, int) -> float
 
-        try:
-            user_idx, movie_idx = self._ratings.translate(uid, mid)
-        except ValueError:
-            print "Value Error: " + str((uid, mid))
-            return None
-        except KeyError:
-            print "Key Error: " + str((uid, mid))
-            return None
+        user_idx, movie_idx = self._ratings.translate(uid, mid)
 
         uindices = self._cov.indices[self._cov.indptr[user_idx]:self._cov.indptr[user_idx+1]]
         ucovar = self._cov.data[self._cov.indptr[user_idx]:self._cov.indptr[user_idx+1]]
@@ -49,7 +52,7 @@ class KNNSolver(RecommenderAlgorithm):
         sorted_neighbours = ucovar.argsort()[::-1]
         for nei_idx in sorted_neighbours:
             neiidx = uindices[nei_idx]
-            rating = self._ratings.get_csr_matrix()[neiidx, movie_idx]
+            rating = dok_matrix[neiidx, movie_idx]
             if rating == 0 or rating is None: # Neighbour hasn't rated movie
                 continue
             neighbours[neiidx] = rating
@@ -57,8 +60,8 @@ class KNNSolver(RecommenderAlgorithm):
             if counter >= self.k:
                 break
 
-        if counter < self.k:
-            print('Warning: not enough neighbours for k, counter: ' + str(counter))
+        #if counter < self.k:
+        #    print('Warning: not enough neighbours for k, counter: ' + str(counter))
 
         # Just try an average
         tot = 0.
