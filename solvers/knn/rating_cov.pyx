@@ -3,8 +3,8 @@
 #cython: cdivision=True
 #cython: nonecheck=False
 
-map as cppmap
-set as cppset
+from libcpp.map cimport map as cppmap
+from libcpp.set cimport set as cppset
 
 import numpy as np
 cimport numpy as np
