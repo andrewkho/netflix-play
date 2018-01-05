@@ -7,8 +7,6 @@ from enum import Enum
 from core.ratings import Ratings
 from solvers.recommenderAlgorithm import RecommenderAlgorithm
 
-import solvers.kmeans.kdtree as kdtree
-
 
 Distances = Enum("Distances", "manhatten euclidean")
 
@@ -25,10 +23,8 @@ class KMeansSolver(RecommenderAlgorithm):
         self.k = k  # type: int
         self.dist = dist  # type: Distances
         self._ratings = None  # type: Ratings
-        self._cov = None  # type: scipy.sparse.csr_matrix
         self._means = None
         self._cluster = None
-        self._kdtree = None
 
     def train(self, ratings, seed = None):
         # type: (Ratings) -> None
