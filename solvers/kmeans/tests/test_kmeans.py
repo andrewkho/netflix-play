@@ -38,22 +38,19 @@ class TestKmeansClustering(unittest.TestCase):
         test, train = self.kfolds.get(0)
         test_set = self.ratings.get_index_split(test)
         train_set = self.ratings.get_index_split(train)
-        kmeans = KMeansSolver(k=100, dist=Distances.manhatten)
+        kmeans = KMeansSolver(k=200, dist=Distances.manhatten)
         kmeans.train(train_set, seed=54321)
-
-        assert True
-        return
 
         y = train_set.get_coo_matrix().data
         print "Generating prediction"
-        pred = knn.predict(train_set)
+        pred = kmeans.predict(train_set)
         print "Done!"
 
         print "Train SSE: %f" % np.sum((y-pred)**2)
         print "Train MSE: %f" % np.mean((y-pred)**2)
         print "Train RMS: %f" % np.sqrt(np.mean((y-pred)**2))
 
-        pred = knn.predict(test_set)
+        pred = kmeans.predict(test_set)
         print "Done!"
         y = test_set.get_coo_matrix().data
 

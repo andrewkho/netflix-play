@@ -16,6 +16,8 @@ Distances = Enum("Distances", "manhatten euclidean")
 class KMeansSolver(RecommenderAlgorithm):
     """
     A recommender engine which uses k-means clustering to generate nearest neighbours
+
+    TODO: Use some datastructure to speed up the nearest centroid search times!
     """
 
     def __init__(self, k, dist=Distances.manhatten):
@@ -73,6 +75,7 @@ class KMeansSolver(RecommenderAlgorithm):
                     self._cluster[uid] = best_cluster
 
             if delta == 0:
+                print("Done! after %d iters, delta=%d" % (curriter, delta))
                 break
 
             # Update means
@@ -95,22 +98,25 @@ class KMeansSolver(RecommenderAlgorithm):
     def predict(self, testratings):
         # type: (Ratings) -> np.array
         n = testratings.get_coo_matrix().nnz
-        print("nnz testratigns: " + str(n))
+        print("predicting %d testratigns: " % n)
         pred = np.zeros(n)
-        ##dok_matrix = self._ratings.get_coo_matrix().todok()  ## DoK matrix is faster but different MSE (!@?!?!?!)
-        dok_matrix = self._ratings.get_coo_matrix().copy().todok()
+        csr_matrix = self._ratings.get_coo_matrix().tocsr()
 
         for i in range(n):
             uidx = testratings.get_coo_matrix().row[i]
             midx = testratings.get_coo_matrix().col[i]
+            uindices = csr_matrix.indices[csr_matrix.indptr[uidx]:csr_matrix.indptr[uidx+1]]
+            udims = [testratings.reverse_translate_movie(_) for _ in uindices]
+            udata = csr_matrix.data[csr_matrix.indptr[uidx]:csr_matrix.indptr[uidx+1]]
+
             uid, mid = testratings.reverse_translate(uidx, midx)
-            pred[i] = self.predict_single(dok_matrix, uid, mid)
+            pred[i] = self.predict_single(uid, mid, udims, udata)
 
         print("len(pred): " + str(len(pred)))
 
         return pred
 
-    def predict_single(self, dok_matrix, uid, mid):
+    def predict_single(self, uid, mid, udims, udata):
         # type: (int, int) -> float
 
         try:
@@ -118,8 +124,31 @@ class KMeansSolver(RecommenderAlgorithm):
         except KeyError:
             return None
 
-        uindices = self._cov.indices[self._cov.indptr[user_idx]:self._cov.indptr[user_idx+1]]
-        ucovar = self._cov.data[self._cov.indptr[user_idx]:self._cov.indptr[user_idx+1]]
+        local_dims = list()
+        local_data = list()
+        for i, dim in enumerate(udims):
+            try:
+                local_dims.append(self._ratings.translate_movie(dim))
+                local_data.append(udata[i])
+            except KeyError:
+                continue
+
+        best_cluster = -1
+        best_dist = np.finfo(np.float64).max
+        for cluster in range(self.k):
+            mn = self._means[cluster]
+            dist = 0
+            for ind, data in izip(local_dims, local_data):
+                dist += abs(data - mn[ind])
+            if np.isnan(dist):
+                print "Distance is nan!!"
+            dist /= len(local_dims)
+            if dist < best_dist:
+                best_dist = dist
+                best_cluster = cluster
+
+        ## For now just use the cluster mean
+        return self._means[best_cluster][movie_idx]
 
         neighbours = {}
 
@@ -127,7 +156,7 @@ class KMeansSolver(RecommenderAlgorithm):
         sorted_neighbours = ucovar.argsort()[::-1]
         for nei_idx in sorted_neighbours:
             neiidx = uindices[nei_idx]
-            rating = dok_matrix[neiidx, movie_idx]
+            rating = csr_matrix[neiidx, movie_idx]
             if rating == 0 or rating is None: # Neighbour hasn't rated movie
                 continue
             neighbours[neiidx] = rating
