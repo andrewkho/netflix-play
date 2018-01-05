@@ -5,6 +5,8 @@
 
 from libcpp.map cimport map as cppmap
 from libcpp.set cimport set as cppset
+cdef extern from "math.h":
+    double sqrt(double m)
 
 import numpy as np
 cimport numpy as np
@@ -14,13 +16,18 @@ from scipy.sparse import coo_matrix
 
 from core.ratings import Ratings
 
-
-def rating_cov(ratings):
+def rating_cor(ratings):
     # type: (Ratings) -> scipy.sparse.coo_matrix
-    return py_get_cov(ratings)
+    """
+    Calculate the user-wise Pearson correlation of the ratings matrix
+
+    :param ratings: Ratings object
+    :return: a sparse matrix in scipy.sparse.coo_matrix format
+    """
+    return py_get_cor(ratings)
 
 
-cdef py_get_cov(ratings):
+cdef py_get_cor(ratings):
     # type: (Ratings) -> scipy.sparse.coo_matrix
 
     cdef int[:] csr_indptr, csr_indices, csc_indptr, csc_indices
@@ -65,7 +72,7 @@ cdef py_get_cov(ratings):
 
     out_counter = _inner_loop(out_row, out_col, out_data,
                               csr_indices, csr_indptr, csr_data,
-                              csc_indices, csc_indptr, ratings.num_rows, rating_dicts)
+                              csc_indices, csc_indptr, ratings.num_rows, ratings.get_user_means(), rating_dicts)
 
     print("out_counter: " + str(out_counter) + " output_length: " + str(output_length))
 
@@ -74,14 +81,14 @@ cdef py_get_cov(ratings):
 cdef int _inner_loop(int[:] out_row, int[:] out_col, double[:] out_data,
                      int[:] csr_indices, int[:] csr_indptr, double[:] csr_data,
                      int[:] csc_indices, int[:] csc_indptr, int num_rows,
-                     list rating_dicts):
+                     double[:] user_means, list rating_dicts):
 
     cdef int out_counter = 0
     cdef int[:] other_cols, user_cols
     cdef double[:] other_rats, user_rats
     cdef cppmap[int, double] other_rats_dict, user_rats_dict
     cdef int[:] ixn
-    cdef double covariance, user_mean, other_mean
+    cdef double corr, user_mean, other_mean, denom_u, denom_o, udiff, odiff
     cdef int movie, ixn_size
     cdef cppset[int] neighbours
     cdef int[:] tmp
@@ -103,27 +110,25 @@ cdef int _inner_loop(int[:] out_row, int[:] out_col, double[:] out_data,
             other_rats_dict = rating_dicts[other_row]
             ixn = np.intersect1d(user_cols, other_cols)
             ixn_size = ixn.size
-            if ixn_size == 1:
-                covariance = 1
-            else:
-                user_mean = 0
-                other_mean = 0
-                for i in range(ixn_size):
-                    movie = ixn[i]
-                    user_mean += user_rats_dict[movie]
-                    other_mean += other_rats_dict[movie]
-                user_mean /= ixn_size
-                other_mean /= ixn_size
 
-                covariance = 0
-                for i in range(ixn_size):
-                    movie = ixn[i]
-                    covariance += (user_rats_dict[movie] - user_mean) * (other_rats_dict[movie] - other_mean)
-                covariance /= ixn_size - 1
+            user_mean = user_means[user_row]
+            other_mean = user_means[other_row]
+            corr = 0
+            denom_u = 0
+            denom_o = 0
+            for i in range(ixn_size):
+                movie = ixn[i]
+                udiff = user_rats_dict[movie] - user_mean
+                odiff = other_rats_dict[movie] - other_mean
+                corr += udiff*odiff
+                denom_u += udiff*udiff
+                denom_o += odiff*odiff
+
+            corr /= sqrt(denom_u)*sqrt(denom_o)
 
             out_row[out_counter] = user_row
             out_col[out_counter] = other_row
-            out_data[out_counter] = covariance
+            out_data[out_counter] = corr
             out_counter += 1
 
     return out_counter

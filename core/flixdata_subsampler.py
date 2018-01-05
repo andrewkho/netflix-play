@@ -61,7 +61,7 @@ class FlixDataSubsampler(object):
 
         print("getting top users")
         mat_csr = mat.tocsr()  # type: csr_matrix
-        row_sizes = mat_csr.indptr[1:] - mat_csr.indptr[:-1]  # Get number of ratings in each movie
+        row_sizes = mat_csr.indptr[1:] - mat_csr.indptr[:-1]  # Get number of ratings by each user
         top_users = np.argsort(col_sizes)[-top_n_users:][::-1]
 
         print("finding ratings for %d users, %d movies" % (top_n_users, top_n_movies))

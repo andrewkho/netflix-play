@@ -11,12 +11,12 @@
             "/Users/andrew/anaconda3/envs/netflix27/lib/python2.7/site-packages/numpy/core/include"
         ], 
         "language": "c++", 
-        "name": "rating_cov", 
+        "name": "rating_cor", 
         "sources": [
-            "rating_cov.pyx"
+            "rating_cor.pyx"
         ]
     }, 
-    "module_name": "rating_cov"
+    "module_name": "rating_cor"
 }
 END: Cython Metadata */
 
@@ -552,8 +552,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__solvers__knn__rating_cov
-#define __PYX_HAVE_API__solvers__knn__rating_cov
+#define __PYX_HAVE__solvers__knn__rating_cor
+#define __PYX_HAVE_API__solvers__knn__rating_cor
 #include <utility>
 #include "ios"
 #include "new"
@@ -561,6 +561,7 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include "typeinfo"
 #include <map>
 #include <set>
+#include "math.h"
 #include <string.h>
 #include <stdio.h>
 #include "numpy/arrayobject.h"
@@ -793,7 +794,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "rating_cov.pyx",
+  "rating_cor.pyx",
   "__init__.pxd",
   "stringsource",
   "type.pxd",
@@ -2094,7 +2095,7 @@ static PyTypeObject *__pyx_ptype_5numpy_ndarray = 0;
 static PyTypeObject *__pyx_ptype_5numpy_ufunc = 0;
 static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *, char *, char *, int *); /*proto*/
 
-/* Module declarations from 'solvers.knn.rating_cov' */
+/* Module declarations from 'solvers.knn.rating_cor' */
 static PyTypeObject *__pyx_array_type = 0;
 static PyTypeObject *__pyx_MemviewEnum_type = 0;
 static PyTypeObject *__pyx_memoryview_type = 0;
@@ -2106,8 +2107,8 @@ static PyObject *contiguous = 0;
 static PyObject *indirect_contiguous = 0;
 static int __pyx_memoryview_thread_locks_used;
 static PyThread_type_lock __pyx_memoryview_thread_locks[8];
-static PyObject *__pyx_f_7solvers_3knn_10rating_cov_py_get_cov(PyObject *); /*proto*/
-static int __pyx_f_7solvers_3knn_10rating_cov__inner_loop(__Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, int, PyObject *); /*proto*/
+static PyObject *__pyx_f_7solvers_3knn_10rating_cor_py_get_cor(PyObject *); /*proto*/
+static int __pyx_f_7solvers_3knn_10rating_cor__inner_loop(__Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, int, __Pyx_memviewslice, PyObject *); /*proto*/
 static PyObject *__pyx_convert_map_to_py_int____double(std::map<int,double>  const &); /*proto*/
 static std::map<int,double>  __pyx_convert_map_from_py_int__and_double(PyObject *); /*proto*/
 static struct __pyx_array_obj *__pyx_array_new(PyObject *, Py_ssize_t, char *, char *, char *); /*proto*/
@@ -2145,11 +2146,11 @@ static void __pyx_memoryview__slice_assign_scalar(char *, Py_ssize_t *, Py_ssize
 static PyObject *__pyx_unpickle_Enum__set_state(struct __pyx_MemviewEnum_obj *, PyObject *); /*proto*/
 static __Pyx_TypeInfo __Pyx_TypeInfo_int = { "int", NULL, sizeof(int), { 0 }, 0, IS_UNSIGNED(int) ? 'U' : 'I', IS_UNSIGNED(int), 0 };
 static __Pyx_TypeInfo __Pyx_TypeInfo_double = { "double", NULL, sizeof(double), { 0 }, 0, 'R', 0, 0 };
-#define __Pyx_MODULE_NAME "solvers.knn.rating_cov"
-extern int __pyx_module_is_main_solvers__knn__rating_cov;
-int __pyx_module_is_main_solvers__knn__rating_cov = 0;
+#define __Pyx_MODULE_NAME "solvers.knn.rating_cor"
+extern int __pyx_module_is_main_solvers__knn__rating_cor;
+int __pyx_module_is_main_solvers__knn__rating_cor = 0;
 
-/* Implementation of 'solvers.knn.rating_cov' */
+/* Implementation of 'solvers.knn.rating_cor' */
 static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_ValueError;
 static PyObject *__pyx_builtin_RuntimeError;
@@ -2230,7 +2231,7 @@ static const char __pyx_k_ValueError[] = "ValueError";
 static const char __pyx_k_coo_matrix[] = "coo_matrix";
 static const char __pyx_k_pyx_result[] = "__pyx_result";
 static const char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
-static const char __pyx_k_rating_cov[] = "rating_cov";
+static const char __pyx_k_rating_cor[] = "rating_cor";
 static const char __pyx_k_ImportError[] = "ImportError";
 static const char __pyx_k_MemoryError[] = "MemoryError";
 static const char __pyx_k_PickleError[] = "PickleError";
@@ -2246,7 +2247,8 @@ static const char __pyx_k_pyx_getbuffer[] = "__pyx_getbuffer";
 static const char __pyx_k_reduce_cython[] = "__reduce_cython__";
 static const char __pyx_k_get_coo_matrix[] = "get_coo_matrix";
 static const char __pyx_k_get_csr_matrix[] = "get_csr_matrix";
-static const char __pyx_k_rating_cov_pyx[] = "rating_cov.pyx";
+static const char __pyx_k_get_user_means[] = "get_user_means";
+static const char __pyx_k_rating_cor_pyx[] = "rating_cor.pyx";
 static const char __pyx_k_View_MemoryView[] = "View.MemoryView";
 static const char __pyx_k_allocate_buffer[] = "allocate_buffer";
 static const char __pyx_k_dtype_is_object[] = "dtype_is_object";
@@ -2259,7 +2261,7 @@ static const char __pyx_k_strided_and_indirect[] = "<strided and indirect>";
 static const char __pyx_k_Building_rating_dicts[] = "Building rating_dicts";
 static const char __pyx_k_contiguous_and_direct[] = "<contiguous and direct>";
 static const char __pyx_k_MemoryView_of_r_object[] = "<MemoryView of %r object>";
-static const char __pyx_k_solvers_knn_rating_cov[] = "solvers.knn.rating_cov";
+static const char __pyx_k_solvers_knn_rating_cor[] = "solvers.knn.rating_cor";
 static const char __pyx_k_MemoryView_of_r_at_0x_x[] = "<MemoryView of %r at 0x%x>";
 static const char __pyx_k_contiguous_and_indirect[] = "<contiguous and indirect>";
 static const char __pyx_k_predicted_output_length[] = "predicted output_length: ";
@@ -2343,6 +2345,7 @@ static PyObject *__pyx_n_s_fortran;
 static PyObject *__pyx_n_u_fortran;
 static PyObject *__pyx_n_s_get_coo_matrix;
 static PyObject *__pyx_n_s_get_csr_matrix;
+static PyObject *__pyx_n_s_get_user_means;
 static PyObject *__pyx_n_s_getstate;
 static PyObject *__pyx_kp_s_got_differing_extents_in_dimensi;
 static PyObject *__pyx_n_s_id;
@@ -2385,8 +2388,8 @@ static PyObject *__pyx_n_s_pyx_type;
 static PyObject *__pyx_n_s_pyx_unpickle_Enum;
 static PyObject *__pyx_n_s_pyx_vtable;
 static PyObject *__pyx_n_s_range;
-static PyObject *__pyx_n_s_rating_cov;
-static PyObject *__pyx_kp_s_rating_cov_pyx;
+static PyObject *__pyx_n_s_rating_cor;
+static PyObject *__pyx_kp_s_rating_cor_pyx;
 static PyObject *__pyx_n_s_ratings;
 static PyObject *__pyx_n_s_reduce;
 static PyObject *__pyx_n_s_reduce_cython;
@@ -2397,7 +2400,7 @@ static PyObject *__pyx_n_s_setstate;
 static PyObject *__pyx_n_s_setstate_cython;
 static PyObject *__pyx_n_s_shape;
 static PyObject *__pyx_n_s_size;
-static PyObject *__pyx_n_s_solvers_knn_rating_cov;
+static PyObject *__pyx_n_s_solvers_knn_rating_cor;
 static PyObject *__pyx_n_s_start;
 static PyObject *__pyx_n_s_step;
 static PyObject *__pyx_n_s_stop;
@@ -2416,7 +2419,7 @@ static PyObject *__pyx_kp_u_unknown_dtype_code_in_numpy_pxd;
 static PyObject *__pyx_n_s_unpack;
 static PyObject *__pyx_n_s_update;
 static PyObject *__pyx_n_s_zeros;
-static PyObject *__pyx_pf_7solvers_3knn_10rating_cov_rating_cov(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_ratings); /* proto */
+static PyObject *__pyx_pf_7solvers_3knn_10rating_cor_rating_cor(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_ratings); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array___cinit__(struct __pyx_array_obj *__pyx_v_self, PyObject *__pyx_v_shape, Py_ssize_t __pyx_v_itemsize, PyObject *__pyx_v_format, PyObject *__pyx_v_mode, int __pyx_v_allocate_buffer); /* proto */
@@ -2507,60 +2510,61 @@ static PyObject *__pyx_tuple__36;
 static PyObject *__pyx_codeobj__30;
 static PyObject *__pyx_codeobj__37;
 
-/* "solvers/knn/rating_cov.pyx":18
+/* "solvers/knn/rating_cor.pyx":19
+ * from core.ratings import Ratings
  * 
- * 
- * def rating_cov(ratings):             # <<<<<<<<<<<<<<
+ * def rating_cor(ratings):             # <<<<<<<<<<<<<<
  *     # type: (Ratings) -> scipy.sparse.coo_matrix
- *     return py_get_cov(ratings)
+ *     """
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7solvers_3knn_10rating_cov_1rating_cov(PyObject *__pyx_self, PyObject *__pyx_v_ratings); /*proto*/
-static PyMethodDef __pyx_mdef_7solvers_3knn_10rating_cov_1rating_cov = {"rating_cov", (PyCFunction)__pyx_pw_7solvers_3knn_10rating_cov_1rating_cov, METH_O, 0};
-static PyObject *__pyx_pw_7solvers_3knn_10rating_cov_1rating_cov(PyObject *__pyx_self, PyObject *__pyx_v_ratings) {
+static PyObject *__pyx_pw_7solvers_3knn_10rating_cor_1rating_cor(PyObject *__pyx_self, PyObject *__pyx_v_ratings); /*proto*/
+static char __pyx_doc_7solvers_3knn_10rating_cor_rating_cor[] = "\n    Calculate the user-wise Pearson correlation of the ratings matrix\n\n    :param ratings: Ratings object\n    :return: a sparse matrix in scipy.sparse.coo_matrix format\n    ";
+static PyMethodDef __pyx_mdef_7solvers_3knn_10rating_cor_1rating_cor = {"rating_cor", (PyCFunction)__pyx_pw_7solvers_3knn_10rating_cor_1rating_cor, METH_O, __pyx_doc_7solvers_3knn_10rating_cor_rating_cor};
+static PyObject *__pyx_pw_7solvers_3knn_10rating_cor_1rating_cor(PyObject *__pyx_self, PyObject *__pyx_v_ratings) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("rating_cov (wrapper)", 0);
-  __pyx_r = __pyx_pf_7solvers_3knn_10rating_cov_rating_cov(__pyx_self, ((PyObject *)__pyx_v_ratings));
+  __Pyx_RefNannySetupContext("rating_cor (wrapper)", 0);
+  __pyx_r = __pyx_pf_7solvers_3knn_10rating_cor_rating_cor(__pyx_self, ((PyObject *)__pyx_v_ratings));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7solvers_3knn_10rating_cov_rating_cov(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_ratings) {
+static PyObject *__pyx_pf_7solvers_3knn_10rating_cor_rating_cor(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_ratings) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  __Pyx_RefNannySetupContext("rating_cov", 0);
+  __Pyx_RefNannySetupContext("rating_cor", 0);
 
-  /* "solvers/knn/rating_cov.pyx":20
- * def rating_cov(ratings):
- *     # type: (Ratings) -> scipy.sparse.coo_matrix
- *     return py_get_cov(ratings)             # <<<<<<<<<<<<<<
+  /* "solvers/knn/rating_cor.pyx":27
+ *     :return: a sparse matrix in scipy.sparse.coo_matrix format
+ *     """
+ *     return py_get_cor(ratings)             # <<<<<<<<<<<<<<
  * 
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_7solvers_3knn_10rating_cov_py_get_cov(__pyx_v_ratings); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 20, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7solvers_3knn_10rating_cor_py_get_cor(__pyx_v_ratings); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 27, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "solvers/knn/rating_cov.pyx":18
+  /* "solvers/knn/rating_cor.pyx":19
+ * from core.ratings import Ratings
  * 
- * 
- * def rating_cov(ratings):             # <<<<<<<<<<<<<<
+ * def rating_cor(ratings):             # <<<<<<<<<<<<<<
  *     # type: (Ratings) -> scipy.sparse.coo_matrix
- *     return py_get_cov(ratings)
+ *     """
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("solvers.knn.rating_cov.rating_cov", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("solvers.knn.rating_cor.rating_cor", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -2568,15 +2572,15 @@ static PyObject *__pyx_pf_7solvers_3knn_10rating_cov_rating_cov(CYTHON_UNUSED Py
   return __pyx_r;
 }
 
-/* "solvers/knn/rating_cov.pyx":23
+/* "solvers/knn/rating_cor.pyx":30
  * 
  * 
- * cdef py_get_cov(ratings):             # <<<<<<<<<<<<<<
+ * cdef py_get_cor(ratings):             # <<<<<<<<<<<<<<
  *     # type: (Ratings) -> scipy.sparse.coo_matrix
  * 
  */
 
-static PyObject *__pyx_f_7solvers_3knn_10rating_cov_py_get_cov(PyObject *__pyx_v_ratings) {
+static PyObject *__pyx_f_7solvers_3knn_10rating_cor_py_get_cor(PyObject *__pyx_v_ratings) {
   __Pyx_memviewslice __pyx_v_csr_indptr = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_csr_indices = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_csc_indptr = { 0, 0, { 0 }, { 0 }, { 0 } };
@@ -2617,16 +2621,16 @@ static PyObject *__pyx_f_7solvers_3knn_10rating_cov_py_get_cov(PyObject *__pyx_v
   Py_ssize_t __pyx_t_18;
   Py_ssize_t __pyx_t_19;
   int __pyx_t_20;
-  __Pyx_RefNannySetupContext("py_get_cov", 0);
+  __Pyx_RefNannySetupContext("py_get_cor", 0);
 
-  /* "solvers/knn/rating_cov.pyx":28
+  /* "solvers/knn/rating_cor.pyx":35
  *     cdef int[:] csr_indptr, csr_indices, csc_indptr, csc_indices
  *     cdef double[:] csr_data
  *     csr_mat = ratings.get_csr_matrix()             # <<<<<<<<<<<<<<
  *     csr_indptr = csr_mat.indptr
  *     csr_indices = csr_mat.indices
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_ratings, __pyx_n_s_get_csr_matrix); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 28, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_ratings, __pyx_n_s_get_csr_matrix); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 35, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -2639,72 +2643,72 @@ static PyObject *__pyx_f_7solvers_3knn_10rating_cov_py_get_cov(PyObject *__pyx_v
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 28, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 35, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 28, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 35, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_csr_mat = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "solvers/knn/rating_cov.pyx":29
+  /* "solvers/knn/rating_cor.pyx":36
  *     cdef double[:] csr_data
  *     csr_mat = ratings.get_csr_matrix()
  *     csr_indptr = csr_mat.indptr             # <<<<<<<<<<<<<<
  *     csr_indices = csr_mat.indices
  *     csr_data = csr_mat.data
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_csr_mat, __pyx_n_s_indptr); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 29, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_csr_mat, __pyx_n_s_indptr); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 36, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_4 = __Pyx_PyObject_to_MemoryviewSlice_ds_int(__pyx_t_1);
-  if (unlikely(!__pyx_t_4.memview)) __PYX_ERR(0, 29, __pyx_L1_error)
+  if (unlikely(!__pyx_t_4.memview)) __PYX_ERR(0, 36, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_csr_indptr = __pyx_t_4;
   __pyx_t_4.memview = NULL;
   __pyx_t_4.data = NULL;
 
-  /* "solvers/knn/rating_cov.pyx":30
+  /* "solvers/knn/rating_cor.pyx":37
  *     csr_mat = ratings.get_csr_matrix()
  *     csr_indptr = csr_mat.indptr
  *     csr_indices = csr_mat.indices             # <<<<<<<<<<<<<<
  *     csr_data = csr_mat.data
  *     csc_mat = ratings.get_coo_matrix().tocsc()
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_csr_mat, __pyx_n_s_indices); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 30, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_csr_mat, __pyx_n_s_indices); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 37, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_4 = __Pyx_PyObject_to_MemoryviewSlice_ds_int(__pyx_t_1);
-  if (unlikely(!__pyx_t_4.memview)) __PYX_ERR(0, 30, __pyx_L1_error)
+  if (unlikely(!__pyx_t_4.memview)) __PYX_ERR(0, 37, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_csr_indices = __pyx_t_4;
   __pyx_t_4.memview = NULL;
   __pyx_t_4.data = NULL;
 
-  /* "solvers/knn/rating_cov.pyx":31
+  /* "solvers/knn/rating_cor.pyx":38
  *     csr_indptr = csr_mat.indptr
  *     csr_indices = csr_mat.indices
  *     csr_data = csr_mat.data             # <<<<<<<<<<<<<<
  *     csc_mat = ratings.get_coo_matrix().tocsc()
  *     csc_indptr = csc_mat.indptr
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_csr_mat, __pyx_n_s_data); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_csr_mat, __pyx_n_s_data); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_5 = __Pyx_PyObject_to_MemoryviewSlice_ds_double(__pyx_t_1);
-  if (unlikely(!__pyx_t_5.memview)) __PYX_ERR(0, 31, __pyx_L1_error)
+  if (unlikely(!__pyx_t_5.memview)) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_csr_data = __pyx_t_5;
   __pyx_t_5.memview = NULL;
   __pyx_t_5.data = NULL;
 
-  /* "solvers/knn/rating_cov.pyx":32
+  /* "solvers/knn/rating_cor.pyx":39
  *     csr_indices = csr_mat.indices
  *     csr_data = csr_mat.data
  *     csc_mat = ratings.get_coo_matrix().tocsc()             # <<<<<<<<<<<<<<
  *     csc_indptr = csc_mat.indptr
  *     csc_indices = csc_mat.indices
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_ratings, __pyx_n_s_get_coo_matrix); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 32, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_ratings, __pyx_n_s_get_coo_matrix); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 39, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_6 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
@@ -2717,14 +2721,14 @@ static PyObject *__pyx_f_7solvers_3knn_10rating_cov_py_get_cov(PyObject *__pyx_v
     }
   }
   if (__pyx_t_6) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 32, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 39, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   } else {
-    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 32, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 39, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_tocsc); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 32, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_tocsc); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 39, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -2738,61 +2742,61 @@ static PyObject *__pyx_f_7solvers_3knn_10rating_cov_py_get_cov(PyObject *__pyx_v
     }
   }
   if (__pyx_t_2) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 32, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 39, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 32, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 39, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_csc_mat = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "solvers/knn/rating_cov.pyx":33
+  /* "solvers/knn/rating_cor.pyx":40
  *     csr_data = csr_mat.data
  *     csc_mat = ratings.get_coo_matrix().tocsc()
  *     csc_indptr = csc_mat.indptr             # <<<<<<<<<<<<<<
  *     csc_indices = csc_mat.indices
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_csc_mat, __pyx_n_s_indptr); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_csc_mat, __pyx_n_s_indptr); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_4 = __Pyx_PyObject_to_MemoryviewSlice_ds_int(__pyx_t_1);
-  if (unlikely(!__pyx_t_4.memview)) __PYX_ERR(0, 33, __pyx_L1_error)
+  if (unlikely(!__pyx_t_4.memview)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_csc_indptr = __pyx_t_4;
   __pyx_t_4.memview = NULL;
   __pyx_t_4.data = NULL;
 
-  /* "solvers/knn/rating_cov.pyx":34
+  /* "solvers/knn/rating_cor.pyx":41
  *     csc_mat = ratings.get_coo_matrix().tocsc()
  *     csc_indptr = csc_mat.indptr
  *     csc_indices = csc_mat.indices             # <<<<<<<<<<<<<<
  * 
  *     cdef long output_length
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_csc_mat, __pyx_n_s_indices); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 34, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_csc_mat, __pyx_n_s_indices); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_4 = __Pyx_PyObject_to_MemoryviewSlice_ds_int(__pyx_t_1);
-  if (unlikely(!__pyx_t_4.memview)) __PYX_ERR(0, 34, __pyx_L1_error)
+  if (unlikely(!__pyx_t_4.memview)) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_csc_indices = __pyx_t_4;
   __pyx_t_4.memview = NULL;
   __pyx_t_4.data = NULL;
 
-  /* "solvers/knn/rating_cov.pyx":37
+  /* "solvers/knn/rating_cor.pyx":44
  * 
  *     cdef long output_length
  *     output_length = ((csr_mat > 0).dot((csr_mat > 0).transpose()) > 0).sum()             # <<<<<<<<<<<<<<
  *     print("predicted output_length: " + str(output_length))
  * 
  */
-  __pyx_t_2 = PyObject_RichCompare(__pyx_v_csr_mat, __pyx_int_0, Py_GT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 37, __pyx_L1_error)
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_dot); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 37, __pyx_L1_error)
+  __pyx_t_2 = PyObject_RichCompare(__pyx_v_csr_mat, __pyx_int_0, Py_GT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_dot); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_7 = PyObject_RichCompare(__pyx_v_csr_mat, __pyx_int_0, Py_GT); __Pyx_XGOTREF(__pyx_t_7); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 37, __pyx_L1_error)
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_transpose); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 37, __pyx_L1_error)
+  __pyx_t_7 = PyObject_RichCompare(__pyx_v_csr_mat, __pyx_int_0, Py_GT); __Pyx_XGOTREF(__pyx_t_7); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_transpose); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __pyx_t_7 = NULL;
@@ -2806,10 +2810,10 @@ static PyObject *__pyx_f_7solvers_3knn_10rating_cov_py_get_cov(PyObject *__pyx_v
     }
   }
   if (__pyx_t_7) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 37, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   } else {
-    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 37, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -2824,14 +2828,14 @@ static PyObject *__pyx_f_7solvers_3knn_10rating_cov_py_get_cov(PyObject *__pyx_v
     }
   }
   if (!__pyx_t_8) {
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 37, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 44, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_GOTREF(__pyx_t_3);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_6)) {
       PyObject *__pyx_temp[2] = {__pyx_t_8, __pyx_t_2};
-      __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 37, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 44, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -2840,28 +2844,28 @@ static PyObject *__pyx_f_7solvers_3knn_10rating_cov_py_get_cov(PyObject *__pyx_v
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
       PyObject *__pyx_temp[2] = {__pyx_t_8, __pyx_t_2};
-      __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 37, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 44, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     } else
     #endif
     {
-      __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 37, __pyx_L1_error)
+      __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 44, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_8); __pyx_t_8 = NULL;
       __Pyx_GIVEREF(__pyx_t_2);
       PyTuple_SET_ITEM(__pyx_t_7, 0+1, __pyx_t_2);
       __pyx_t_2 = 0;
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_7, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 37, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_7, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 44, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     }
   }
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = PyObject_RichCompare(__pyx_t_3, __pyx_int_0, Py_GT); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 37, __pyx_L1_error)
+  __pyx_t_6 = PyObject_RichCompare(__pyx_t_3, __pyx_int_0, Py_GT); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_sum); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 37, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_sum); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __pyx_t_6 = NULL;
@@ -2875,161 +2879,161 @@ static PyObject *__pyx_f_7solvers_3knn_10rating_cov_py_get_cov(PyObject *__pyx_v
     }
   }
   if (__pyx_t_6) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 37, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 44, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 37, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 44, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_9 = __Pyx_PyInt_As_long(__pyx_t_1); if (unlikely((__pyx_t_9 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 37, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyInt_As_long(__pyx_t_1); if (unlikely((__pyx_t_9 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_output_length = __pyx_t_9;
 
-  /* "solvers/knn/rating_cov.pyx":38
+  /* "solvers/knn/rating_cor.pyx":45
  *     cdef long output_length
  *     output_length = ((csr_mat > 0).dot((csr_mat > 0).transpose()) > 0).sum()
  *     print("predicted output_length: " + str(output_length))             # <<<<<<<<<<<<<<
  * 
  *     cdef int[:] out_row, out_col
  */
-  __pyx_t_1 = __Pyx_PyInt_From_long(__pyx_v_output_length); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_long(__pyx_v_output_length); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 45, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 45, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 45, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyNumber_Add(__pyx_kp_s_predicted_output_length, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_Add(__pyx_kp_s_predicted_output_length, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 45, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (__Pyx_PrintOne(0, __pyx_t_3) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
+  if (__Pyx_PrintOne(0, __pyx_t_3) < 0) __PYX_ERR(0, 45, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "solvers/knn/rating_cov.pyx":43
+  /* "solvers/knn/rating_cor.pyx":50
  *     cdef double[:] out_data
  *     cdef long out_counter
  *     out_row = np.zeros(output_length, dtype=np.int32)             # <<<<<<<<<<<<<<
  *     out_col = np.zeros(output_length, dtype=np.int32)
  *     out_data = np.zeros(output_length, dtype=np.float64)
  */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyInt_From_long(__pyx_v_output_length); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_long(__pyx_v_output_length); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_GIVEREF(__pyx_t_3);
   PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_3);
   __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_int32); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_int32); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_2) < 0) __PYX_ERR(0, 43, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_2) < 0) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_6, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_6, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_4 = __Pyx_PyObject_to_MemoryviewSlice_ds_int(__pyx_t_2);
-  if (unlikely(!__pyx_t_4.memview)) __PYX_ERR(0, 43, __pyx_L1_error)
+  if (unlikely(!__pyx_t_4.memview)) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_out_row = __pyx_t_4;
   __pyx_t_4.memview = NULL;
   __pyx_t_4.data = NULL;
 
-  /* "solvers/knn/rating_cov.pyx":44
+  /* "solvers/knn/rating_cor.pyx":51
  *     cdef long out_counter
  *     out_row = np.zeros(output_length, dtype=np.int32)
  *     out_col = np.zeros(output_length, dtype=np.int32)             # <<<<<<<<<<<<<<
  *     out_data = np.zeros(output_length, dtype=np.float64)
  *     out_counter = 0
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 51, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyInt_From_long(__pyx_v_output_length); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_long(__pyx_v_output_length); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 51, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_2);
   __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 51, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_int32); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_int32); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 51, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_7) < 0) __PYX_ERR(0, 44, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_7) < 0) __PYX_ERR(0, 51, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, __pyx_t_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, __pyx_t_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 51, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_4 = __Pyx_PyObject_to_MemoryviewSlice_ds_int(__pyx_t_7);
-  if (unlikely(!__pyx_t_4.memview)) __PYX_ERR(0, 44, __pyx_L1_error)
+  if (unlikely(!__pyx_t_4.memview)) __PYX_ERR(0, 51, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __pyx_v_out_col = __pyx_t_4;
   __pyx_t_4.memview = NULL;
   __pyx_t_4.data = NULL;
 
-  /* "solvers/knn/rating_cov.pyx":45
+  /* "solvers/knn/rating_cor.pyx":52
  *     out_row = np.zeros(output_length, dtype=np.int32)
  *     out_col = np.zeros(output_length, dtype=np.int32)
  *     out_data = np.zeros(output_length, dtype=np.float64)             # <<<<<<<<<<<<<<
  *     out_counter = 0
  * 
  */
-  __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = __Pyx_PyInt_From_long(__pyx_v_output_length); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyInt_From_long(__pyx_v_output_length); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_GIVEREF(__pyx_t_7);
   PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_7);
   __pyx_t_7 = 0;
-  __pyx_t_7 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_float64); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_float64); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_dtype, __pyx_t_1) < 0) __PYX_ERR(0, 45, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_dtype, __pyx_t_1) < 0) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_6, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_6, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __pyx_t_5 = __Pyx_PyObject_to_MemoryviewSlice_ds_double(__pyx_t_1);
-  if (unlikely(!__pyx_t_5.memview)) __PYX_ERR(0, 45, __pyx_L1_error)
+  if (unlikely(!__pyx_t_5.memview)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_out_data = __pyx_t_5;
   __pyx_t_5.memview = NULL;
   __pyx_t_5.data = NULL;
 
-  /* "solvers/knn/rating_cov.pyx":46
+  /* "solvers/knn/rating_cor.pyx":53
  *     out_col = np.zeros(output_length, dtype=np.int32)
  *     out_data = np.zeros(output_length, dtype=np.float64)
  *     out_counter = 0             # <<<<<<<<<<<<<<
@@ -3038,42 +3042,42 @@ static PyObject *__pyx_f_7solvers_3knn_10rating_cov_py_get_cov(PyObject *__pyx_v
  */
   __pyx_v_out_counter = 0;
 
-  /* "solvers/knn/rating_cov.pyx":55
+  /* "solvers/knn/rating_cor.pyx":62
  *     cdef list rating_dicts
  * 
  *     rating_dicts = []             # <<<<<<<<<<<<<<
  *     print("Building rating_dicts")
  *     for user_row in range(ratings.num_rows):
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 55, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_rating_dicts = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "solvers/knn/rating_cov.pyx":56
+  /* "solvers/knn/rating_cor.pyx":63
  * 
  *     rating_dicts = []
  *     print("Building rating_dicts")             # <<<<<<<<<<<<<<
  *     for user_row in range(ratings.num_rows):
  *         user_cols = csr_indices[csr_indptr[user_row]:csr_indptr[user_row + 1]]
  */
-  if (__Pyx_PrintOne(0, __pyx_kp_s_Building_rating_dicts) < 0) __PYX_ERR(0, 56, __pyx_L1_error)
+  if (__Pyx_PrintOne(0, __pyx_kp_s_Building_rating_dicts) < 0) __PYX_ERR(0, 63, __pyx_L1_error)
 
-  /* "solvers/knn/rating_cov.pyx":57
+  /* "solvers/knn/rating_cor.pyx":64
  *     rating_dicts = []
  *     print("Building rating_dicts")
  *     for user_row in range(ratings.num_rows):             # <<<<<<<<<<<<<<
  *         user_cols = csr_indices[csr_indptr[user_row]:csr_indptr[user_row + 1]]
  *         user_rats = csr_data[csr_indptr[user_row]:csr_indptr[user_row + 1]]
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_ratings, __pyx_n_s_num_rows); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 57, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_ratings, __pyx_n_s_num_rows); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 64, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_9 = __Pyx_PyInt_As_long(__pyx_t_1); if (unlikely((__pyx_t_9 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 57, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyInt_As_long(__pyx_t_1); if (unlikely((__pyx_t_9 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 64, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
     __pyx_v_user_row = __pyx_t_10;
 
-    /* "solvers/knn/rating_cov.pyx":58
+    /* "solvers/knn/rating_cor.pyx":65
  *     print("Building rating_dicts")
  *     for user_row in range(ratings.num_rows):
  *         user_cols = csr_indices[csr_indptr[user_row]:csr_indptr[user_row + 1]]             # <<<<<<<<<<<<<<
@@ -3100,7 +3104,7 @@ static PyObject *__pyx_f_7solvers_3knn_10rating_cov_py_get_cov(PyObject *__pyx_v
     0,
     1) < 0))
 {
-    __PYX_ERR(0, 58, __pyx_L1_error)
+    __PYX_ERR(0, 65, __pyx_L1_error)
 }
 
 __PYX_XDEC_MEMVIEW(&__pyx_v_user_cols, 1);
@@ -3108,7 +3112,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_user_cols, 1);
     __pyx_t_4.memview = NULL;
     __pyx_t_4.data = NULL;
 
-    /* "solvers/knn/rating_cov.pyx":59
+    /* "solvers/knn/rating_cor.pyx":66
  *     for user_row in range(ratings.num_rows):
  *         user_cols = csr_indices[csr_indptr[user_row]:csr_indptr[user_row + 1]]
  *         user_rats = csr_data[csr_indptr[user_row]:csr_indptr[user_row + 1]]             # <<<<<<<<<<<<<<
@@ -3135,7 +3139,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_user_cols, 1);
     0,
     1) < 0))
 {
-    __PYX_ERR(0, 59, __pyx_L1_error)
+    __PYX_ERR(0, 66, __pyx_L1_error)
 }
 
 __PYX_XDEC_MEMVIEW(&__pyx_v_user_rats, 1);
@@ -3143,7 +3147,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_user_rats, 1);
     __pyx_t_5.memview = NULL;
     __pyx_t_5.data = NULL;
 
-    /* "solvers/knn/rating_cov.pyx":60
+    /* "solvers/knn/rating_cor.pyx":67
  *         user_cols = csr_indices[csr_indptr[user_row]:csr_indptr[user_row + 1]]
  *         user_rats = csr_data[csr_indptr[user_row]:csr_indptr[user_row + 1]]
  *         di = cppmap[int, double]()             # <<<<<<<<<<<<<<
@@ -3154,28 +3158,28 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_user_rats, 1);
       __pyx_t_16 = std::map<int,double> ();
     } catch(...) {
       __Pyx_CppExn2PyErr();
-      __PYX_ERR(0, 60, __pyx_L1_error)
+      __PYX_ERR(0, 67, __pyx_L1_error)
     }
     __pyx_v_di = __pyx_t_16;
 
-    /* "solvers/knn/rating_cov.pyx":61
+    /* "solvers/knn/rating_cor.pyx":68
  *         user_rats = csr_data[csr_indptr[user_row]:csr_indptr[user_row + 1]]
  *         di = cppmap[int, double]()
  *         for i in range(user_cols.size):             # <<<<<<<<<<<<<<
  *             di[user_cols[i]] = user_rats[i]
  *         rating_dicts.append(di)
  */
-    __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_user_cols, 1, (PyObject *(*)(char *)) __pyx_memview_get_int, (int (*)(char *, PyObject *)) __pyx_memview_set_int, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 61, __pyx_L1_error)
+    __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_user_cols, 1, (PyObject *(*)(char *)) __pyx_memview_get_int, (int (*)(char *, PyObject *)) __pyx_memview_set_int, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_size); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 61, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_size); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 68, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_17 = __Pyx_PyInt_As_long(__pyx_t_7); if (unlikely((__pyx_t_17 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 61, __pyx_L1_error)
+    __pyx_t_17 = __Pyx_PyInt_As_long(__pyx_t_7); if (unlikely((__pyx_t_17 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 68, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     for (__pyx_t_13 = 0; __pyx_t_13 < __pyx_t_17; __pyx_t_13+=1) {
       __pyx_v_i = __pyx_t_13;
 
-      /* "solvers/knn/rating_cov.pyx":62
+      /* "solvers/knn/rating_cor.pyx":69
  *         di = cppmap[int, double]()
  *         for i in range(user_cols.size):
  *             di[user_cols[i]] = user_rats[i]             # <<<<<<<<<<<<<<
@@ -3187,90 +3191,116 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_user_rats, 1);
       (__pyx_v_di[(*((int *) ( /* dim=0 */ (__pyx_v_user_cols.data + __pyx_t_19 * __pyx_v_user_cols.strides[0]) )))]) = (*((double *) ( /* dim=0 */ (__pyx_v_user_rats.data + __pyx_t_18 * __pyx_v_user_rats.strides[0]) )));
     }
 
-    /* "solvers/knn/rating_cov.pyx":63
+    /* "solvers/knn/rating_cor.pyx":70
  *         for i in range(user_cols.size):
  *             di[user_cols[i]] = user_rats[i]
  *         rating_dicts.append(di)             # <<<<<<<<<<<<<<
  *     print("done!")
  * 
  */
-    __pyx_t_7 = __pyx_convert_map_to_py_int____double(__pyx_v_di); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 63, __pyx_L1_error)
+    __pyx_t_7 = __pyx_convert_map_to_py_int____double(__pyx_v_di); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 70, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_20 = __Pyx_PyList_Append(__pyx_v_rating_dicts, __pyx_t_7); if (unlikely(__pyx_t_20 == ((int)-1))) __PYX_ERR(0, 63, __pyx_L1_error)
+    __pyx_t_20 = __Pyx_PyList_Append(__pyx_v_rating_dicts, __pyx_t_7); if (unlikely(__pyx_t_20 == ((int)-1))) __PYX_ERR(0, 70, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   }
 
-  /* "solvers/knn/rating_cov.pyx":64
+  /* "solvers/knn/rating_cor.pyx":71
  *             di[user_cols[i]] = user_rats[i]
  *         rating_dicts.append(di)
  *     print("done!")             # <<<<<<<<<<<<<<
  * 
  *     out_counter = _inner_loop(out_row, out_col, out_data,
  */
-  if (__Pyx_PrintOne(0, __pyx_kp_s_done) < 0) __PYX_ERR(0, 64, __pyx_L1_error)
+  if (__Pyx_PrintOne(0, __pyx_kp_s_done) < 0) __PYX_ERR(0, 71, __pyx_L1_error)
 
-  /* "solvers/knn/rating_cov.pyx":68
+  /* "solvers/knn/rating_cor.pyx":75
  *     out_counter = _inner_loop(out_row, out_col, out_data,
  *                               csr_indices, csr_indptr, csr_data,
- *                               csc_indices, csc_indptr, ratings.num_rows, rating_dicts)             # <<<<<<<<<<<<<<
+ *                               csc_indices, csc_indptr, ratings.num_rows, ratings.get_user_means(), rating_dicts)             # <<<<<<<<<<<<<<
  * 
  *     print("out_counter: " + str(out_counter) + " output_length: " + str(output_length))
  */
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_ratings, __pyx_n_s_num_rows); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_ratings, __pyx_n_s_num_rows); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_10 = __Pyx_PyInt_As_int(__pyx_t_7); if (unlikely((__pyx_t_10 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 68, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyInt_As_int(__pyx_t_7); if (unlikely((__pyx_t_10 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 75, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_ratings, __pyx_n_s_get_user_means); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 75, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_6 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
+    __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_1);
+    if (likely(__pyx_t_6)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+      __Pyx_INCREF(__pyx_t_6);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_1, function);
+    }
+  }
+  if (__pyx_t_6) {
+    __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 75, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  } else {
+    __pyx_t_7 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 75, __pyx_L1_error)
+  }
+  __Pyx_GOTREF(__pyx_t_7);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_5 = __Pyx_PyObject_to_MemoryviewSlice_ds_double(__pyx_t_7);
+  if (unlikely(!__pyx_t_5.memview)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "solvers/knn/rating_cov.pyx":66
+  /* "solvers/knn/rating_cor.pyx":73
  *     print("done!")
  * 
  *     out_counter = _inner_loop(out_row, out_col, out_data,             # <<<<<<<<<<<<<<
  *                               csr_indices, csr_indptr, csr_data,
- *                               csc_indices, csc_indptr, ratings.num_rows, rating_dicts)
+ *                               csc_indices, csc_indptr, ratings.num_rows, ratings.get_user_means(), rating_dicts)
  */
-  __pyx_v_out_counter = __pyx_f_7solvers_3knn_10rating_cov__inner_loop(__pyx_v_out_row, __pyx_v_out_col, __pyx_v_out_data, __pyx_v_csr_indices, __pyx_v_csr_indptr, __pyx_v_csr_data, __pyx_v_csc_indices, __pyx_v_csc_indptr, __pyx_t_10, __pyx_v_rating_dicts);
+  __pyx_v_out_counter = __pyx_f_7solvers_3knn_10rating_cor__inner_loop(__pyx_v_out_row, __pyx_v_out_col, __pyx_v_out_data, __pyx_v_csr_indices, __pyx_v_csr_indptr, __pyx_v_csr_data, __pyx_v_csc_indices, __pyx_v_csc_indptr, __pyx_t_10, __pyx_t_5, __pyx_v_rating_dicts);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_5, 1);
+  __pyx_t_5.memview = NULL;
+  __pyx_t_5.data = NULL;
 
-  /* "solvers/knn/rating_cov.pyx":70
- *                               csc_indices, csc_indptr, ratings.num_rows, rating_dicts)
+  /* "solvers/knn/rating_cor.pyx":77
+ *                               csc_indices, csc_indptr, ratings.num_rows, ratings.get_user_means(), rating_dicts)
  * 
  *     print("out_counter: " + str(out_counter) + " output_length: " + str(output_length))             # <<<<<<<<<<<<<<
  * 
  *     return coo_matrix((out_data, (out_row, out_col)), shape=(ratings.num_rows, ratings.num_rows))
  */
-  __pyx_t_7 = __Pyx_PyInt_From_long(__pyx_v_out_counter); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyInt_From_long(__pyx_v_out_counter); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 77, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 77, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_7);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_7);
   __pyx_t_7 = 0;
-  __pyx_t_7 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_1, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_1, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 77, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyNumber_Add(__pyx_kp_s_out_counter, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Add(__pyx_kp_s_out_counter, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 77, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = PyNumber_Add(__pyx_t_1, __pyx_kp_s_output_length); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_t_7 = PyNumber_Add(__pyx_t_1, __pyx_kp_s_output_length); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 77, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyInt_From_long(__pyx_v_output_length); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_long(__pyx_v_output_length); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 77, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 77, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 77, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = PyNumber_Add(__pyx_t_7, __pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_t_6 = PyNumber_Add(__pyx_t_7, __pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 77, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (__Pyx_PrintOne(0, __pyx_t_6) < 0) __PYX_ERR(0, 70, __pyx_L1_error)
+  if (__Pyx_PrintOne(0, __pyx_t_6) < 0) __PYX_ERR(0, 77, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "solvers/knn/rating_cov.pyx":72
+  /* "solvers/knn/rating_cor.pyx":79
  *     print("out_counter: " + str(out_counter) + " output_length: " + str(output_length))
  * 
  *     return coo_matrix((out_data, (out_row, out_col)), shape=(ratings.num_rows, ratings.num_rows))             # <<<<<<<<<<<<<<
@@ -3278,15 +3308,15 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_user_rats, 1);
  * cdef int _inner_loop(int[:] out_row, int[:] out_col, double[:] out_data,
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_coo_matrix); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_coo_matrix); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 79, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_out_data, 1, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_out_data, 1, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 79, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_7 = __pyx_memoryview_fromslice(__pyx_v_out_row, 1, (PyObject *(*)(char *)) __pyx_memview_get_int, (int (*)(char *, PyObject *)) __pyx_memview_set_int, 0);; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_t_7 = __pyx_memoryview_fromslice(__pyx_v_out_row, 1, (PyObject *(*)(char *)) __pyx_memview_get_int, (int (*)(char *, PyObject *)) __pyx_memview_set_int, 0);; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 79, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_out_col, 1, (PyObject *(*)(char *)) __pyx_memview_get_int, (int (*)(char *, PyObject *)) __pyx_memview_set_int, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_out_col, 1, (PyObject *(*)(char *)) __pyx_memview_get_int, (int (*)(char *, PyObject *)) __pyx_memview_set_int, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 79, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 79, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_7);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_7);
@@ -3294,7 +3324,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_user_rats, 1);
   PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_t_2);
   __pyx_t_7 = 0;
   __pyx_t_2 = 0;
-  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 79, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
@@ -3302,18 +3332,18 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_user_rats, 1);
   PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_t_3);
   __pyx_t_1 = 0;
   __pyx_t_3 = 0;
-  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 79, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_2);
   __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 79, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_ratings, __pyx_n_s_num_rows); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_ratings, __pyx_n_s_num_rows); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 79, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_ratings, __pyx_n_s_num_rows); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_ratings, __pyx_n_s_num_rows); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 79, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_8 = PyTuple_New(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_t_8 = PyTuple_New(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 79, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_1);
@@ -3321,9 +3351,9 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_user_rats, 1);
   PyTuple_SET_ITEM(__pyx_t_8, 1, __pyx_t_7);
   __pyx_t_1 = 0;
   __pyx_t_7 = 0;
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_shape, __pyx_t_8) < 0) __PYX_ERR(0, 72, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_shape, __pyx_t_8) < 0) __PYX_ERR(0, 79, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 79, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -3332,10 +3362,10 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_user_rats, 1);
   __pyx_t_8 = 0;
   goto __pyx_L0;
 
-  /* "solvers/knn/rating_cov.pyx":23
+  /* "solvers/knn/rating_cor.pyx":30
  * 
  * 
- * cdef py_get_cov(ratings):             # <<<<<<<<<<<<<<
+ * cdef py_get_cor(ratings):             # <<<<<<<<<<<<<<
  *     # type: (Ratings) -> scipy.sparse.coo_matrix
  * 
  */
@@ -3350,7 +3380,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_user_rats, 1);
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_AddTraceback("solvers.knn.rating_cov.py_get_cov", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("solvers.knn.rating_cor.py_get_cor", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __PYX_XDEC_MEMVIEW(&__pyx_v_csr_indptr, 1);
@@ -3371,7 +3401,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_user_rats, 1);
   return __pyx_r;
 }
 
-/* "solvers/knn/rating_cov.pyx":74
+/* "solvers/knn/rating_cor.pyx":81
  *     return coo_matrix((out_data, (out_row, out_col)), shape=(ratings.num_rows, ratings.num_rows))
  * 
  * cdef int _inner_loop(int[:] out_row, int[:] out_col, double[:] out_data,             # <<<<<<<<<<<<<<
@@ -3379,7 +3409,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_user_rats, 1);
  *                      int[:] csc_indices, int[:] csc_indptr, int num_rows,
  */
 
-static int __pyx_f_7solvers_3knn_10rating_cov__inner_loop(__Pyx_memviewslice __pyx_v_out_row, __Pyx_memviewslice __pyx_v_out_col, __Pyx_memviewslice __pyx_v_out_data, __Pyx_memviewslice __pyx_v_csr_indices, __Pyx_memviewslice __pyx_v_csr_indptr, __Pyx_memviewslice __pyx_v_csr_data, __Pyx_memviewslice __pyx_v_csc_indices, __Pyx_memviewslice __pyx_v_csc_indptr, int __pyx_v_num_rows, PyObject *__pyx_v_rating_dicts) {
+static int __pyx_f_7solvers_3knn_10rating_cor__inner_loop(__Pyx_memviewslice __pyx_v_out_row, __Pyx_memviewslice __pyx_v_out_col, __Pyx_memviewslice __pyx_v_out_data, __Pyx_memviewslice __pyx_v_csr_indices, __Pyx_memviewslice __pyx_v_csr_indptr, __Pyx_memviewslice __pyx_v_csr_data, __Pyx_memviewslice __pyx_v_csc_indices, __Pyx_memviewslice __pyx_v_csc_indptr, int __pyx_v_num_rows, __Pyx_memviewslice __pyx_v_user_means, PyObject *__pyx_v_rating_dicts) {
   int __pyx_v_out_counter;
   __Pyx_memviewslice __pyx_v_other_cols = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_user_cols = { 0, 0, { 0 }, { 0 }, { 0 } };
@@ -3388,9 +3418,13 @@ static int __pyx_f_7solvers_3knn_10rating_cov__inner_loop(__Pyx_memviewslice __p
   std::map<int,double>  __pyx_v_other_rats_dict;
   std::map<int,double>  __pyx_v_user_rats_dict;
   __Pyx_memviewslice __pyx_v_ixn = { 0, 0, { 0 }, { 0 }, { 0 } };
-  double __pyx_v_covariance;
+  double __pyx_v_corr;
   double __pyx_v_user_mean;
   double __pyx_v_other_mean;
+  double __pyx_v_denom_u;
+  double __pyx_v_denom_o;
+  double __pyx_v_udiff;
+  double __pyx_v_odiff;
   int __pyx_v_movie;
   int __pyx_v_ixn_size;
   std::set<int>  __pyx_v_neighbours;
@@ -3431,7 +3465,7 @@ static int __pyx_f_7solvers_3knn_10rating_cov__inner_loop(__Pyx_memviewslice __p
   PyObject *__pyx_t_27 = NULL;
   PyObject *__pyx_t_28 = NULL;
   PyObject *__pyx_t_29 = NULL;
-  int __pyx_t_30;
+  Py_ssize_t __pyx_t_30;
   Py_ssize_t __pyx_t_31;
   Py_ssize_t __pyx_t_32;
   Py_ssize_t __pyx_t_33;
@@ -3439,8 +3473,8 @@ static int __pyx_f_7solvers_3knn_10rating_cov__inner_loop(__Pyx_memviewslice __p
   Py_ssize_t __pyx_t_35;
   __Pyx_RefNannySetupContext("_inner_loop", 0);
 
-  /* "solvers/knn/rating_cov.pyx":79
- *                      list rating_dicts):
+  /* "solvers/knn/rating_cor.pyx":86
+ *                      double[:] user_means, list rating_dicts):
  * 
  *     cdef int out_counter = 0             # <<<<<<<<<<<<<<
  *     cdef int[:] other_cols, user_cols
@@ -3448,7 +3482,7 @@ static int __pyx_f_7solvers_3knn_10rating_cov__inner_loop(__Pyx_memviewslice __p
  */
   __pyx_v_out_counter = 0;
 
-  /* "solvers/knn/rating_cov.pyx":90
+  /* "solvers/knn/rating_cor.pyx":97
  * 
  *     cdef int other_row, user_row, user_col, i, j
  *     for user_row in range(num_rows):             # <<<<<<<<<<<<<<
@@ -3459,7 +3493,7 @@ static int __pyx_f_7solvers_3knn_10rating_cov__inner_loop(__Pyx_memviewslice __p
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_user_row = __pyx_t_2;
 
-    /* "solvers/knn/rating_cov.pyx":91
+    /* "solvers/knn/rating_cor.pyx":98
  *     cdef int other_row, user_row, user_col, i, j
  *     for user_row in range(num_rows):
  *         user_cols = csr_indices[csr_indptr[user_row]:csr_indptr[user_row + 1]]             # <<<<<<<<<<<<<<
@@ -3486,7 +3520,7 @@ static int __pyx_f_7solvers_3knn_10rating_cov__inner_loop(__Pyx_memviewslice __p
     0,
     1) < 0))
 {
-    __PYX_ERR(0, 91, __pyx_L1_error)
+    __PYX_ERR(0, 98, __pyx_L1_error)
 }
 
 __PYX_XDEC_MEMVIEW(&__pyx_v_user_cols, 1);
@@ -3494,7 +3528,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_user_cols, 1);
     __pyx_t_5.memview = NULL;
     __pyx_t_5.data = NULL;
 
-    /* "solvers/knn/rating_cov.pyx":92
+    /* "solvers/knn/rating_cor.pyx":99
  *     for user_row in range(num_rows):
  *         user_cols = csr_indices[csr_indptr[user_row]:csr_indptr[user_row + 1]]
  *         user_rats = csr_data[csr_indptr[user_row]:csr_indptr[user_row + 1]]             # <<<<<<<<<<<<<<
@@ -3521,7 +3555,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_user_cols, 1);
     0,
     1) < 0))
 {
-    __PYX_ERR(0, 92, __pyx_L1_error)
+    __PYX_ERR(0, 99, __pyx_L1_error)
 }
 
 __PYX_XDEC_MEMVIEW(&__pyx_v_user_rats, 1);
@@ -3529,7 +3563,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_user_rats, 1);
     __pyx_t_9.memview = NULL;
     __pyx_t_9.data = NULL;
 
-    /* "solvers/knn/rating_cov.pyx":93
+    /* "solvers/knn/rating_cor.pyx":100
  *         user_cols = csr_indices[csr_indptr[user_row]:csr_indptr[user_row + 1]]
  *         user_rats = csr_data[csr_indptr[user_row]:csr_indptr[user_row + 1]]
  *         user_rats_dict = rating_dicts[user_row]             # <<<<<<<<<<<<<<
@@ -3538,12 +3572,12 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_user_rats, 1);
  */
     if (unlikely(__pyx_v_rating_dicts == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 93, __pyx_L1_error)
+      __PYX_ERR(0, 100, __pyx_L1_error)
     }
-    __pyx_t_10 = __pyx_convert_map_from_py_int__and_double(PyList_GET_ITEM(__pyx_v_rating_dicts, __pyx_v_user_row)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 93, __pyx_L1_error)
+    __pyx_t_10 = __pyx_convert_map_from_py_int__and_double(PyList_GET_ITEM(__pyx_v_rating_dicts, __pyx_v_user_row)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 100, __pyx_L1_error)
     __pyx_v_user_rats_dict = __pyx_t_10;
 
-    /* "solvers/knn/rating_cov.pyx":94
+    /* "solvers/knn/rating_cor.pyx":101
  *         user_rats = csr_data[csr_indptr[user_row]:csr_indptr[user_row + 1]]
  *         user_rats_dict = rating_dicts[user_row]
  *         neighbours = cppset[int]()             # <<<<<<<<<<<<<<
@@ -3554,11 +3588,11 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_user_rats, 1);
       __pyx_t_11 = std::set<int> ();
     } catch(...) {
       __Pyx_CppExn2PyErr();
-      __PYX_ERR(0, 94, __pyx_L1_error)
+      __PYX_ERR(0, 101, __pyx_L1_error)
     }
     __pyx_v_neighbours = __pyx_t_11;
 
-    /* "solvers/knn/rating_cov.pyx":95
+    /* "solvers/knn/rating_cor.pyx":102
  *         user_rats_dict = rating_dicts[user_row]
  *         neighbours = cppset[int]()
  *         for i in range(user_cols.shape[0]):             # <<<<<<<<<<<<<<
@@ -3569,7 +3603,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_user_rats, 1);
     for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_12; __pyx_t_6+=1) {
       __pyx_v_i = __pyx_t_6;
 
-      /* "solvers/knn/rating_cov.pyx":96
+      /* "solvers/knn/rating_cor.pyx":103
  *         neighbours = cppset[int]()
  *         for i in range(user_cols.shape[0]):
  *             user_col = user_cols[i]             # <<<<<<<<<<<<<<
@@ -3579,7 +3613,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_user_rats, 1);
       __pyx_t_13 = __pyx_v_i;
       __pyx_v_user_col = (*((int *) ( /* dim=0 */ (__pyx_v_user_cols.data + __pyx_t_13 * __pyx_v_user_cols.strides[0]) )));
 
-      /* "solvers/knn/rating_cov.pyx":97
+      /* "solvers/knn/rating_cor.pyx":104
  *         for i in range(user_cols.shape[0]):
  *             user_col = user_cols[i]
  *             tmp = csc_indices[csc_indptr[user_col]:csc_indptr[user_col+1]]             # <<<<<<<<<<<<<<
@@ -3606,7 +3640,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_user_rats, 1);
     0,
     1) < 0))
 {
-    __PYX_ERR(0, 97, __pyx_L1_error)
+    __PYX_ERR(0, 104, __pyx_L1_error)
 }
 
 __PYX_XDEC_MEMVIEW(&__pyx_v_tmp, 1);
@@ -3614,7 +3648,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_tmp, 1);
       __pyx_t_5.memview = NULL;
       __pyx_t_5.data = NULL;
 
-      /* "solvers/knn/rating_cov.pyx":98
+      /* "solvers/knn/rating_cor.pyx":105
  *             user_col = user_cols[i]
  *             tmp = csc_indices[csc_indptr[user_col]:csc_indptr[user_col+1]]
  *             for j in range(tmp.shape[0]):             # <<<<<<<<<<<<<<
@@ -3625,7 +3659,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_tmp, 1);
       for (__pyx_t_16 = 0; __pyx_t_16 < __pyx_t_17; __pyx_t_16+=1) {
         __pyx_v_j = __pyx_t_16;
 
-        /* "solvers/knn/rating_cov.pyx":99
+        /* "solvers/knn/rating_cor.pyx":106
  *             tmp = csc_indices[csc_indptr[user_col]:csc_indptr[user_col+1]]
  *             for j in range(tmp.shape[0]):
  *                 neighbours.insert(tmp[j])             # <<<<<<<<<<<<<<
@@ -3637,12 +3671,12 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_tmp, 1);
           __pyx_v_neighbours.insert((*((int *) ( /* dim=0 */ (__pyx_v_tmp.data + __pyx_t_18 * __pyx_v_tmp.strides[0]) ))));
         } catch(...) {
           __Pyx_CppExn2PyErr();
-          __PYX_ERR(0, 99, __pyx_L1_error)
+          __PYX_ERR(0, 106, __pyx_L1_error)
         }
       }
     }
 
-    /* "solvers/knn/rating_cov.pyx":100
+    /* "solvers/knn/rating_cor.pyx":107
  *             for j in range(tmp.shape[0]):
  *                 neighbours.insert(tmp[j])
  *         for other_row in neighbours:             # <<<<<<<<<<<<<<
@@ -3656,7 +3690,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_tmp, 1);
       ++__pyx_t_19;
       __pyx_v_other_row = __pyx_t_6;
 
-      /* "solvers/knn/rating_cov.pyx":101
+      /* "solvers/knn/rating_cor.pyx":108
  *                 neighbours.insert(tmp[j])
  *         for other_row in neighbours:
  *             other_cols = csr_indices[csr_indptr[other_row]:csr_indptr[other_row + 1]]             # <<<<<<<<<<<<<<
@@ -3683,7 +3717,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_tmp, 1);
     0,
     1) < 0))
 {
-    __PYX_ERR(0, 101, __pyx_L1_error)
+    __PYX_ERR(0, 108, __pyx_L1_error)
 }
 
 __PYX_XDEC_MEMVIEW(&__pyx_v_other_cols, 1);
@@ -3691,7 +3725,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_other_cols, 1);
       __pyx_t_5.memview = NULL;
       __pyx_t_5.data = NULL;
 
-      /* "solvers/knn/rating_cov.pyx":102
+      /* "solvers/knn/rating_cor.pyx":109
  *         for other_row in neighbours:
  *             other_cols = csr_indices[csr_indptr[other_row]:csr_indptr[other_row + 1]]
  *             other_rats = csr_data[csr_indptr[other_row]:csr_indptr[other_row + 1]]             # <<<<<<<<<<<<<<
@@ -3718,7 +3752,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_other_cols, 1);
     0,
     1) < 0))
 {
-    __PYX_ERR(0, 102, __pyx_L1_error)
+    __PYX_ERR(0, 109, __pyx_L1_error)
 }
 
 __PYX_XDEC_MEMVIEW(&__pyx_v_other_rats, 1);
@@ -3726,7 +3760,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_other_rats, 1);
       __pyx_t_9.memview = NULL;
       __pyx_t_9.data = NULL;
 
-      /* "solvers/knn/rating_cov.pyx":103
+      /* "solvers/knn/rating_cor.pyx":110
  *             other_cols = csr_indices[csr_indptr[other_row]:csr_indptr[other_row + 1]]
  *             other_rats = csr_data[csr_indptr[other_row]:csr_indptr[other_row + 1]]
  *             other_rats_dict = rating_dicts[other_row]             # <<<<<<<<<<<<<<
@@ -3735,26 +3769,26 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_other_rats, 1);
  */
       if (unlikely(__pyx_v_rating_dicts == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-        __PYX_ERR(0, 103, __pyx_L1_error)
+        __PYX_ERR(0, 110, __pyx_L1_error)
       }
-      __pyx_t_10 = __pyx_convert_map_from_py_int__and_double(PyList_GET_ITEM(__pyx_v_rating_dicts, __pyx_v_other_row)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 103, __pyx_L1_error)
+      __pyx_t_10 = __pyx_convert_map_from_py_int__and_double(PyList_GET_ITEM(__pyx_v_rating_dicts, __pyx_v_other_row)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 110, __pyx_L1_error)
       __pyx_v_other_rats_dict = __pyx_t_10;
 
-      /* "solvers/knn/rating_cov.pyx":104
+      /* "solvers/knn/rating_cor.pyx":111
  *             other_rats = csr_data[csr_indptr[other_row]:csr_indptr[other_row + 1]]
  *             other_rats_dict = rating_dicts[other_row]
  *             ixn = np.intersect1d(user_cols, other_cols)             # <<<<<<<<<<<<<<
  *             ixn_size = ixn.size
- *             if ixn_size == 1:
+ * 
  */
-      __pyx_t_25 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 104, __pyx_L1_error)
+      __pyx_t_25 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 111, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_25);
-      __pyx_t_26 = __Pyx_PyObject_GetAttrStr(__pyx_t_25, __pyx_n_s_intersect1d); if (unlikely(!__pyx_t_26)) __PYX_ERR(0, 104, __pyx_L1_error)
+      __pyx_t_26 = __Pyx_PyObject_GetAttrStr(__pyx_t_25, __pyx_n_s_intersect1d); if (unlikely(!__pyx_t_26)) __PYX_ERR(0, 111, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_26);
       __Pyx_DECREF(__pyx_t_25); __pyx_t_25 = 0;
-      __pyx_t_25 = __pyx_memoryview_fromslice(__pyx_v_user_cols, 1, (PyObject *(*)(char *)) __pyx_memview_get_int, (int (*)(char *, PyObject *)) __pyx_memview_set_int, 0);; if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 104, __pyx_L1_error)
+      __pyx_t_25 = __pyx_memoryview_fromslice(__pyx_v_user_cols, 1, (PyObject *(*)(char *)) __pyx_memview_get_int, (int (*)(char *, PyObject *)) __pyx_memview_set_int, 0);; if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 111, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_25);
-      __pyx_t_27 = __pyx_memoryview_fromslice(__pyx_v_other_cols, 1, (PyObject *(*)(char *)) __pyx_memview_get_int, (int (*)(char *, PyObject *)) __pyx_memview_set_int, 0);; if (unlikely(!__pyx_t_27)) __PYX_ERR(0, 104, __pyx_L1_error)
+      __pyx_t_27 = __pyx_memoryview_fromslice(__pyx_v_other_cols, 1, (PyObject *(*)(char *)) __pyx_memview_get_int, (int (*)(char *, PyObject *)) __pyx_memview_set_int, 0);; if (unlikely(!__pyx_t_27)) __PYX_ERR(0, 111, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_27);
       __pyx_t_28 = NULL;
       __pyx_t_6 = 0;
@@ -3771,7 +3805,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_other_rats, 1);
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_26)) {
         PyObject *__pyx_temp[3] = {__pyx_t_28, __pyx_t_25, __pyx_t_27};
-        __pyx_t_24 = __Pyx_PyFunction_FastCall(__pyx_t_26, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 104, __pyx_L1_error)
+        __pyx_t_24 = __Pyx_PyFunction_FastCall(__pyx_t_26, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 111, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_28); __pyx_t_28 = 0;
         __Pyx_GOTREF(__pyx_t_24);
         __Pyx_DECREF(__pyx_t_25); __pyx_t_25 = 0;
@@ -3781,7 +3815,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_other_rats, 1);
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_26)) {
         PyObject *__pyx_temp[3] = {__pyx_t_28, __pyx_t_25, __pyx_t_27};
-        __pyx_t_24 = __Pyx_PyCFunction_FastCall(__pyx_t_26, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 104, __pyx_L1_error)
+        __pyx_t_24 = __Pyx_PyCFunction_FastCall(__pyx_t_26, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 111, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_28); __pyx_t_28 = 0;
         __Pyx_GOTREF(__pyx_t_24);
         __Pyx_DECREF(__pyx_t_25); __pyx_t_25 = 0;
@@ -3789,7 +3823,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_other_rats, 1);
       } else
       #endif
       {
-        __pyx_t_29 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_29)) __PYX_ERR(0, 104, __pyx_L1_error)
+        __pyx_t_29 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_29)) __PYX_ERR(0, 111, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_29);
         if (__pyx_t_28) {
           __Pyx_GIVEREF(__pyx_t_28); PyTuple_SET_ITEM(__pyx_t_29, 0, __pyx_t_28); __pyx_t_28 = NULL;
@@ -3800,232 +3834,198 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_other_rats, 1);
         PyTuple_SET_ITEM(__pyx_t_29, 1+__pyx_t_6, __pyx_t_27);
         __pyx_t_25 = 0;
         __pyx_t_27 = 0;
-        __pyx_t_24 = __Pyx_PyObject_Call(__pyx_t_26, __pyx_t_29, NULL); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 104, __pyx_L1_error)
+        __pyx_t_24 = __Pyx_PyObject_Call(__pyx_t_26, __pyx_t_29, NULL); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 111, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_24);
         __Pyx_DECREF(__pyx_t_29); __pyx_t_29 = 0;
       }
       __Pyx_DECREF(__pyx_t_26); __pyx_t_26 = 0;
       __pyx_t_5 = __Pyx_PyObject_to_MemoryviewSlice_ds_int(__pyx_t_24);
-      if (unlikely(!__pyx_t_5.memview)) __PYX_ERR(0, 104, __pyx_L1_error)
+      if (unlikely(!__pyx_t_5.memview)) __PYX_ERR(0, 111, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_24); __pyx_t_24 = 0;
       __PYX_XDEC_MEMVIEW(&__pyx_v_ixn, 1);
       __pyx_v_ixn = __pyx_t_5;
       __pyx_t_5.memview = NULL;
       __pyx_t_5.data = NULL;
 
-      /* "solvers/knn/rating_cov.pyx":105
+      /* "solvers/knn/rating_cor.pyx":112
  *             other_rats_dict = rating_dicts[other_row]
  *             ixn = np.intersect1d(user_cols, other_cols)
  *             ixn_size = ixn.size             # <<<<<<<<<<<<<<
- *             if ixn_size == 1:
- *                 covariance = 1
+ * 
+ *             user_mean = user_means[user_row]
  */
-      __pyx_t_24 = __pyx_memoryview_fromslice(__pyx_v_ixn, 1, (PyObject *(*)(char *)) __pyx_memview_get_int, (int (*)(char *, PyObject *)) __pyx_memview_set_int, 0);; if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 105, __pyx_L1_error)
+      __pyx_t_24 = __pyx_memoryview_fromslice(__pyx_v_ixn, 1, (PyObject *(*)(char *)) __pyx_memview_get_int, (int (*)(char *, PyObject *)) __pyx_memview_set_int, 0);; if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 112, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_24);
-      __pyx_t_26 = __Pyx_PyObject_GetAttrStr(__pyx_t_24, __pyx_n_s_size); if (unlikely(!__pyx_t_26)) __PYX_ERR(0, 105, __pyx_L1_error)
+      __pyx_t_26 = __Pyx_PyObject_GetAttrStr(__pyx_t_24, __pyx_n_s_size); if (unlikely(!__pyx_t_26)) __PYX_ERR(0, 112, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_26);
       __Pyx_DECREF(__pyx_t_24); __pyx_t_24 = 0;
-      __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_26); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 105, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_26); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 112, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_26); __pyx_t_26 = 0;
       __pyx_v_ixn_size = __pyx_t_6;
 
-      /* "solvers/knn/rating_cov.pyx":106
- *             ixn = np.intersect1d(user_cols, other_cols)
+      /* "solvers/knn/rating_cor.pyx":114
  *             ixn_size = ixn.size
- *             if ixn_size == 1:             # <<<<<<<<<<<<<<
- *                 covariance = 1
- *             else:
+ * 
+ *             user_mean = user_means[user_row]             # <<<<<<<<<<<<<<
+ *             other_mean = user_means[other_row]
+ *             corr = 0
  */
-      __pyx_t_30 = ((__pyx_v_ixn_size == 1) != 0);
-      if (__pyx_t_30) {
+      __pyx_t_30 = __pyx_v_user_row;
+      __pyx_v_user_mean = (*((double *) ( /* dim=0 */ (__pyx_v_user_means.data + __pyx_t_30 * __pyx_v_user_means.strides[0]) )));
 
-        /* "solvers/knn/rating_cov.pyx":107
- *             ixn_size = ixn.size
- *             if ixn_size == 1:
- *                 covariance = 1             # <<<<<<<<<<<<<<
- *             else:
- *                 user_mean = 0
+      /* "solvers/knn/rating_cor.pyx":115
+ * 
+ *             user_mean = user_means[user_row]
+ *             other_mean = user_means[other_row]             # <<<<<<<<<<<<<<
+ *             corr = 0
+ *             denom_u = 0
  */
-        __pyx_v_covariance = 1.0;
+      __pyx_t_31 = __pyx_v_other_row;
+      __pyx_v_other_mean = (*((double *) ( /* dim=0 */ (__pyx_v_user_means.data + __pyx_t_31 * __pyx_v_user_means.strides[0]) )));
 
-        /* "solvers/knn/rating_cov.pyx":106
- *             ixn = np.intersect1d(user_cols, other_cols)
- *             ixn_size = ixn.size
- *             if ixn_size == 1:             # <<<<<<<<<<<<<<
- *                 covariance = 1
- *             else:
+      /* "solvers/knn/rating_cor.pyx":116
+ *             user_mean = user_means[user_row]
+ *             other_mean = user_means[other_row]
+ *             corr = 0             # <<<<<<<<<<<<<<
+ *             denom_u = 0
+ *             denom_o = 0
  */
-        goto __pyx_L11;
+      __pyx_v_corr = 0.0;
+
+      /* "solvers/knn/rating_cor.pyx":117
+ *             other_mean = user_means[other_row]
+ *             corr = 0
+ *             denom_u = 0             # <<<<<<<<<<<<<<
+ *             denom_o = 0
+ *             for i in range(ixn_size):
+ */
+      __pyx_v_denom_u = 0.0;
+
+      /* "solvers/knn/rating_cor.pyx":118
+ *             corr = 0
+ *             denom_u = 0
+ *             denom_o = 0             # <<<<<<<<<<<<<<
+ *             for i in range(ixn_size):
+ *                 movie = ixn[i]
+ */
+      __pyx_v_denom_o = 0.0;
+
+      /* "solvers/knn/rating_cor.pyx":119
+ *             denom_u = 0
+ *             denom_o = 0
+ *             for i in range(ixn_size):             # <<<<<<<<<<<<<<
+ *                 movie = ixn[i]
+ *                 udiff = user_rats_dict[movie] - user_mean
+ */
+      __pyx_t_6 = __pyx_v_ixn_size;
+      for (__pyx_t_16 = 0; __pyx_t_16 < __pyx_t_6; __pyx_t_16+=1) {
+        __pyx_v_i = __pyx_t_16;
+
+        /* "solvers/knn/rating_cor.pyx":120
+ *             denom_o = 0
+ *             for i in range(ixn_size):
+ *                 movie = ixn[i]             # <<<<<<<<<<<<<<
+ *                 udiff = user_rats_dict[movie] - user_mean
+ *                 odiff = other_rats_dict[movie] - other_mean
+ */
+        __pyx_t_32 = __pyx_v_i;
+        __pyx_v_movie = (*((int *) ( /* dim=0 */ (__pyx_v_ixn.data + __pyx_t_32 * __pyx_v_ixn.strides[0]) )));
+
+        /* "solvers/knn/rating_cor.pyx":121
+ *             for i in range(ixn_size):
+ *                 movie = ixn[i]
+ *                 udiff = user_rats_dict[movie] - user_mean             # <<<<<<<<<<<<<<
+ *                 odiff = other_rats_dict[movie] - other_mean
+ *                 corr += udiff*odiff
+ */
+        __pyx_v_udiff = ((__pyx_v_user_rats_dict[__pyx_v_movie]) - __pyx_v_user_mean);
+
+        /* "solvers/knn/rating_cor.pyx":122
+ *                 movie = ixn[i]
+ *                 udiff = user_rats_dict[movie] - user_mean
+ *                 odiff = other_rats_dict[movie] - other_mean             # <<<<<<<<<<<<<<
+ *                 corr += udiff*odiff
+ *                 denom_u += udiff*udiff
+ */
+        __pyx_v_odiff = ((__pyx_v_other_rats_dict[__pyx_v_movie]) - __pyx_v_other_mean);
+
+        /* "solvers/knn/rating_cor.pyx":123
+ *                 udiff = user_rats_dict[movie] - user_mean
+ *                 odiff = other_rats_dict[movie] - other_mean
+ *                 corr += udiff*odiff             # <<<<<<<<<<<<<<
+ *                 denom_u += udiff*udiff
+ *                 denom_o += odiff*odiff
+ */
+        __pyx_v_corr = (__pyx_v_corr + (__pyx_v_udiff * __pyx_v_odiff));
+
+        /* "solvers/knn/rating_cor.pyx":124
+ *                 odiff = other_rats_dict[movie] - other_mean
+ *                 corr += udiff*odiff
+ *                 denom_u += udiff*udiff             # <<<<<<<<<<<<<<
+ *                 denom_o += odiff*odiff
+ * 
+ */
+        __pyx_v_denom_u = (__pyx_v_denom_u + (__pyx_v_udiff * __pyx_v_udiff));
+
+        /* "solvers/knn/rating_cor.pyx":125
+ *                 corr += udiff*odiff
+ *                 denom_u += udiff*udiff
+ *                 denom_o += odiff*odiff             # <<<<<<<<<<<<<<
+ * 
+ *             corr /= sqrt(denom_u)*sqrt(denom_o)
+ */
+        __pyx_v_denom_o = (__pyx_v_denom_o + (__pyx_v_odiff * __pyx_v_odiff));
       }
 
-      /* "solvers/knn/rating_cov.pyx":109
- *                 covariance = 1
- *             else:
- *                 user_mean = 0             # <<<<<<<<<<<<<<
- *                 other_mean = 0
- *                 for i in range(ixn_size):
- */
-      /*else*/ {
-        __pyx_v_user_mean = 0.0;
-
-        /* "solvers/knn/rating_cov.pyx":110
- *             else:
- *                 user_mean = 0
- *                 other_mean = 0             # <<<<<<<<<<<<<<
- *                 for i in range(ixn_size):
- *                     movie = ixn[i]
- */
-        __pyx_v_other_mean = 0.0;
-
-        /* "solvers/knn/rating_cov.pyx":111
- *                 user_mean = 0
- *                 other_mean = 0
- *                 for i in range(ixn_size):             # <<<<<<<<<<<<<<
- *                     movie = ixn[i]
- *                     user_mean += user_rats_dict[movie]
- */
-        __pyx_t_6 = __pyx_v_ixn_size;
-        for (__pyx_t_16 = 0; __pyx_t_16 < __pyx_t_6; __pyx_t_16+=1) {
-          __pyx_v_i = __pyx_t_16;
-
-          /* "solvers/knn/rating_cov.pyx":112
- *                 other_mean = 0
- *                 for i in range(ixn_size):
- *                     movie = ixn[i]             # <<<<<<<<<<<<<<
- *                     user_mean += user_rats_dict[movie]
- *                     other_mean += other_rats_dict[movie]
- */
-          __pyx_t_31 = __pyx_v_i;
-          __pyx_v_movie = (*((int *) ( /* dim=0 */ (__pyx_v_ixn.data + __pyx_t_31 * __pyx_v_ixn.strides[0]) )));
-
-          /* "solvers/knn/rating_cov.pyx":113
- *                 for i in range(ixn_size):
- *                     movie = ixn[i]
- *                     user_mean += user_rats_dict[movie]             # <<<<<<<<<<<<<<
- *                     other_mean += other_rats_dict[movie]
- *                 user_mean /= ixn_size
- */
-          __pyx_v_user_mean = (__pyx_v_user_mean + (__pyx_v_user_rats_dict[__pyx_v_movie]));
-
-          /* "solvers/knn/rating_cov.pyx":114
- *                     movie = ixn[i]
- *                     user_mean += user_rats_dict[movie]
- *                     other_mean += other_rats_dict[movie]             # <<<<<<<<<<<<<<
- *                 user_mean /= ixn_size
- *                 other_mean /= ixn_size
- */
-          __pyx_v_other_mean = (__pyx_v_other_mean + (__pyx_v_other_rats_dict[__pyx_v_movie]));
-        }
-
-        /* "solvers/knn/rating_cov.pyx":115
- *                     user_mean += user_rats_dict[movie]
- *                     other_mean += other_rats_dict[movie]
- *                 user_mean /= ixn_size             # <<<<<<<<<<<<<<
- *                 other_mean /= ixn_size
+      /* "solvers/knn/rating_cor.pyx":127
+ *                 denom_o += odiff*odiff
  * 
- */
-        __pyx_v_user_mean = (__pyx_v_user_mean / __pyx_v_ixn_size);
-
-        /* "solvers/knn/rating_cov.pyx":116
- *                     other_mean += other_rats_dict[movie]
- *                 user_mean /= ixn_size
- *                 other_mean /= ixn_size             # <<<<<<<<<<<<<<
- * 
- *                 covariance = 0
- */
-        __pyx_v_other_mean = (__pyx_v_other_mean / __pyx_v_ixn_size);
-
-        /* "solvers/knn/rating_cov.pyx":118
- *                 other_mean /= ixn_size
- * 
- *                 covariance = 0             # <<<<<<<<<<<<<<
- *                 for i in range(ixn_size):
- *                     movie = ixn[i]
- */
-        __pyx_v_covariance = 0.0;
-
-        /* "solvers/knn/rating_cov.pyx":119
- * 
- *                 covariance = 0
- *                 for i in range(ixn_size):             # <<<<<<<<<<<<<<
- *                     movie = ixn[i]
- *                     covariance += (user_rats_dict[movie] - user_mean) * (other_rats_dict[movie] - other_mean)
- */
-        __pyx_t_6 = __pyx_v_ixn_size;
-        for (__pyx_t_16 = 0; __pyx_t_16 < __pyx_t_6; __pyx_t_16+=1) {
-          __pyx_v_i = __pyx_t_16;
-
-          /* "solvers/knn/rating_cov.pyx":120
- *                 covariance = 0
- *                 for i in range(ixn_size):
- *                     movie = ixn[i]             # <<<<<<<<<<<<<<
- *                     covariance += (user_rats_dict[movie] - user_mean) * (other_rats_dict[movie] - other_mean)
- *                 covariance /= ixn_size - 1
- */
-          __pyx_t_32 = __pyx_v_i;
-          __pyx_v_movie = (*((int *) ( /* dim=0 */ (__pyx_v_ixn.data + __pyx_t_32 * __pyx_v_ixn.strides[0]) )));
-
-          /* "solvers/knn/rating_cov.pyx":121
- *                 for i in range(ixn_size):
- *                     movie = ixn[i]
- *                     covariance += (user_rats_dict[movie] - user_mean) * (other_rats_dict[movie] - other_mean)             # <<<<<<<<<<<<<<
- *                 covariance /= ixn_size - 1
- * 
- */
-          __pyx_v_covariance = (__pyx_v_covariance + (((__pyx_v_user_rats_dict[__pyx_v_movie]) - __pyx_v_user_mean) * ((__pyx_v_other_rats_dict[__pyx_v_movie]) - __pyx_v_other_mean)));
-        }
-
-        /* "solvers/knn/rating_cov.pyx":122
- *                     movie = ixn[i]
- *                     covariance += (user_rats_dict[movie] - user_mean) * (other_rats_dict[movie] - other_mean)
- *                 covariance /= ixn_size - 1             # <<<<<<<<<<<<<<
+ *             corr /= sqrt(denom_u)*sqrt(denom_o)             # <<<<<<<<<<<<<<
  * 
  *             out_row[out_counter] = user_row
  */
-        __pyx_v_covariance = (__pyx_v_covariance / (__pyx_v_ixn_size - 1));
-      }
-      __pyx_L11:;
+      __pyx_v_corr = (__pyx_v_corr / (sqrt(__pyx_v_denom_u) * sqrt(__pyx_v_denom_o)));
 
-      /* "solvers/knn/rating_cov.pyx":124
- *                 covariance /= ixn_size - 1
+      /* "solvers/knn/rating_cor.pyx":129
+ *             corr /= sqrt(denom_u)*sqrt(denom_o)
  * 
  *             out_row[out_counter] = user_row             # <<<<<<<<<<<<<<
  *             out_col[out_counter] = other_row
- *             out_data[out_counter] = covariance
+ *             out_data[out_counter] = corr
  */
       __pyx_t_33 = __pyx_v_out_counter;
       *((int *) ( /* dim=0 */ (__pyx_v_out_row.data + __pyx_t_33 * __pyx_v_out_row.strides[0]) )) = __pyx_v_user_row;
 
-      /* "solvers/knn/rating_cov.pyx":125
+      /* "solvers/knn/rating_cor.pyx":130
  * 
  *             out_row[out_counter] = user_row
  *             out_col[out_counter] = other_row             # <<<<<<<<<<<<<<
- *             out_data[out_counter] = covariance
+ *             out_data[out_counter] = corr
  *             out_counter += 1
  */
       __pyx_t_34 = __pyx_v_out_counter;
       *((int *) ( /* dim=0 */ (__pyx_v_out_col.data + __pyx_t_34 * __pyx_v_out_col.strides[0]) )) = __pyx_v_other_row;
 
-      /* "solvers/knn/rating_cov.pyx":126
+      /* "solvers/knn/rating_cor.pyx":131
  *             out_row[out_counter] = user_row
  *             out_col[out_counter] = other_row
- *             out_data[out_counter] = covariance             # <<<<<<<<<<<<<<
+ *             out_data[out_counter] = corr             # <<<<<<<<<<<<<<
  *             out_counter += 1
  * 
  */
       __pyx_t_35 = __pyx_v_out_counter;
-      *((double *) ( /* dim=0 */ (__pyx_v_out_data.data + __pyx_t_35 * __pyx_v_out_data.strides[0]) )) = __pyx_v_covariance;
+      *((double *) ( /* dim=0 */ (__pyx_v_out_data.data + __pyx_t_35 * __pyx_v_out_data.strides[0]) )) = __pyx_v_corr;
 
-      /* "solvers/knn/rating_cov.pyx":127
+      /* "solvers/knn/rating_cor.pyx":132
  *             out_col[out_counter] = other_row
- *             out_data[out_counter] = covariance
+ *             out_data[out_counter] = corr
  *             out_counter += 1             # <<<<<<<<<<<<<<
  * 
  *     return out_counter
  */
       __pyx_v_out_counter = (__pyx_v_out_counter + 1);
 
-      /* "solvers/knn/rating_cov.pyx":100
+      /* "solvers/knn/rating_cor.pyx":107
  *             for j in range(tmp.shape[0]):
  *                 neighbours.insert(tmp[j])
  *         for other_row in neighbours:             # <<<<<<<<<<<<<<
@@ -4035,7 +4035,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_other_rats, 1);
     }
   }
 
-  /* "solvers/knn/rating_cov.pyx":129
+  /* "solvers/knn/rating_cor.pyx":134
  *             out_counter += 1
  * 
  *     return out_counter             # <<<<<<<<<<<<<<
@@ -4043,7 +4043,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_other_rats, 1);
   __pyx_r = __pyx_v_out_counter;
   goto __pyx_L0;
 
-  /* "solvers/knn/rating_cov.pyx":74
+  /* "solvers/knn/rating_cor.pyx":81
  *     return coo_matrix((out_data, (out_row, out_col)), shape=(ratings.num_rows, ratings.num_rows))
  * 
  * cdef int _inner_loop(int[:] out_row, int[:] out_col, double[:] out_data,             # <<<<<<<<<<<<<<
@@ -4061,7 +4061,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_other_rats, 1);
   __Pyx_XDECREF(__pyx_t_27);
   __Pyx_XDECREF(__pyx_t_28);
   __Pyx_XDECREF(__pyx_t_29);
-  __Pyx_WriteUnraisable("solvers.knn.rating_cov._inner_loop", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("solvers.knn.rating_cor._inner_loop", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_r = 0;
   __pyx_L0:;
   __PYX_XDEC_MEMVIEW(&__pyx_v_other_cols, 1);
@@ -19815,7 +19815,7 @@ static PyBufferProcs __pyx_tp_as_buffer_array = {
 
 static PyTypeObject __pyx_type___pyx_array = {
   PyVarObject_HEAD_INIT(0, 0)
-  "solvers.knn.rating_cov.array", /*tp_name*/
+  "solvers.knn.rating_cor.array", /*tp_name*/
   sizeof(struct __pyx_array_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_array, /*tp_dealloc*/
@@ -19923,7 +19923,7 @@ static PyMethodDef __pyx_methods_Enum[] = {
 
 static PyTypeObject __pyx_type___pyx_MemviewEnum = {
   PyVarObject_HEAD_INIT(0, 0)
-  "solvers.knn.rating_cov.Enum", /*tp_name*/
+  "solvers.knn.rating_cor.Enum", /*tp_name*/
   sizeof(struct __pyx_MemviewEnum_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_Enum, /*tp_dealloc*/
@@ -20173,7 +20173,7 @@ static PyBufferProcs __pyx_tp_as_buffer_memoryview = {
 
 static PyTypeObject __pyx_type___pyx_memoryview = {
   PyVarObject_HEAD_INIT(0, 0)
-  "solvers.knn.rating_cov.memoryview", /*tp_name*/
+  "solvers.knn.rating_cor.memoryview", /*tp_name*/
   sizeof(struct __pyx_memoryview_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_memoryview, /*tp_dealloc*/
@@ -20300,7 +20300,7 @@ static struct PyGetSetDef __pyx_getsets__memoryviewslice[] = {
 
 static PyTypeObject __pyx_type___pyx_memoryviewslice = {
   PyVarObject_HEAD_INIT(0, 0)
-  "solvers.knn.rating_cov._memoryviewslice", /*tp_name*/
+  "solvers.knn.rating_cor._memoryviewslice", /*tp_name*/
   sizeof(struct __pyx_memoryviewslice_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc__memoryviewslice, /*tp_dealloc*/
@@ -20371,17 +20371,17 @@ static PyMethodDef __pyx_methods[] = {
 #if PY_MAJOR_VERSION >= 3
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 static PyObject* __pyx_pymod_create(PyObject *spec, PyModuleDef *def); /*proto*/
-static int __pyx_pymod_exec_rating_cov(PyObject* module); /*proto*/
+static int __pyx_pymod_exec_rating_cor(PyObject* module); /*proto*/
 static PyModuleDef_Slot __pyx_moduledef_slots[] = {
   {Py_mod_create, (void*)__pyx_pymod_create},
-  {Py_mod_exec, (void*)__pyx_pymod_exec_rating_cov},
+  {Py_mod_exec, (void*)__pyx_pymod_exec_rating_cor},
   {0, NULL}
 };
 #endif
 
 static struct PyModuleDef __pyx_moduledef = {
     PyModuleDef_HEAD_INIT,
-    "rating_cov",
+    "rating_cor",
     0, /* m_doc */
   #if CYTHON_PEP489_MULTI_PHASE_INIT
     0, /* m_size */
@@ -20457,6 +20457,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_u_fortran, __pyx_k_fortran, sizeof(__pyx_k_fortran), 0, 1, 0, 1},
   {&__pyx_n_s_get_coo_matrix, __pyx_k_get_coo_matrix, sizeof(__pyx_k_get_coo_matrix), 0, 0, 1, 1},
   {&__pyx_n_s_get_csr_matrix, __pyx_k_get_csr_matrix, sizeof(__pyx_k_get_csr_matrix), 0, 0, 1, 1},
+  {&__pyx_n_s_get_user_means, __pyx_k_get_user_means, sizeof(__pyx_k_get_user_means), 0, 0, 1, 1},
   {&__pyx_n_s_getstate, __pyx_k_getstate, sizeof(__pyx_k_getstate), 0, 0, 1, 1},
   {&__pyx_kp_s_got_differing_extents_in_dimensi, __pyx_k_got_differing_extents_in_dimensi, sizeof(__pyx_k_got_differing_extents_in_dimensi), 0, 0, 1, 0},
   {&__pyx_n_s_id, __pyx_k_id, sizeof(__pyx_k_id), 0, 0, 1, 1},
@@ -20499,8 +20500,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_pyx_unpickle_Enum, __pyx_k_pyx_unpickle_Enum, sizeof(__pyx_k_pyx_unpickle_Enum), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_vtable, __pyx_k_pyx_vtable, sizeof(__pyx_k_pyx_vtable), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
-  {&__pyx_n_s_rating_cov, __pyx_k_rating_cov, sizeof(__pyx_k_rating_cov), 0, 0, 1, 1},
-  {&__pyx_kp_s_rating_cov_pyx, __pyx_k_rating_cov_pyx, sizeof(__pyx_k_rating_cov_pyx), 0, 0, 1, 0},
+  {&__pyx_n_s_rating_cor, __pyx_k_rating_cor, sizeof(__pyx_k_rating_cor), 0, 0, 1, 1},
+  {&__pyx_kp_s_rating_cor_pyx, __pyx_k_rating_cor_pyx, sizeof(__pyx_k_rating_cor_pyx), 0, 0, 1, 0},
   {&__pyx_n_s_ratings, __pyx_k_ratings, sizeof(__pyx_k_ratings), 0, 0, 1, 1},
   {&__pyx_n_s_reduce, __pyx_k_reduce, sizeof(__pyx_k_reduce), 0, 0, 1, 1},
   {&__pyx_n_s_reduce_cython, __pyx_k_reduce_cython, sizeof(__pyx_k_reduce_cython), 0, 0, 1, 1},
@@ -20511,7 +20512,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_setstate_cython, __pyx_k_setstate_cython, sizeof(__pyx_k_setstate_cython), 0, 0, 1, 1},
   {&__pyx_n_s_shape, __pyx_k_shape, sizeof(__pyx_k_shape), 0, 0, 1, 1},
   {&__pyx_n_s_size, __pyx_k_size, sizeof(__pyx_k_size), 0, 0, 1, 1},
-  {&__pyx_n_s_solvers_knn_rating_cov, __pyx_k_solvers_knn_rating_cov, sizeof(__pyx_k_solvers_knn_rating_cov), 0, 0, 1, 1},
+  {&__pyx_n_s_solvers_knn_rating_cor, __pyx_k_solvers_knn_rating_cor, sizeof(__pyx_k_solvers_knn_rating_cor), 0, 0, 1, 1},
   {&__pyx_n_s_start, __pyx_k_start, sizeof(__pyx_k_start), 0, 0, 1, 1},
   {&__pyx_n_s_step, __pyx_k_step, sizeof(__pyx_k_step), 0, 0, 1, 1},
   {&__pyx_n_s_stop, __pyx_k_stop, sizeof(__pyx_k_stop), 0, 0, 1, 1},
@@ -20533,7 +20534,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 57, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 64, __pyx_L1_error)
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(1, 235, __pyx_L1_error)
   __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) __PYX_ERR(1, 823, __pyx_L1_error)
   __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(1, 1013, __pyx_L1_error)
@@ -20852,17 +20853,17 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__28);
   __Pyx_GIVEREF(__pyx_tuple__28);
 
-  /* "solvers/knn/rating_cov.pyx":18
+  /* "solvers/knn/rating_cor.pyx":19
+ * from core.ratings import Ratings
  * 
- * 
- * def rating_cov(ratings):             # <<<<<<<<<<<<<<
+ * def rating_cor(ratings):             # <<<<<<<<<<<<<<
  *     # type: (Ratings) -> scipy.sparse.coo_matrix
- *     return py_get_cov(ratings)
+ *     """
  */
-  __pyx_tuple__29 = PyTuple_Pack(1, __pyx_n_s_ratings); if (unlikely(!__pyx_tuple__29)) __PYX_ERR(0, 18, __pyx_L1_error)
+  __pyx_tuple__29 = PyTuple_Pack(1, __pyx_n_s_ratings); if (unlikely(!__pyx_tuple__29)) __PYX_ERR(0, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__29);
   __Pyx_GIVEREF(__pyx_tuple__29);
-  __pyx_codeobj__30 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__29, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_rating_cov_pyx, __pyx_n_s_rating_cov, 18, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__30)) __PYX_ERR(0, 18, __pyx_L1_error)
+  __pyx_codeobj__30 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__29, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_rating_cor_pyx, __pyx_n_s_rating_cor, 19, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__30)) __PYX_ERR(0, 19, __pyx_L1_error)
 
   /* "View.MemoryView":284
  *         return self.name
@@ -20947,11 +20948,11 @@ static int __Pyx_InitGlobals(void) {
 }
 
 #if PY_MAJOR_VERSION < 3
-PyMODINIT_FUNC initrating_cov(void); /*proto*/
-PyMODINIT_FUNC initrating_cov(void)
+PyMODINIT_FUNC initrating_cor(void); /*proto*/
+PyMODINIT_FUNC initrating_cor(void)
 #else
-PyMODINIT_FUNC PyInit_rating_cov(void); /*proto*/
-PyMODINIT_FUNC PyInit_rating_cov(void)
+PyMODINIT_FUNC PyInit_rating_cor(void); /*proto*/
+PyMODINIT_FUNC PyInit_rating_cor(void)
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 {
   return PyModuleDef_Init(&__pyx_moduledef);
@@ -20991,7 +20992,7 @@ bad:
 }
 
 
-static int __pyx_pymod_exec_rating_cov(PyObject *__pyx_pyinit_module)
+static int __pyx_pymod_exec_rating_cor(PyObject *__pyx_pyinit_module)
 #endif
 #endif
 {
@@ -21011,7 +21012,7 @@ static int __pyx_pymod_exec_rating_cov(PyObject *__pyx_pyinit_module)
           Py_FatalError("failed to import 'refnanny' module");
   }
   #endif
-  __Pyx_RefNannySetupContext("PyMODINIT_FUNC PyInit_rating_cov(void)", 0);
+  __Pyx_RefNannySetupContext("PyMODINIT_FUNC PyInit_rating_cor(void)", 0);
   if (__Pyx_check_binary_version() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_empty_tuple = PyTuple_New(0); if (unlikely(!__pyx_empty_tuple)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_empty_bytes = PyBytes_FromStringAndSize("", 0); if (unlikely(!__pyx_empty_bytes)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -21047,7 +21048,7 @@ static int __pyx_pymod_exec_rating_cov(PyObject *__pyx_pyinit_module)
   Py_INCREF(__pyx_m);
   #else
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("rating_cov", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("rating_cor", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
@@ -21066,14 +21067,14 @@ static int __pyx_pymod_exec_rating_cov(PyObject *__pyx_pyinit_module)
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_solvers__knn__rating_cov) {
+  if (__pyx_module_is_main_solvers__knn__rating_cor) {
     if (PyObject_SetAttrString(__pyx_m, "__name__", __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "solvers.knn.rating_cov")) {
-      if (unlikely(PyDict_SetItemString(modules, "solvers.knn.rating_cov", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "solvers.knn.rating_cor")) {
+      if (unlikely(PyDict_SetItemString(modules, "solvers.knn.rating_cor", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -21144,85 +21145,85 @@ static int __pyx_pymod_exec_rating_cov(PyObject *__pyx_pyinit_module)
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "solvers/knn/rating_cov.pyx":9
- * from libcpp.set cimport set as cppset
+  /* "solvers/knn/rating_cor.pyx":11
+ *     double sqrt(double m)
  * 
  * import numpy as np             # <<<<<<<<<<<<<<
  * cimport numpy as np
  * 
  */
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_numpy, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 9, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_numpy, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 9, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "solvers/knn/rating_cov.pyx":12
+  /* "solvers/knn/rating_cor.pyx":14
  * cimport numpy as np
  * 
  * import scipy.sparse             # <<<<<<<<<<<<<<
  * from scipy.sparse import coo_matrix
  * 
  */
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_scipy_sparse, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 12, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_scipy_sparse, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 14, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_scipy, __pyx_t_1) < 0) __PYX_ERR(0, 12, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_scipy, __pyx_t_1) < 0) __PYX_ERR(0, 14, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "solvers/knn/rating_cov.pyx":13
+  /* "solvers/knn/rating_cor.pyx":15
  * 
  * import scipy.sparse
  * from scipy.sparse import coo_matrix             # <<<<<<<<<<<<<<
  * 
  * from core.ratings import Ratings
  */
-  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 13, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_n_s_coo_matrix);
   __Pyx_GIVEREF(__pyx_n_s_coo_matrix);
   PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_coo_matrix);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_scipy_sparse, __pyx_t_1, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 13, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_scipy_sparse, __pyx_t_1, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_coo_matrix); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 13, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_coo_matrix); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_coo_matrix, __pyx_t_1) < 0) __PYX_ERR(0, 13, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_coo_matrix, __pyx_t_1) < 0) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "solvers/knn/rating_cov.pyx":15
+  /* "solvers/knn/rating_cor.pyx":17
  * from scipy.sparse import coo_matrix
  * 
  * from core.ratings import Ratings             # <<<<<<<<<<<<<<
  * 
- * 
+ * def rating_cor(ratings):
  */
-  __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 15, __pyx_L1_error)
+  __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_n_s_Ratings);
   __Pyx_GIVEREF(__pyx_n_s_Ratings);
   PyList_SET_ITEM(__pyx_t_2, 0, __pyx_n_s_Ratings);
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_core_ratings, __pyx_t_2, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 15, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_core_ratings, __pyx_t_2, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_Ratings); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 15, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_Ratings); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_Ratings, __pyx_t_2) < 0) __PYX_ERR(0, 15, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_Ratings, __pyx_t_2) < 0) __PYX_ERR(0, 17, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "solvers/knn/rating_cov.pyx":18
+  /* "solvers/knn/rating_cor.pyx":19
+ * from core.ratings import Ratings
  * 
- * 
- * def rating_cov(ratings):             # <<<<<<<<<<<<<<
+ * def rating_cor(ratings):             # <<<<<<<<<<<<<<
  *     # type: (Ratings) -> scipy.sparse.coo_matrix
- *     return py_get_cov(ratings)
+ *     """
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7solvers_3knn_10rating_cov_1rating_cov, NULL, __pyx_n_s_solvers_knn_rating_cov); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 18, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7solvers_3knn_10rating_cor_1rating_cor, NULL, __pyx_n_s_solvers_knn_rating_cor); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_rating_cov, __pyx_t_1) < 0) __PYX_ERR(0, 18, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_rating_cor, __pyx_t_1) < 0) __PYX_ERR(0, 19, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "solvers/knn/rating_cov.pyx":1
+  /* "solvers/knn/rating_cor.pyx":1
  * #cython: boundscheck=False             # <<<<<<<<<<<<<<
  * #cython: wraparound=False
  * #cython: cdivision=True
@@ -21393,11 +21394,11 @@ static int __pyx_pymod_exec_rating_cov(PyObject *__pyx_pyinit_module)
   __Pyx_XDECREF(__pyx_t_2);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init solvers.knn.rating_cov", 0, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init solvers.knn.rating_cor", 0, __pyx_lineno, __pyx_filename);
     }
     Py_DECREF(__pyx_m); __pyx_m = 0;
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init solvers.knn.rating_cov");
+    PyErr_SetString(PyExc_ImportError, "init solvers.knn.rating_cor");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();

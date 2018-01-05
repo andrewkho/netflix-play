@@ -38,11 +38,11 @@ class TestKNN(unittest.TestCase):
         test, train = self.kfolds.get(0)
         test_set = self.ratings.get_index_split(test)
         train_set = self.ratings.get_index_split(train)
-        knn = KNNSolver(k=15, dist="cov")
+        knn = KNNSolver(k=10, dist="cor")
         knn.train(train_set)
 
-        #print knn._cov.sum(axis=0)
-        print knn._cov.shape
+        #print knn._cor.sum(axis=0)
+        print knn._cor.shape
 
         y = train_set.get_coo_matrix().data
         print "Generating prediction"

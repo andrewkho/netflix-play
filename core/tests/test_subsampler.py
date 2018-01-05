@@ -52,7 +52,7 @@ class TestSubsampler(unittest.TestCase):
         fd = FlixData(flix_data_root)
         print ("Generate popularity subsample")
         self.ratings = FlixDataSubsampler.popularity_sample(12345, 500, 50000, fd)
-        print ("Generat KFolds")
+        print ("Generate KFolds")
         self.kfolds = KFolds(self.ratings.size, 10, 12345)
 
         print ("Create Kfolds splits")
@@ -80,5 +80,7 @@ class TestSubsampler(unittest.TestCase):
                 continue  # It's possible the movie or rating doesn't exist in training set
             assert self.train_csr[train_uidx, train_midx] == 0, "%d, %d rating exists in train set but shouldn't!" % (
                 t_uid, t_mid)
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -54,7 +54,17 @@ class Ratings(object):
         self._idx_to_mid = np.array(self._idx_to_mid)
 
         self._data = coo_matrix((R, (I, J)), shape=(i, j))
+        self._data_csr = None
         self._data.sum_duplicates()
+        self._user_means = None
+
+    def get_user_means(self):
+        # type: (None) -> np.array
+        """ Will lazy load the user-means from a csr matrix"""
+        if self._user_means is None:
+            self._user_means = np.squeeze(np.asarray(self.get_csr_matrix().mean(axis=1)))
+
+        return self._user_means
 
     def get_simple_split(self, k, index):
         # type: (int, int) -> (Ratings, Ratings)
@@ -134,7 +144,10 @@ class Ratings(object):
 
     def get_csr_matrix(self):
         # type: () -> csr_matrix
-        return self._data.tocsr()
+        """ Will lazy load this ratings matrix as a CSR matrix and store"""
+        if self._data_csr is None:
+            self._data_csr = self._data.tocsr()
+        return self._data_csr
 
     @property
     def shape(self):
