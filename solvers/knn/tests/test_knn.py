@@ -4,6 +4,7 @@ import unittest
 
 import cProfile
 
+from itertools import izip
 import numpy as np
 
 from core.flixdata import FlixData
@@ -27,7 +28,7 @@ class TestKNN(unittest.TestCase):
         else:
             print ("Couldn't find " + saved_data + ", regenerating")
             fd = FlixData(flix_data_root)
-            self.ratings = FlixDataSubsampler.random_sample(12345, 1e5, fd)
+            self.ratings = FlixDataSubsampler.popularity_sample(12345, 1e2, 1e3, fd)
             self.kfolds = KFolds(self.ratings.size, 10, 12345)
 
             with open(saved_data, "wb") as f:
@@ -40,12 +41,11 @@ class TestKNN(unittest.TestCase):
         knn = KNNSolver(k=15, dist="cov")
         knn.train(train_set)
 
-        print knn._cov.sum(axis=0)
+        #print knn._cov.sum(axis=0)
         print knn._cov.shape
 
         y = train_set.get_coo_matrix().data
         print "Generating prediction"
-        train_set.get_coo_matrix().sum_duplicates()
         pred = knn.predict(train_set)
         print "Done!"
 
@@ -53,16 +53,17 @@ class TestKNN(unittest.TestCase):
         print "Train MSE: %f" % np.mean((y-pred)**2)
         print "Train RMS: %f" % np.sqrt(np.mean((y-pred)**2))
 
-        test_set.get_coo_matrix().sum_duplicates()
         pred = knn.predict(test_set)
         print "Done!"
         y = test_set.get_coo_matrix().data
 
         print("%d / %d are None (%f)" % ((pred==None).sum(), pred.shape[0], (pred==None).mean()))
+        print("%d / %d are NaN (%f)" % ((np.isnan(pred)).sum(), pred.shape[0], (np.isnan(pred)).mean()))
+        #print [(_, __) for _, __ in izip(y, pred)]
 
-        print "Test SSE: %f" % np.sum((y[pred != None]-pred[pred != None])**2)
-        print "Test MSE: %f" % np.mean((y[pred != None]-pred[pred != None])**2)
-        print "Test RMS: %f" % np.sqrt(np.mean((y[pred != None]-pred[pred != None])**2))
+        print "Test SSE: %f" % np.sum((y[~np.isnan(pred)]-pred[~np.isnan(pred)])**2)
+        print "Test MSE: %f" % np.mean((y[~np.isnan(pred)]-pred[~np.isnan(pred)])**2)
+        print "Test RMS: %f" % np.sqrt(np.mean((y[~np.isnan(pred)]-pred[~np.isnan(pred)])**2))
 
         assert True
 

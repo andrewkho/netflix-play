@@ -31,20 +31,19 @@ class KNNSolver(RecommenderAlgorithm):
         n = testratings.get_coo_matrix().nnz
         print("nnz testratigns: " + str(n))
         pred = np.zeros(n)
-        ##dok_matrix = self._ratings.get_coo_matrix().todok()  ## DoK matrix is faster but different MSE (!@?!?!?!)
-        dok_matrix = self._ratings.get_coo_matrix().copy().todok()
+        lil_matrix = self._ratings.get_coo_matrix().tolil()
 
         for i in range(n):
             uidx = testratings.get_coo_matrix().row[i]
             midx = testratings.get_coo_matrix().col[i]
             uid, mid = testratings.reverse_translate(uidx, midx)
-            pred[i] = self.predict_single(dok_matrix, uid, mid)
+            pred[i] = self.predict_single(lil_matrix, uid, mid)
 
         print("len(pred): " + str(len(pred)))
 
         return pred
 
-    def predict_single(self, dok_matrix, uid, mid):
+    def predict_single(self, lil_matrix, uid, mid):
         # type: (int, int) -> float
 
         try:
@@ -61,7 +60,7 @@ class KNNSolver(RecommenderAlgorithm):
         sorted_neighbours = ucovar.argsort()[::-1]
         for nei_idx in sorted_neighbours:
             neiidx = uindices[nei_idx]
-            rating = dok_matrix[neiidx, movie_idx]
+            rating = lil_matrix[neiidx, movie_idx]
             if rating == 0 or rating is None: # Neighbour hasn't rated movie
                 continue
             neighbours[neiidx] = rating
@@ -72,12 +71,12 @@ class KNNSolver(RecommenderAlgorithm):
         #if counter < self.k:
         #    print('Warning: not enough neighbours for k, counter: ' + str(counter))
 
+        if counter == 0:
+            return None
+
         # Just try an average
         tot = 0.
         for neiId, rating in neighbours.items():
             tot += rating
 
-        if counter == 0:
-            return None
-        else:
-            return tot / counter
+        return tot / counter
