@@ -124,10 +124,12 @@ class KMeansSolver(RecommenderAlgorithm):
         best_cluster = -1
         best_dist = np.finfo(np.float64).max
         for cluster in range(self.k):
+            if np.isnan(self._means[cluster, movie_idx]):
+                continue
             mn = self._means[cluster, :]
+            valid_indices = np.isin(uindices, np.where(~np.isnan(mn)))
             if valid_indices.sum() == 0:
                 continue
-            valid_indices = np.isin(uindices, np.where(~np.isnan(mn)))
             dist = np.linalg.norm(udata[valid_indices] - self._means[cluster, uindices[valid_indices]], ord=1) / valid_indices.sum()
 
             if dist < best_dist:
