@@ -7,6 +7,7 @@ import cProfile
 import numpy as np
 
 from core.flixdata import FlixData
+from core.flixdata_subsampler import FlixDataSubsampler
 from core.ratings import Ratings
 from solvers.kFoldsCrossValidator import KFolds
 from solvers.knn.knn_solver import KNNSolver
@@ -15,7 +16,7 @@ flix_data_root = "../../../data/arrays/"
 saved_data = "ratings_test.pkl"
 
 
-class TestStringMethods(unittest.TestCase):
+class TestKNN(unittest.TestCase):
 
     def setUp(self):
         if os.path.isfile(saved_data):
@@ -26,14 +27,7 @@ class TestStringMethods(unittest.TestCase):
         else:
             print ("Couldn't find " + saved_data + ", regenerating")
             fd = FlixData(flix_data_root)
-
-            np.random.seed(12345)
-            idx = np.random.choice(fd.userIDsForUsers.size, size=fd.userIDsForUsers.size, replace=False)
-            N = int(1e5)
-            self.ratings = Ratings(fd.userIDsForUsers[idx[:N]],
-                                   fd.movieIDs[idx[:N]],
-                                   fd.userRatings[idx[:N]])
-
+            self.ratings = FlixDataSubsampler.random_sample(12345, 1e5, fd)
             self.kfolds = KFolds(self.ratings.size, 10, 12345)
 
             with open(saved_data, "wb") as f:
