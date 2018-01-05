@@ -1,6 +1,8 @@
 import numpy as np
 import scipy.sparse
 
+from itertools import izip
+
 from core.ratings import Ratings
 from rating_cov import rating_cov
 from solvers.recommenderAlgorithm import RecommenderAlgorithm
@@ -24,24 +26,31 @@ class KNNSolver(RecommenderAlgorithm):
         self._ratings = ratings
         self._cov = rating_cov(self._ratings).tocsr()
 
-    def predict(self, ratings):
+    def predict(self, testratings):
         # type: (Ratings) -> np.array
-        n = ratings.get_coo_matrix().row.shape[0]
+        n = testratings.get_coo_matrix().nnz
+        print("nnz testratigns: " + str(n))
         pred = np.zeros(n)
-        #dok_matrix = self._ratings.get_coo_matrix().todok()  ## DoK matrix is faster but different MSE (!@?!?!?!)
-        dok_matrix = self._ratings.get_coo_matrix().tocsr()
+        ##dok_matrix = self._ratings.get_coo_matrix().todok()  ## DoK matrix is faster but different MSE (!@?!?!?!)
+        dok_matrix = self._ratings.get_coo_matrix().copy().todok()
+
         for i in range(n):
-            uidx = ratings.get_coo_matrix().row[i]
-            midx = ratings.get_coo_matrix().col[i]
-            uid, mid = ratings.reverse_translate(uidx, midx)
+            uidx = testratings.get_coo_matrix().row[i]
+            midx = testratings.get_coo_matrix().col[i]
+            uid, mid = testratings.reverse_translate(uidx, midx)
             pred[i] = self.predict_single(dok_matrix, uid, mid)
+
+        print("len(pred): " + str(len(pred)))
 
         return pred
 
     def predict_single(self, dok_matrix, uid, mid):
         # type: (int, int) -> float
 
-        user_idx, movie_idx = self._ratings.translate(uid, mid)
+        try:
+            user_idx, movie_idx = self._ratings.translate(uid, mid)
+        except KeyError:
+            return None
 
         uindices = self._cov.indices[self._cov.indptr[user_idx]:self._cov.indptr[user_idx+1]]
         ucovar = self._cov.data[self._cov.indptr[user_idx]:self._cov.indptr[user_idx+1]]
@@ -68,4 +77,7 @@ class KNNSolver(RecommenderAlgorithm):
         for neiId, rating in neighbours.items():
             tot += rating
 
-        return tot / counter
+        if counter == 0:
+            return None
+        else:
+            return tot / counter

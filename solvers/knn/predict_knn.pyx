@@ -30,7 +30,7 @@ def predict_ratings(knn_solver, ratings):
 
     return pred
 
-def predict_single(knn_solver, ratings_dok, int uid, int mid):
+def _predict_single(knn_solver, ratings_dok, int uid, int mid):
     # type: (KNNSolver, int, int) -> float
 
     #cdef int user_idx, movie_idx

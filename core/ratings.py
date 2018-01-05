@@ -2,17 +2,22 @@ import numpy as np
 
 from scipy.sparse import coo_matrix, csr_matrix, lil_matrix
 
-
 class Ratings(object):
-    # cdef public coo_matrix _data
-    # cdef public np.ndarray[np.double_t, ]
     """
     <Immutable> Sparse representation of user/movie ratings
-    underlying representation is a dictionary
+    underlying representation is a coo_matrix
     """
 
     def __init__(self, uids, mids, ratings):
         # type: (np.array, np.array, np.array) -> None
+        """
+        Constructs a Ratings object from a list of uids, mids, ratings (ala coo_matrix).
+        Any duplicate entries are *summed*. length of uids, mids, ratings must be identical
+
+        :param uids: user ids (e.g. row indices)
+        :param mids: mids (e.g. column indices)
+        :param ratings: (movie ratings)
+        """
 
         # Build lookup indexes for ratings
         self._uid_to_idx = dict()
@@ -49,6 +54,7 @@ class Ratings(object):
         self._idx_to_mid = np.array(self._idx_to_mid)
 
         self._data = coo_matrix((R, (I, J)), shape=(i, j))
+        self._data.sum_duplicates()
 
     def get_simple_split(self, k, index):
         # type: (int, int) -> (Ratings, Ratings)

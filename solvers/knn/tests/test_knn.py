@@ -29,7 +29,7 @@ class TestStringMethods(unittest.TestCase):
 
             np.random.seed(12345)
             idx = np.random.choice(fd.userIDsForUsers.size, size=fd.userIDsForUsers.size, replace=False)
-            N = int(1e4)
+            N = int(1e5)
             self.ratings = Ratings(fd.userIDsForUsers[idx[:N]],
                                    fd.movieIDs[idx[:N]],
                                    fd.userRatings[idx[:N]])
@@ -43,21 +43,32 @@ class TestStringMethods(unittest.TestCase):
         test, train = self.kfolds.get(0)
         test_set = self.ratings.get_index_split(test)
         train_set = self.ratings.get_index_split(train)
-
         knn = KNNSolver(k=15, dist="cov")
         knn.train(train_set)
 
         print knn._cov.sum(axis=0)
         print knn._cov.shape
 
-        print "Generating prediction"
         y = train_set.get_coo_matrix().data
+        print "Generating prediction"
+        train_set.get_coo_matrix().sum_duplicates()
         pred = knn.predict(train_set)
         print "Done!"
 
-        print "SSE: %f" % np.sum((y-pred)**2)
-        print "MSE: %f" % np.mean((y-pred)**2)
-        print "RMS: %f" % np.sqrt(np.mean((y-pred)**2))
+        print "Train SSE: %f" % np.sum((y-pred)**2)
+        print "Train MSE: %f" % np.mean((y-pred)**2)
+        print "Train RMS: %f" % np.sqrt(np.mean((y-pred)**2))
+
+        test_set.get_coo_matrix().sum_duplicates()
+        pred = knn.predict(test_set)
+        print "Done!"
+        y = test_set.get_coo_matrix().data
+
+        print("%d / %d are None (%f)" % ((pred==None).sum(), pred.shape[0], (pred==None).mean()))
+
+        print "Test SSE: %f" % np.sum((y[pred != None]-pred[pred != None])**2)
+        print "Test MSE: %f" % np.mean((y[pred != None]-pred[pred != None])**2)
+        print "Test RMS: %f" % np.sqrt(np.mean((y[pred != None]-pred[pred != None])**2))
 
         assert True
 
