@@ -38,8 +38,10 @@ class TestKmeansClustering(unittest.TestCase):
         test, train = self.kfolds.get(0)
         test_set = self.ratings.get_index_split(test)
         train_set = self.ratings.get_index_split(train)
-        kmeans = KMeansSolver(k=200, dist=Distances.manhatten)
+        kmeans = KMeansSolver(k=100, dist=Distances.manhatten)
         kmeans.train(train_set, seed=54321)
+
+        print str(kmeans._means)
 
         y = train_set.get_coo_matrix().data
         print "Generating prediction"
@@ -56,7 +58,7 @@ class TestKmeansClustering(unittest.TestCase):
 
         print("%d / %d are None (%f)" % ((pred==None).sum(), pred.shape[0], (pred==None).mean()))
         print("%d / %d are NaN (%f)" % ((np.isnan(pred)).sum(), pred.shape[0], (np.isnan(pred)).mean()))
-        #print [(_, __) for _, __ in izip(y, pred)]
+        print [(_, __) for _, __ in izip(y, pred)]
 
         print "Test SSE: %f" % np.sum((y[~np.isnan(pred)]-pred[~np.isnan(pred)])**2)
         print "Test MSE: %f" % np.mean((y[~np.isnan(pred)]-pred[~np.isnan(pred)])**2)
