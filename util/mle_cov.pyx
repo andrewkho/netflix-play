@@ -15,10 +15,11 @@ import scipy.sparse
 from scipy.sparse import coo_matrix
 
 
-def item_cov(ratings_mat):
+def mle_cov(ratings_mat):
     # type: (scipy.sparse.coo_matrix) -> scipy.sparse.coo_matrix
     """
-    Calculate the item (column)-wise covariance matrix of Ratings using only present ratings.
+    Calculate the "maximum likelihood approximate" item (column)-wise covariance
+    matrix of Ratings by only including rated items in the covariance calculation.
     If two items have nothing in common, then returns zero.
 
     If ratings_mat is of shape (n,m), returns a matrix of shape (m,m)
@@ -87,6 +88,7 @@ cdef py_get_cov(ratings):
     print("out_counter: " + str(out_counter) + " output_length: " + str(output_length))
 
     return coo_matrix((out_data, (out_row, out_col)), shape=(ratings.shape[1], ratings.shape[1]))
+
 
 cdef int _inner_loop(int[:] out_row, int[:] out_col, double[:] out_data,
                      int[:] csr_indices, int[:] csr_indptr, double[:] csr_data,

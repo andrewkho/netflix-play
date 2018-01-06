@@ -132,7 +132,10 @@ cdef int _inner_loop(int[:] out_row, int[:] out_col, double[:] out_data,
 
             out_row[out_counter] = user_row
             out_col[out_counter] = other_row
-            out_data[out_counter] = corr
+            if np.isnan(corr):
+                out_data[out_counter] = 0
+            else:
+                out_data[out_counter] = corr
             out_counter += 1
 
     return out_counter
