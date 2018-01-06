@@ -57,13 +57,16 @@ class KNNSolver(RecommenderAlgorithm):
         neighbours = {}
 
         counter = 0
+        tot = 0.
+        denom = 0.
         sorted_neighbours = ucorr.argsort()[::-1]
         for nei_idx in sorted_neighbours:
             neiidx = uindices[nei_idx]
             rating = lil_matrix[neiidx, movie_idx]
             if rating == 0 or rating is None: # Neighbour hasn't rated movie
                 continue
-            neighbours[neiidx] = rating
+            tot += rating * ucorr[nei_idx]
+            denom += ucorr[nei_idx]
             counter += 1
             if counter >= self.k:
                 break
@@ -71,12 +74,13 @@ class KNNSolver(RecommenderAlgorithm):
         #if counter < self.k:
         #    print('Warning: not enough neighbours for k, counter: ' + str(counter))
 
-        if counter == 0:
+        if counter == 0 or denom == 0:
             return None
 
         # Just try an average
-        tot = 0.
-        for neiId, rating in neighbours.items():
-            tot += rating
+        #tot = 0.
+        #for neiId, rating in neighbours.items():
+        #    tot += rating
+        # tot /= counter
 
-        return tot / counter
+        return tot / denom
