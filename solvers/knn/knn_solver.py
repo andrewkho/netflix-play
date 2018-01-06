@@ -4,7 +4,7 @@ import scipy.sparse
 from itertools import izip
 
 from core.ratings import Ratings
-from rating_cor import rating_cor
+from util.user_cor import user_cor
 from solvers.recommenderAlgorithm import RecommenderAlgorithm
 
 
@@ -24,7 +24,7 @@ class KNNSolver(RecommenderAlgorithm):
         # type: (Ratings) -> None
 
         self._ratings = ratings
-        self._cor = rating_cor(self._ratings).tocsr()
+        self._cor = user_cor(self._ratings.get_coo_matrix()).tocsr()
 
     def predict(self, testratings):
         # type: (Ratings) -> np.array

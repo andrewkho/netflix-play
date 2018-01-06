@@ -14,29 +14,28 @@ cimport numpy as np
 import scipy.sparse
 from scipy.sparse import coo_matrix
 
-from core.ratings import Ratings
-
-def rating_cor(ratings):
-    # type: (Ratings) -> scipy.sparse.coo_matrix
+def user_cor(ratings_mat):
+    # type: (scipy.sparse.coo_matrix) -> scipy.sparse.coo_matrix
     """
-    Calculate the user-wise Pearson correlation of the ratings matrix
+    Calculate the user-wise Pearson correlation of the ratings matrix.
+    Returns a sparse matrix in coo_matrix format
 
-    :param ratings: Ratings object
+    :param ratings: ratings matrix in scipy.sparse.coo_matrix form
     :return: a sparse matrix in scipy.sparse.coo_matrix format
     """
-    return py_get_cor(ratings)
+    return py_get_cor(ratings_mat)
 
 
 cdef py_get_cor(ratings):
-    # type: (Ratings) -> scipy.sparse.coo_matrix
+    # type: (scipy.sparse.coo_matrix) -> scipy.sparse.coo_matrix
 
     cdef int[:] csr_indptr, csr_indices, csc_indptr, csc_indices
     cdef double[:] csr_data
-    csr_mat = ratings.get_csr_matrix()
+    csr_mat = ratings.tocsr()
     csr_indptr = csr_mat.indptr
     csr_indices = csr_mat.indices
     csr_data = csr_mat.data
-    csc_mat = ratings.get_coo_matrix().tocsc()
+    csc_mat = ratings.tocsc()
     csc_indptr = csc_mat.indptr
     csc_indices = csc_mat.indices
 
@@ -60,23 +59,28 @@ cdef py_get_cor(ratings):
     cdef list rating_dicts
 
     rating_dicts = []
+    row_means = np.zeros(ratings.shape[0])
     print("Building rating_dicts")
-    for user_row in range(ratings.num_rows):
+    for user_row in range(ratings.shape[0]):
         user_cols = csr_indices[csr_indptr[user_row]:csr_indptr[user_row + 1]]
         user_rats = csr_data[csr_indptr[user_row]:csr_indptr[user_row + 1]]
         di = cppmap[int, double]()
+        mn = 0
         for i in range(user_cols.size):
             di[user_cols[i]] = user_rats[i]
+            mn += user_rats[i]
+
         rating_dicts.append(di)
+        row_means[user_row] = mn / user_cols.size
     print("done!")
 
     out_counter = _inner_loop(out_row, out_col, out_data,
                               csr_indices, csr_indptr, csr_data,
-                              csc_indices, csc_indptr, ratings.num_rows, ratings.get_user_means(), rating_dicts)
+                              csc_indices, csc_indptr, ratings.shape[0], row_means, rating_dicts)
 
     print("out_counter: " + str(out_counter) + " output_length: " + str(output_length))
 
-    return coo_matrix((out_data, (out_row, out_col)), shape=(ratings.num_rows, ratings.num_rows))
+    return coo_matrix((out_data, (out_row, out_col)), shape=(ratings.shape[0], ratings.shape[0]))
 
 cdef int _inner_loop(int[:] out_row, int[:] out_col, double[:] out_data,
                      int[:] csr_indices, int[:] csr_indptr, double[:] csr_data,

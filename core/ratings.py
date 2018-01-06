@@ -54,9 +54,11 @@ class Ratings(object):
         self._idx_to_mid = np.array(self._idx_to_mid)
 
         self._data = coo_matrix((R, (I, J)), shape=(i, j))
-        self._data_csr = None
         self._data.sum_duplicates()
+        self._data_csr = None
+        self._data_csc = None
         self._user_means = None
+        self._item_means = None
 
     def get_user_means(self):
         # type: (None) -> np.array
@@ -65,6 +67,14 @@ class Ratings(object):
             self._user_means = np.squeeze(np.asarray(self.get_csr_matrix().mean(axis=1)))
 
         return self._user_means
+
+    def get_item_means(self):
+        # type: (None) -> np.array
+        """ Will lazy load the item (column) means from a csr matrix"""
+        if self._item_means is None:
+            self._item_means = np.squeeze(np.asarray(self.get_csc_matrix().mean(axis=0)))
+
+        return self._item_means
 
     def get_simple_split(self, k, index):
         # type: (int, int) -> (Ratings, Ratings)
@@ -148,6 +158,13 @@ class Ratings(object):
         if self._data_csr is None:
             self._data_csr = self._data.tocsr()
         return self._data_csr
+
+    def get_csc_matrix(self):
+        # type: () -> csc_matrix
+        """ Will lazy load this ratings matrix as a CSC matrix and store"""
+        if self._data_csc is None:
+            self._data_csc = self._data.tocsc()
+        return self._data_csc
 
     @property
     def shape(self):
