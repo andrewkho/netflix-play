@@ -6,3 +6,4 @@ data
 *.so
 *.o
 build/
+*.prof
