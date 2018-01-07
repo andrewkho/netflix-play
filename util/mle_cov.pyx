@@ -3,12 +3,6 @@
 #cython: cdivision=True
 #cython: nonecheck=False
 
-from libc.stdlib cimport malloc, free
-from libcpp.map cimport map as cppmap
-from libcpp.set cimport set as cppset
-cdef extern from "math.h":
-    double sqrt(double m)
-
 import numpy as np
 cimport numpy as np
 
@@ -50,109 +44,95 @@ cdef py_get_cov(ratings):
     csc_indices = csc_mat.indices
     csc_data = csc_mat.data
 
-    cdef long output_length
-    output_length = ((csr_mat > 0).transpose().dot((csr_mat > 0)) > 0).sum()
-    print("predicted output_length: " + str(output_length))
+    cdef double[:,:] out_mat
+    out_mat = np.zeros(shape=(csr_mat.shape[1], csr_mat.shape[1]), dtype=np.float64)
 
-    cdef int[:] out_row, out_col
-    cdef double[:] out_data
-    cdef long out_counter
-    out_row = np.zeros(output_length, dtype=np.int32)
-    out_col = np.zeros(output_length, dtype=np.int32)
-    out_data = np.zeros(output_length, dtype=np.float64)
-    out_counter = 0
-
-    cdef int item_col, i
+    cdef int out_counter
+    cdef int item_col
     cdef int[:] item_rows
     cdef double[:] item_rats, column_means
-    #cdef dict di
-    cdef cppmap[int, double] di
-    cdef list rating_dicts
+    cdef double mn
 
-    rating_dicts = []
     column_means = np.zeros(ratings.shape[1])
-    #column_means = np.squeeze(np.asarray(csc_mat.mean(axis=0)))
-    print("Building rating_dicts, column_means")
+    print("  cy: Building column_means")
     for item_col in range(ratings.shape[1]):
         item_rows = csc_indices[csc_indptr[item_col]:csc_indptr[item_col + 1]]
         item_rats = csc_data[csc_indptr[item_col]:csc_indptr[item_col + 1]]
-        di = cppmap[int, double]()
-        mn = 0
-        for i in range(item_rows.size):
-            di[item_rows[i]] = item_rats[i]
-            mn += item_rats[i]
-
-        rating_dicts.append(di)
-        column_means[item_col] = mn / item_rows.size
-    print("done!")
-
-    out_counter = _inner_loop(out_row, out_col, out_data,
+        mn = 0.
+        for rat in item_rats:
+            mn += rat
+        column_means[item_col] = mn / item_rats.shape[0]
+    print "  cy: building covar matrix with size (%d, %d)" % (ratings.shape[1], ratings.shape[1])
+    out_counter = _inner_loop(out_mat,
                               csr_indices, csr_indptr, csr_data,
                               csc_indices, csc_indptr, csc_data,
-                              ratings.shape[1], column_means, rating_dicts)
+                              ratings.shape[1], column_means)
 
-    print("out_counter: " + str(out_counter) + " output_length: " + str(output_length))
+    print "   cy: done"
+    return out_mat
 
-    return coo_matrix((out_data, (out_row, out_col)), shape=(ratings.shape[1], ratings.shape[1]))
 
-
-cdef int _inner_loop(int[:] out_row, int[:] out_col, double[:] out_data,
+cdef int _inner_loop(double[:,:] out_mat,
                      int[:] csr_indices, int[:] csr_indptr, double[:] csr_data,
                      int[:] csc_indices, int[:] csc_indptr, double[:] csc_data,
-                     int num_cols, double[:] item_means, list rating_dicts):
+                     int num_cols, double[:] item_means) nogil:
 
     cdef int out_counter = 0
     cdef int[:] other_rows, item_rows
-    cdef double[:] other_rats, user_rats
-    cdef cppmap[int, double] other_rats_dict, item_rats_dict
-    cdef int n, ixn_size
-    cdef double cov, item_mean, other_mean, denom_u, denom_o, udiff, odiff
-    cdef int user
-    cdef cppset[int] neighbours
-    cdef int[:] tmp
+    cdef double[:] other_rats, item_rats
+    cdef double cov, item_mean, other_mean,
 
     cdef int other_col, item_row, item_col, i, j
     for item_col in range(num_cols):
         item_rows = csc_indices[csc_indptr[item_col]:csc_indptr[item_col + 1]]
         item_rats = csc_data[csc_indptr[item_col]:csc_indptr[item_col + 1]]
-        item_rats_dict = rating_dicts[item_col]
-        neighbours = cppset[int]()
-        for i in range(item_rows.shape[0]):
-            item_row = item_rows[i]
-            tmp = csr_indices[csr_indptr[item_row]:csr_indptr[item_row+1]]
-            for j in range(tmp.shape[0]):
-                neighbours.insert(tmp[j])
-        for other_col in neighbours:
+
+        for other_col in range(num_cols):
             other_rows = csc_indices[csc_indptr[other_col]:csc_indptr[other_col + 1]]
             other_rats = csc_data[csc_indptr[other_col]:csc_indptr[other_col + 1]]
-            other_rats_dict = rating_dicts[other_col]
-
-            n = min(item_rows.shape[0], other_rows.shape[0])
-            ixn = <int*> malloc(n * sizeof(int))
-            ixn_size = cyintersect1d(ixn, item_rows, other_rows)
-
             item_mean = item_means[item_col]
             other_mean = item_means[other_col]
-            cov = 0
-            denom_u = 0
-            denom_o = 0
-            for i in range(ixn_size):
-                user = ixn[i]
-                udiff = item_rats_dict[user] - item_mean
-                odiff = other_rats_dict[user] - other_mean
-                cov += udiff * odiff
 
-            if ixn_size == 0:
-                cov = 0
-            else:
-                cov /= ixn_size
+            cov = _cycovar(item_rows, other_rows,
+                           item_mean, other_mean,
+                           item_rats, other_rats)
 
-            # Cleanup memory
-            free(ixn)
-
-            out_row[out_counter] = item_col
-            out_col[out_counter] = other_col
-            out_data[out_counter] = cov
+            out_mat[item_col, other_col] = cov
             out_counter += 1
 
     return out_counter
+
+
+cdef inline double _cycovar(int[:] left, int[:] right,
+                         double item_mean, double other_mean,
+                         double[:] item_rats, double[:] other_rats) nogil:
+    """
+    To use this function, left and right must be unique and in sorted order
+    Returns the intersection of the two arrays in ixn
+    """
+    cdef int i = 0
+    cdef int j = 0
+    cdef int c = 0
+    cdef int max_left, max_right
+    max_left = left.shape[0]
+    max_right = right.shape[0]
+
+    cdef double covar = 0
+
+    while True:
+        if left[i] < right[j]:
+            i += 1
+        elif left[i] > right[j]:
+            j += 1
+        else:
+            covar += (item_rats[i] - item_mean) * (other_rats[j] - other_mean)
+            c += 1
+            i += 1
+            j += 1
+        if i >= max_left or j >= max_right:
+            break
+
+    if c == 0:
+        return 0.
+    else:
+        return covar / c

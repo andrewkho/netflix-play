@@ -1,10 +1,15 @@
-cdef inline int min(int left, int right):
+#cython: boundscheck=False
+#cython: wraparound=False
+#cython: cdivision=True
+#cython: nonecheck=False
+
+cdef inline int min(int left, int right) nogil:
     if left < right:
         return left
     else:
         return right
 
-cdef inline int cyintersect1d(int* ixn, int[:] left, int[:] right):
+cdef inline int cyintersect1d(int* ixn, int[:] left, int[:] right) nogil:
     """
     To use this function, left and right must be unique and in sorted order
     Returns the intersection of the two arrays in ixn

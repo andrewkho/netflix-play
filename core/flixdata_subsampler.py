@@ -46,7 +46,7 @@ class FlixDataSubsampler(object):
                        flixdata.userRatings[idx[:N]])
 
     @staticmethod
-    def random_sample_movies(flixdata, seed, N, M, minratings):
+    def random_sample_movies(flixdata, seed, N, M, minratings=9):
         # type: (FlixData, int, int, int) -> Ratings
         """
         Return a new Ratings object with randomly chosen movies.
@@ -95,7 +95,7 @@ class FlixDataSubsampler(object):
                        flixdata.userRatings[idxs])
 
     @staticmethod
-    def random_sample_users(flixdata, seed, N, nusers, minratings):
+    def random_sample_users(flixdata, seed, N, nusers, minratings=9):
         # type: (FlixData, int, int, int, int) -> Ratings
         """
         Return a new Ratings object with N ratings and nusers,

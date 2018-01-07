@@ -4244,20 +4244,21 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_other_rats, 1);
   return __pyx_r;
 }
 
-/* "util/cyintersect1d.pxd":1
- * cdef inline int min(int left, int right):             # <<<<<<<<<<<<<<
+/* "util/cyintersect1d.pxd":6
+ * #cython: nonecheck=False
+ * 
+ * cdef inline int min(int left, int right) nogil:             # <<<<<<<<<<<<<<
  *     if left < right:
  *         return left
  */
 
 static CYTHON_INLINE int __pyx_f_4util_13cyintersect1d_min(int __pyx_v_left, int __pyx_v_right) {
   int __pyx_r;
-  __Pyx_RefNannyDeclarations
   int __pyx_t_1;
-  __Pyx_RefNannySetupContext("min", 0);
 
-  /* "util/cyintersect1d.pxd":2
- * cdef inline int min(int left, int right):
+  /* "util/cyintersect1d.pxd":7
+ * 
+ * cdef inline int min(int left, int right) nogil:
  *     if left < right:             # <<<<<<<<<<<<<<
  *         return left
  *     else:
@@ -4265,8 +4266,8 @@ static CYTHON_INLINE int __pyx_f_4util_13cyintersect1d_min(int __pyx_v_left, int
   __pyx_t_1 = ((__pyx_v_left < __pyx_v_right) != 0);
   if (__pyx_t_1) {
 
-    /* "util/cyintersect1d.pxd":3
- * cdef inline int min(int left, int right):
+    /* "util/cyintersect1d.pxd":8
+ * cdef inline int min(int left, int right) nogil:
  *     if left < right:
  *         return left             # <<<<<<<<<<<<<<
  *     else:
@@ -4275,44 +4276,46 @@ static CYTHON_INLINE int __pyx_f_4util_13cyintersect1d_min(int __pyx_v_left, int
     __pyx_r = __pyx_v_left;
     goto __pyx_L0;
 
-    /* "util/cyintersect1d.pxd":2
- * cdef inline int min(int left, int right):
+    /* "util/cyintersect1d.pxd":7
+ * 
+ * cdef inline int min(int left, int right) nogil:
  *     if left < right:             # <<<<<<<<<<<<<<
  *         return left
  *     else:
  */
   }
 
-  /* "util/cyintersect1d.pxd":5
+  /* "util/cyintersect1d.pxd":10
  *         return left
  *     else:
  *         return right             # <<<<<<<<<<<<<<
  * 
- * cdef inline int cyintersect1d(int* ixn, int[:] left, int[:] right):
+ * cdef inline int cyintersect1d(int* ixn, int[:] left, int[:] right) nogil:
  */
   /*else*/ {
     __pyx_r = __pyx_v_right;
     goto __pyx_L0;
   }
 
-  /* "util/cyintersect1d.pxd":1
- * cdef inline int min(int left, int right):             # <<<<<<<<<<<<<<
+  /* "util/cyintersect1d.pxd":6
+ * #cython: nonecheck=False
+ * 
+ * cdef inline int min(int left, int right) nogil:             # <<<<<<<<<<<<<<
  *     if left < right:
  *         return left
  */
 
   /* function exit code */
   __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "util/cyintersect1d.pxd":7
+/* "util/cyintersect1d.pxd":12
  *         return right
  * 
- * cdef inline int cyintersect1d(int* ixn, int[:] left, int[:] right):             # <<<<<<<<<<<<<<
- *     # To use this function, left and right must be unique and in sorted order
- *     # Returns the intersection of the two arrays
+ * cdef inline int cyintersect1d(int* ixn, int[:] left, int[:] right) nogil:             # <<<<<<<<<<<<<<
+ *     """
+ *     To use this function, left and right must be unique and in sorted order
  */
 
 static CYTHON_INLINE int __pyx_f_4util_13cyintersect1d_cyintersect1d(int *__pyx_v_ixn, __Pyx_memviewslice __pyx_v_left, __Pyx_memviewslice __pyx_v_right) {
@@ -4322,7 +4325,6 @@ static CYTHON_INLINE int __pyx_f_4util_13cyintersect1d_cyintersect1d(int *__pyx_
   int __pyx_v_max_left;
   int __pyx_v_max_right;
   int __pyx_r;
-  __Pyx_RefNannyDeclarations
   Py_ssize_t __pyx_t_1;
   Py_ssize_t __pyx_t_2;
   int __pyx_t_3;
@@ -4330,19 +4332,18 @@ static CYTHON_INLINE int __pyx_f_4util_13cyintersect1d_cyintersect1d(int *__pyx_
   Py_ssize_t __pyx_t_5;
   Py_ssize_t __pyx_t_6;
   int __pyx_t_7;
-  __Pyx_RefNannySetupContext("cyintersect1d", 0);
 
-  /* "util/cyintersect1d.pxd":10
- *     # To use this function, left and right must be unique and in sorted order
- *     # Returns the intersection of the two arrays
+  /* "util/cyintersect1d.pxd":17
+ *     Returns the intersection of the two arrays in ixn
+ *     """
  *     cdef int i = 0             # <<<<<<<<<<<<<<
  *     cdef int j = 0
  *     cdef int c = 0
  */
   __pyx_v_i = 0;
 
-  /* "util/cyintersect1d.pxd":11
- *     # Returns the intersection of the two arrays
+  /* "util/cyintersect1d.pxd":18
+ *     """
  *     cdef int i = 0
  *     cdef int j = 0             # <<<<<<<<<<<<<<
  *     cdef int c = 0
@@ -4350,7 +4351,7 @@ static CYTHON_INLINE int __pyx_f_4util_13cyintersect1d_cyintersect1d(int *__pyx_
  */
   __pyx_v_j = 0;
 
-  /* "util/cyintersect1d.pxd":12
+  /* "util/cyintersect1d.pxd":19
  *     cdef int i = 0
  *     cdef int j = 0
  *     cdef int c = 0             # <<<<<<<<<<<<<<
@@ -4359,7 +4360,7 @@ static CYTHON_INLINE int __pyx_f_4util_13cyintersect1d_cyintersect1d(int *__pyx_
  */
   __pyx_v_c = 0;
 
-  /* "util/cyintersect1d.pxd":14
+  /* "util/cyintersect1d.pxd":21
  *     cdef int c = 0
  *     cdef int max_left, max_right
  *     max_left = left.shape[0]             # <<<<<<<<<<<<<<
@@ -4368,7 +4369,7 @@ static CYTHON_INLINE int __pyx_f_4util_13cyintersect1d_cyintersect1d(int *__pyx_
  */
   __pyx_v_max_left = (__pyx_v_left.shape[0]);
 
-  /* "util/cyintersect1d.pxd":15
+  /* "util/cyintersect1d.pxd":22
  *     cdef int max_left, max_right
  *     max_left = left.shape[0]
  *     max_right = right.shape[0]             # <<<<<<<<<<<<<<
@@ -4377,7 +4378,7 @@ static CYTHON_INLINE int __pyx_f_4util_13cyintersect1d_cyintersect1d(int *__pyx_
  */
   __pyx_v_max_right = (__pyx_v_right.shape[0]);
 
-  /* "util/cyintersect1d.pxd":17
+  /* "util/cyintersect1d.pxd":24
  *     max_right = right.shape[0]
  * 
  *     while True:             # <<<<<<<<<<<<<<
@@ -4386,7 +4387,7 @@ static CYTHON_INLINE int __pyx_f_4util_13cyintersect1d_cyintersect1d(int *__pyx_
  */
   while (1) {
 
-    /* "util/cyintersect1d.pxd":18
+    /* "util/cyintersect1d.pxd":25
  * 
  *     while True:
  *         if left[i] < right[j]:             # <<<<<<<<<<<<<<
@@ -4398,7 +4399,7 @@ static CYTHON_INLINE int __pyx_f_4util_13cyintersect1d_cyintersect1d(int *__pyx_
     __pyx_t_3 = (((*((int *) ( /* dim=0 */ (__pyx_v_left.data + __pyx_t_1 * __pyx_v_left.strides[0]) ))) < (*((int *) ( /* dim=0 */ (__pyx_v_right.data + __pyx_t_2 * __pyx_v_right.strides[0]) )))) != 0);
     if (__pyx_t_3) {
 
-      /* "util/cyintersect1d.pxd":19
+      /* "util/cyintersect1d.pxd":26
  *     while True:
  *         if left[i] < right[j]:
  *             i += 1             # <<<<<<<<<<<<<<
@@ -4407,7 +4408,7 @@ static CYTHON_INLINE int __pyx_f_4util_13cyintersect1d_cyintersect1d(int *__pyx_
  */
       __pyx_v_i = (__pyx_v_i + 1);
 
-      /* "util/cyintersect1d.pxd":18
+      /* "util/cyintersect1d.pxd":25
  * 
  *     while True:
  *         if left[i] < right[j]:             # <<<<<<<<<<<<<<
@@ -4417,7 +4418,7 @@ static CYTHON_INLINE int __pyx_f_4util_13cyintersect1d_cyintersect1d(int *__pyx_
       goto __pyx_L5;
     }
 
-    /* "util/cyintersect1d.pxd":20
+    /* "util/cyintersect1d.pxd":27
  *         if left[i] < right[j]:
  *             i += 1
  *         elif left[i] > right[j]:             # <<<<<<<<<<<<<<
@@ -4429,7 +4430,7 @@ static CYTHON_INLINE int __pyx_f_4util_13cyintersect1d_cyintersect1d(int *__pyx_
     __pyx_t_3 = (((*((int *) ( /* dim=0 */ (__pyx_v_left.data + __pyx_t_4 * __pyx_v_left.strides[0]) ))) > (*((int *) ( /* dim=0 */ (__pyx_v_right.data + __pyx_t_5 * __pyx_v_right.strides[0]) )))) != 0);
     if (__pyx_t_3) {
 
-      /* "util/cyintersect1d.pxd":21
+      /* "util/cyintersect1d.pxd":28
  *             i += 1
  *         elif left[i] > right[j]:
  *             j += 1             # <<<<<<<<<<<<<<
@@ -4438,7 +4439,7 @@ static CYTHON_INLINE int __pyx_f_4util_13cyintersect1d_cyintersect1d(int *__pyx_
  */
       __pyx_v_j = (__pyx_v_j + 1);
 
-      /* "util/cyintersect1d.pxd":20
+      /* "util/cyintersect1d.pxd":27
  *         if left[i] < right[j]:
  *             i += 1
  *         elif left[i] > right[j]:             # <<<<<<<<<<<<<<
@@ -4448,7 +4449,7 @@ static CYTHON_INLINE int __pyx_f_4util_13cyintersect1d_cyintersect1d(int *__pyx_
       goto __pyx_L5;
     }
 
-    /* "util/cyintersect1d.pxd":23
+    /* "util/cyintersect1d.pxd":30
  *             j += 1
  *         else:
  *             ixn[c] = left[i]             # <<<<<<<<<<<<<<
@@ -4459,7 +4460,7 @@ static CYTHON_INLINE int __pyx_f_4util_13cyintersect1d_cyintersect1d(int *__pyx_
       __pyx_t_6 = __pyx_v_i;
       (__pyx_v_ixn[__pyx_v_c]) = (*((int *) ( /* dim=0 */ (__pyx_v_left.data + __pyx_t_6 * __pyx_v_left.strides[0]) )));
 
-      /* "util/cyintersect1d.pxd":24
+      /* "util/cyintersect1d.pxd":31
  *         else:
  *             ixn[c] = left[i]
  *             c += 1             # <<<<<<<<<<<<<<
@@ -4468,7 +4469,7 @@ static CYTHON_INLINE int __pyx_f_4util_13cyintersect1d_cyintersect1d(int *__pyx_
  */
       __pyx_v_c = (__pyx_v_c + 1);
 
-      /* "util/cyintersect1d.pxd":25
+      /* "util/cyintersect1d.pxd":32
  *             ixn[c] = left[i]
  *             c += 1
  *             i += 1             # <<<<<<<<<<<<<<
@@ -4477,7 +4478,7 @@ static CYTHON_INLINE int __pyx_f_4util_13cyintersect1d_cyintersect1d(int *__pyx_
  */
       __pyx_v_i = (__pyx_v_i + 1);
 
-      /* "util/cyintersect1d.pxd":26
+      /* "util/cyintersect1d.pxd":33
  *             c += 1
  *             i += 1
  *             j += 1             # <<<<<<<<<<<<<<
@@ -4488,7 +4489,7 @@ static CYTHON_INLINE int __pyx_f_4util_13cyintersect1d_cyintersect1d(int *__pyx_
     }
     __pyx_L5:;
 
-    /* "util/cyintersect1d.pxd":27
+    /* "util/cyintersect1d.pxd":34
  *             i += 1
  *             j += 1
  *         if i >= max_left or j >= max_right:             # <<<<<<<<<<<<<<
@@ -4506,7 +4507,7 @@ static CYTHON_INLINE int __pyx_f_4util_13cyintersect1d_cyintersect1d(int *__pyx_
     __pyx_L7_bool_binop_done:;
     if (__pyx_t_3) {
 
-      /* "util/cyintersect1d.pxd":28
+      /* "util/cyintersect1d.pxd":35
  *             j += 1
  *         if i >= max_left or j >= max_right:
  *             break             # <<<<<<<<<<<<<<
@@ -4515,7 +4516,7 @@ static CYTHON_INLINE int __pyx_f_4util_13cyintersect1d_cyintersect1d(int *__pyx_
  */
       goto __pyx_L4_break;
 
-      /* "util/cyintersect1d.pxd":27
+      /* "util/cyintersect1d.pxd":34
  *             i += 1
  *             j += 1
  *         if i >= max_left or j >= max_right:             # <<<<<<<<<<<<<<
@@ -4526,7 +4527,7 @@ static CYTHON_INLINE int __pyx_f_4util_13cyintersect1d_cyintersect1d(int *__pyx_
   }
   __pyx_L4_break:;
 
-  /* "util/cyintersect1d.pxd":30
+  /* "util/cyintersect1d.pxd":37
  *             break
  * 
  *     return c             # <<<<<<<<<<<<<<
@@ -4535,17 +4536,16 @@ static CYTHON_INLINE int __pyx_f_4util_13cyintersect1d_cyintersect1d(int *__pyx_
   __pyx_r = __pyx_v_c;
   goto __pyx_L0;
 
-  /* "util/cyintersect1d.pxd":7
+  /* "util/cyintersect1d.pxd":12
  *         return right
  * 
- * cdef inline int cyintersect1d(int* ixn, int[:] left, int[:] right):             # <<<<<<<<<<<<<<
- *     # To use this function, left and right must be unique and in sorted order
- *     # Returns the intersection of the two arrays
+ * cdef inline int cyintersect1d(int* ixn, int[:] left, int[:] right) nogil:             # <<<<<<<<<<<<<<
+ *     """
+ *     To use this function, left and right must be unique and in sorted order
  */
 
   /* function exit code */
   __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
