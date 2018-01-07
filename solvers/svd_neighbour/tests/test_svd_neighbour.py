@@ -29,7 +29,7 @@ class TestSvdNeighbour(unittest.TestCase):
             print ("Couldn't find " + saved_data + ", regenerating")
             fd = FlixData(flix_data_root)
             print "total ratings: %d" % fd.numratings
-            self.ratings = FlixDataSubsampler.random_sample_movies(fd, seed=12345, N=int(2e4), M=int(1e3))
+            self.ratings = FlixDataSubsampler.random_sample_movies(fd, seed=12345, N=int(1e5), M=int(5e3))
             self.kfolds = KFolds(self.ratings.size, 10, 12345)
 
             with open(saved_data, "wb") as f:
@@ -40,17 +40,17 @@ class TestSvdNeighbour(unittest.TestCase):
         test, train = self.kfolds.get(0)
         test_set = self.ratings.get_index_split(test)
         train_set = self.ratings.get_index_split(train)
-        svdn = SvdNeighbourSolver(svd_k=10, knn_k=15)
+        svdn = SvdNeighbourSolver(svd_k=10, knn_k=15, cluster_k=300)
         svdn.train(train_set, seed=54321)
 
-        #y = train_set.get_coo_matrix().data
-        #print "Generating prediction"
-        #pred = svdn.predict(train_set)
-        #print "Done!"
-
-        #print "Train SSE: %f" % np.sum((y-pred)**2)
-        #print "Train MSE: %f" % np.mean((y-pred)**2)
-        #print "Train RMS: %f" % np.sqrt(np.mean((y-pred)**2))
+        # y = train_set.get_coo_matrix().data
+        # print("predicting %d train ratings: " % train_set.get_coo_matrix().nnz)
+        # pred = svdn.predict(train_set)
+        # print "Done!"
+        #
+        # print "Train SSE: %f" % np.sum((y-pred)**2)
+        # print "Train MSE: %f" % np.mean((y-pred)**2)
+        # print "Train RMS: %f" % np.sqrt(np.mean((y-pred)**2))
 
         print("predicting %d testratings: " % test_set.get_coo_matrix().nnz)
         pred = svdn.predict(test_set)

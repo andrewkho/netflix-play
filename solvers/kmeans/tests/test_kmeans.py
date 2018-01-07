@@ -2,14 +2,11 @@ import cPickle
 import os
 import unittest
 
-import cProfile
-
 from itertools import izip
 import numpy as np
 
 from core.flixdata import FlixData
 from core.flixdata_subsampler import FlixDataSubsampler
-from core.ratings import Ratings
 from solvers.kFoldsCrossValidator import KFolds
 from solvers.kmeans.kmeans_solver import KMeansSolver, Distances
 

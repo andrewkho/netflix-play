@@ -5,7 +5,10 @@ I used the repo at alexbw as a starting point, mainly for his functions to read 
 
 The plan is to implement the "recipes" summarized in Recommender Systems (Aggarwal, 2016).
 
-Particularly, I am interested in the performance of:
-Collaborative filtering methods (user-based)
-Latent factor methods
+Particularly, I am interested in the performance of: Collaborative filtering methods (user-based) Latent factor methods
 
+## Packages used
+* cython 0.27.3
+* numpy: 1.13.3
+* scipy: 1.0.0 (for sparse matrix representations and conversions between)
+* scikit-learn: 0.19.1

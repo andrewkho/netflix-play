@@ -37,7 +37,6 @@ cpdef double cy_svdn_predict_single(int user_idx, double[:,:] correlation, int k
 
     for j in range(neighbours.shape[0]):
         nei_idx = neighbours[j]
-        ## Do binary search
         i = bin_search(0, potentials.shape[0], potentials, nei_idx)
         if i >= potentials.shape[0] or potentials[i] != nei_idx:
             continue

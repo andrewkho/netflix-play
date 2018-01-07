@@ -2,6 +2,8 @@ import numpy as np
 import scipy.sparse
 import scipy.sparse.linalg
 
+from sklearn.cluster import KMeans
+
 from itertools import izip
 
 from core.ratings import Ratings
@@ -18,10 +20,11 @@ class SvdNeighbourSolver(RecommenderAlgorithm):
     Generates a SVD representation of the ratings matrix
     """
 
-    def __init__(self, svd_k, knn_k):
+    def __init__(self, svd_k, knn_k, cluster_k):
         # type: (int) -> None
         self.svd_k = svd_k  # type: int
         self.knn_k = knn_k  # type: int
+        self.cluster_k = cluster_k  # type: int
         self._ratings = None  # type: Ratings
         self._cov = None  # type: scipy.sparse.csr_matrix
 
@@ -41,14 +44,38 @@ class SvdNeighbourSolver(RecommenderAlgorithm):
         self._svd_u, self._svd_s, self._svd_vt = scipy.sparse.linalg.svds(self._cov, self.svd_k)
         print "  eigenratings"
         self._eigenratings = incomplete_projection(self._ratings.get_csr_matrix(), self._svd_u)
-        print "  ratings correlation in eigen space"
-        self._correlation = np.corrcoef(self._eigenratings)
+
+        print "  clustering into %d clusters" % self.cluster_k
+        ## Since eigenratings is dense, we can use off the shelf KMeans solver from sklearn
+        kmeans_estimator = KMeans(n_clusters=self.cluster_k, n_init=10, random_state=seed)
+        kmeans_estimator.fit(self._eigenratings)
+
+        print "  generate cluster mappings"
+        mapped_idxs = np.zeros(shape=kmeans_estimator.labels_.shape, dtype=np.int32)
+        labels = kmeans_estimator.labels_
+        for cluster in range(self.cluster_k):
+            cluster_bools = labels == cluster
+            mapped_idxs = mapped_idxs + (np.cumsum(cluster_bools) - 1)*cluster_bools
+        self._cluster_labels = np.vstack((labels, mapped_idxs)).transpose().astype(dtype=np.int32)
+
+        print "  compute ratings correlation in eigen space, for each cluster"
+        self._correlation = list()
+        for cluster in range(self.cluster_k):
+            self._correlation.append(np.corrcoef(self._eigenratings[labels == cluster]))
+        #self._correlation = np.corrcoef(self._eigenratings)
+
         print "  Nearest neighbour sort"
-        self._neighbours = np.argsort(self._correlation, axis=1)[:, ::-1][:, 1:]
+        #self._neighbours = np.argsort(self._correlation, axis=1)[:, ::-1][:, 1:]
+        self._neighbours = list()
+        for cluster in range(self.cluster_k):
+            if self._correlation[cluster].ndim == 1: ## For empty clusters
+                self._neighbours.append(None)
+            self._neighbours.append(np.argsort(self._correlation[cluster], axis=1)[:, ::-1][:, 1:])
+
 
     def predict(self, testratings):
         # type: (Ratings) -> np.array
-        if True:
+        if False:
             return self.predict_cy(testratings)
 
         n = testratings.get_coo_matrix().nnz
@@ -61,7 +88,7 @@ class SvdNeighbourSolver(RecommenderAlgorithm):
             midx = testratings.get_coo_matrix().col[i]
 
             uid, mid = testratings.reverse_translate(uidx, midx)
-            pred[i] = self.predict_single(uid, mid, csc_mat, rat_mat)
+            pred[i] = self.predict_single(uid, mid, csc_mat)
 
         return pred
 
@@ -92,7 +119,7 @@ class SvdNeighbourSolver(RecommenderAlgorithm):
         return preds
 
 
-    def predict_single(self, uid, mid, csc_mat, rat_mat):
+    def predict_single(self, uid, mid, csc_mat):
         # type: (int, int, scipy.sparse.csc_matrix) -> float
 
         try:
@@ -100,45 +127,15 @@ class SvdNeighbourSolver(RecommenderAlgorithm):
         except KeyError:
             return None
 
-        # neighbours = self._neighbours[user_idx, :]
-        # return _py_svdn_predict(user_idx, movie_idx, self._correlation, self.knn_k, rat_mat, neighbours)
+        cluster = self._cluster_labels[user_idx, 0]
+        mapped_user_idx = self._cluster_labels[user_idx, 1]
 
         potentials = csc_mat.indices[csc_mat.indptr[movie_idx]:csc_mat.indptr[movie_idx+1]]
+        mapped_potentials = self._cluster_labels[:, 1][potentials]
         potential_ratings = csc_mat.data[csc_mat.indptr[movie_idx]:csc_mat.indptr[movie_idx+1]]
-        return cy_svdn_predict_single(user_idx, self._correlation, self.knn_k, self._neighbours[user_idx, :], potentials, potential_ratings)
 
-
-def _py_svdn_predict(user_idx, movie_idx, correlation, knn_k, rat_mat, neighbours):
-    """
-    Deprecated, use cy_svdn_predict_single instead, it's much faster
-    :param user_idx:
-    :param movie_idx:
-    :param correlation:
-    :param knn_k:
-    :param rat_mat:
-    :param neighbours:
-    :return:
-    """
-    counter = 0
-    tot = 0.
-    denom = 0.
-
-    for nei_idx in neighbours:
-        rating = rat_mat[nei_idx, movie_idx]
-        if rating == 0:
-            continue
-        counter += 1
-        tot += rating * correlation[user_idx, nei_idx]
-        denom += correlation[user_idx, nei_idx]
-        if counter >= knn_k:
-            break
-
-    #if counter == self.knn_k:
-    #    print "found k neighbours!"
-    #    #print "Warning, counter less than knn_k (%d, %d)" % (counter, self.knn_k)
-
-    tot /= denom
-    return tot
-
+        #return cy_svdn_predict_single(user_idx, self._correlation, self.knn_k, self._neighbours[user_idx, :], potentials, potential_ratings)
+        return cy_svdn_predict_single(mapped_user_idx, self._correlation[cluster], self.knn_k,
+                                      self._neighbours[cluster][mapped_user_idx, :], mapped_potentials, potential_ratings)
 
 
