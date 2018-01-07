@@ -68,7 +68,7 @@ cdef py_get_cov(ratings):
                               csc_indices, csc_indptr, csc_data,
                               ratings.shape[1], column_means)
 
-    print "   cy: done"
+    print "  cy: done"
     return out_mat
 
 

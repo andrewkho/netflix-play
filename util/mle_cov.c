@@ -2106,7 +2106,7 @@ static const char __pyx_k_reduce[] = "__reduce__";
 static const char __pyx_k_struct[] = "struct";
 static const char __pyx_k_unpack[] = "unpack";
 static const char __pyx_k_update[] = "update";
-static const char __pyx_k_cy_done[] = "   cy: done";
+static const char __pyx_k_cy_done[] = "  cy: done";
 static const char __pyx_k_float64[] = "float64";
 static const char __pyx_k_fortran[] = "fortran";
 static const char __pyx_k_indices[] = "indices";
@@ -3114,7 +3114,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_item_rats, 1);
  *                               csc_indices, csc_indptr, csc_data,
  *                               ratings.shape[1], column_means)             # <<<<<<<<<<<<<<
  * 
- *     print "   cy: done"
+ *     print "  cy: done"
  */
   __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_ratings, __pyx_n_s_shape); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -3136,7 +3136,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_item_rats, 1);
   /* "util/mle_cov.pyx":71
  *                               ratings.shape[1], column_means)
  * 
- *     print "   cy: done"             # <<<<<<<<<<<<<<
+ *     print "  cy: done"             # <<<<<<<<<<<<<<
  *     return out_mat
  * 
  */
@@ -3144,7 +3144,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_item_rats, 1);
 
   /* "util/mle_cov.pyx":72
  * 
- *     print "   cy: done"
+ *     print "  cy: done"
  *     return out_mat             # <<<<<<<<<<<<<<
  * 
  * 
