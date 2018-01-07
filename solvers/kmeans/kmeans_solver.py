@@ -32,6 +32,7 @@ class KMeansSolver(RecommenderAlgorithm):
 
         self._kmeans_cluster(seed)
 
+    # TODO: Maybe cython could speed this up
     def _kmeans_cluster(self, seed = None):
         if seed is not None:
             np.random.seed(int(seed))
@@ -106,6 +107,7 @@ class KMeansSolver(RecommenderAlgorithm):
 
         return pred
 
+    # TODO: This too
     def predict_single(self, uid, mid, csr_mat):
         # type: (int, int, scipy.sparse.csr_matrix) -> float
 

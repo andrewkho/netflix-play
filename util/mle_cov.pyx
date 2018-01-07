@@ -3,6 +3,7 @@
 #cython: cdivision=True
 #cython: nonecheck=False
 
+from libc.stdlib cimport malloc, free
 from libcpp.map cimport map as cppmap
 from libcpp.set cimport set as cppset
 cdef extern from "math.h":
@@ -14,6 +15,7 @@ cimport numpy as np
 import scipy.sparse
 from scipy.sparse import coo_matrix
 
+from util.cyintersect1d cimport cyintersect1d, min
 
 def mle_cov(ratings_mat):
     # type: (scipy.sparse.coo_matrix) -> scipy.sparse.coo_matrix
@@ -36,10 +38,14 @@ cdef py_get_cov(ratings):
     cdef int[:] csr_indptr, csr_indices, csc_indptr, csc_indices
     cdef double[:] csr_data, csc_data
     csr_mat = ratings.tocsr()
+    if csr_mat.has_sorted_indices == False:
+        csr_mat.sort_indices()
     csr_indptr = csr_mat.indptr
     csr_indices = csr_mat.indices
     csr_data = csr_mat.data
     csc_mat = ratings.tocsc()
+    if csc_mat.has_sorted_indices == False:
+        csc_mat.sort_indices()
     csc_indptr = csc_mat.indptr
     csc_indices = csc_mat.indices
     csc_data = csc_mat.data
@@ -98,10 +104,10 @@ cdef int _inner_loop(int[:] out_row, int[:] out_col, double[:] out_data,
     cdef int out_counter = 0
     cdef int[:] other_rows, item_rows
     cdef double[:] other_rats, user_rats
-    cdef cppmap[int, double] other_rats_dict, user_rats_dict
-    cdef int[:] ixn
+    cdef cppmap[int, double] other_rats_dict, item_rats_dict
+    cdef int n, ixn_size
     cdef double cov, item_mean, other_mean, denom_u, denom_o, udiff, odiff
-    cdef int user, ixn_size
+    cdef int user
     cdef cppset[int] neighbours
     cdef int[:] tmp
 
@@ -120,8 +126,10 @@ cdef int _inner_loop(int[:] out_row, int[:] out_col, double[:] out_data,
             other_rows = csc_indices[csc_indptr[other_col]:csc_indptr[other_col + 1]]
             other_rats = csc_data[csc_indptr[other_col]:csc_indptr[other_col + 1]]
             other_rats_dict = rating_dicts[other_col]
-            ixn = np.intersect1d(item_rows, other_rows)
-            ixn_size = ixn.size
+
+            n = min(item_rows.shape[0], other_rows.shape[0])
+            ixn = <int*> malloc(n * sizeof(int))
+            ixn_size = cyintersect1d(ixn, item_rows, other_rows)
 
             item_mean = item_means[item_col]
             other_mean = item_means[other_col]
@@ -138,6 +146,9 @@ cdef int _inner_loop(int[:] out_row, int[:] out_col, double[:] out_data,
                 cov = 0
             else:
                 cov /= ixn_size
+
+            # Cleanup memory
+            free(ixn)
 
             out_row[out_counter] = item_col
             out_col[out_counter] = other_col

@@ -3,10 +3,15 @@
 #cython: cdivision=True
 #cython: nonecheck=False
 
+from libc.stdlib cimport malloc, free
 from libcpp.map cimport map as cppmap
 from libcpp.set cimport set as cppset
 cdef extern from "math.h":
     double sqrt(double m)
+cdef extern from "<cmath>" namespace "std":
+     bint isnan(double x) nogil
+
+from util.cyintersect1d cimport cyintersect1d, min
 
 import numpy as np
 cimport numpy as np
@@ -32,10 +37,14 @@ cdef py_get_cor(ratings):
     cdef int[:] csr_indptr, csr_indices, csc_indptr, csc_indices
     cdef double[:] csr_data
     csr_mat = ratings.tocsr()
+    if csr_mat.has_sorted_indices == False:
+        csr_mat.sort_indices()
     csr_indptr = csr_mat.indptr
     csr_indices = csr_mat.indices
     csr_data = csr_mat.data
     csc_mat = ratings.tocsc()
+    if csc_mat.has_sorted_indices == False:
+        csc_mat.sort_indices()
     csc_indptr = csc_mat.indptr
     csc_indices = csc_mat.indices
 
@@ -91,9 +100,9 @@ cdef int _inner_loop(int[:] out_row, int[:] out_col, double[:] out_data,
     cdef int[:] other_cols, user_cols
     cdef double[:] other_rats, user_rats
     cdef cppmap[int, double] other_rats_dict, user_rats_dict
-    cdef int[:] ixn
+    cdef int n, ixn_size
     cdef double corr, user_mean, other_mean, denom_u, denom_o, udiff, odiff
-    cdef int movie, ixn_size
+    cdef int movie
     cdef cppset[int] neighbours
     cdef int[:] tmp
 
@@ -112,8 +121,10 @@ cdef int _inner_loop(int[:] out_row, int[:] out_col, double[:] out_data,
             other_cols = csr_indices[csr_indptr[other_row]:csr_indptr[other_row + 1]]
             other_rats = csr_data[csr_indptr[other_row]:csr_indptr[other_row + 1]]
             other_rats_dict = rating_dicts[other_row]
-            ixn = np.intersect1d(user_cols, other_cols)
-            ixn_size = ixn.size
+
+            n = min(user_cols.shape[0], other_cols.shape[0])
+            ixn = <int*> malloc(n * sizeof(int))
+            ixn_size = cyintersect1d(ixn, user_cols, other_cols)
 
             user_mean = user_means[user_row]
             other_mean = user_means[other_row]
@@ -128,14 +139,18 @@ cdef int _inner_loop(int[:] out_row, int[:] out_col, double[:] out_data,
                 denom_u += udiff*udiff
                 denom_o += odiff*odiff
 
+            # Cleanup memory
+            free(ixn)
+
             corr /= sqrt(denom_u)*sqrt(denom_o)
 
             out_row[out_counter] = user_row
             out_col[out_counter] = other_row
-            if np.isnan(corr):
+            if isnan(corr):
                 out_data[out_counter] = 0
             else:
                 out_data[out_counter] = corr
             out_counter += 1
 
     return out_counter
+

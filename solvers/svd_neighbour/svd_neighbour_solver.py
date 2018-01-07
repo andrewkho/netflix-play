@@ -32,10 +32,17 @@ class SvdNeighbourSolver(RecommenderAlgorithm):
         self._ratings = ratings
 
         ## compute and store data needed for predictions
-        self._cov = mle_cov(self._ratings.get_coo_matrix())
+        print "  mle covariance"
+        #self._cov = mle_cov(self._ratings.get_coo_matrix())
+
+
+        print "  %d top svd" % self.svd_k
         self._svd_u, self._svd_s, self._svd_vt = scipy.sparse.linalg.svds(self._cov, self.svd_k)
+        print "  eigenratings"
         self._eigenratings = incomplete_projection(self._ratings.get_csr_matrix(), self._svd_u)
+        print "  ratings correlation in eigen space"
         self._correlation = np.corrcoef(self._eigenratings)
+        print "  Nearest neighbour sort"
         self._neighbours = np.argsort(self._correlation, axis=1)[:, ::-1][:, 1:]
 
     def predict(self, testratings):
@@ -78,8 +85,9 @@ class SvdNeighbourSolver(RecommenderAlgorithm):
             if counter >= self.knn_k:
                 break
 
-        if counter < self.knn_k:
-            print "Warning, counter less than knn_k (%d, %d)" % (counter, self.knn_k)
+        #if counter == self.knn_k:
+        #    print "found k neighbours!"
+        #    #print "Warning, counter less than knn_k (%d, %d)" % (counter, self.knn_k)
 
         tot /= denom
         return tot

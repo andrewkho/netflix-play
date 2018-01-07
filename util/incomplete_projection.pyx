@@ -45,7 +45,9 @@ cdef _incomplete_projection(left, right):
 cdef int _inner_loop(double[:,:] out_mat, int[:] csr_indices, int[:] csr_indptr, double[:] csr_data, double[:,:] right,
                      int left_num_rows, int left_num_cols, int right_num_rows, int right_num_cols):
 
-    cdef double tot
+    cdef int[:] user_cols
+    cdef double[:] user_rats
+    cdef double tot, rating
     cdef int out_row, out_col, k, i
     for out_row in range(left_num_rows):
         user_cols = csr_indices[csr_indptr[out_row]:csr_indptr[out_row + 1]]
@@ -53,11 +55,11 @@ cdef int _inner_loop(double[:,:] out_mat, int[:] csr_indices, int[:] csr_indptr,
 
         for out_col in range(right_num_cols):
             tot = 0.
-            for i in range(user_cols.size):
+            for i in range(user_cols.shape[0]):
                 k = user_cols[i]
                 rating = user_rats[i]
                 tot += right[k, out_col] * rating
-            tot /= user_cols.size
+            tot /= user_cols.shape[0]
             out_mat[out_row, out_col] = tot
 
     return 0
