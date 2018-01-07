@@ -22,6 +22,7 @@ class FlixDataSubsampler(object):
         :param flixdata: the FlixData to sample from
         :return: a new ratings object
         """
+        print "  Building full ratings object..."
         return Ratings(flixdata.userIDsForUsers,
                        flixdata.movieIDs,
                        flixdata.userRatings)

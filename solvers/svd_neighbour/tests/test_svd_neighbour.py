@@ -7,6 +7,8 @@ import cProfile
 from itertools import izip
 import numpy as np
 
+from sklearn.cluster import KMeans
+
 from core.flixdata import FlixData
 from core.flixdata_subsampler import FlixDataSubsampler
 from core.ratings import Ratings
@@ -29,19 +31,23 @@ class TestSvdNeighbour(unittest.TestCase):
             print ("Couldn't find " + saved_data + ", regenerating")
             fd = FlixData(flix_data_root)
             print "total ratings: %d" % fd.numratings
-            self.ratings = FlixDataSubsampler.random_sample_movies(fd, seed=12345, N=int(1e5), M=int(5e3))
-            self.kfolds = KFolds(self.ratings.size, 10, 12345)
+            #self.ratings = FlixDataSubsampler.get_all(fd)
+            self.ratings = FlixDataSubsampler.random_sample_movies(fd, seed=12345, N=int(1e4), M=int(1e3))
+            self.kfolds = KFolds(self.ratings.size, 40, 12345)
 
             with open(saved_data, "wb") as f:
                 cPickle.dump((self.ratings, self.kfolds), f, cPickle.HIGHEST_PROTOCOL)
         print "Using dataset with %d users, %d movies" % (self.ratings.shape[0], self.ratings.shape[1])
 
     def test_one_fold(self):
+        print "Splitting data into train, test"
         test, train = self.kfolds.get(0)
         test_set = self.ratings.get_index_split(test)
         train_set = self.ratings.get_index_split(train)
-        svdn = SvdNeighbourSolver(svd_k=10, knn_k=15, cluster_k=300)
-        svdn.train(train_set, seed=54321)
+        print "Training SvdNeighbourSolver..."
+        svdn = SvdNeighbourSolver(svd_k=50, knn_k=80,
+                                  kmeans_estimator=KMeans(n_clusters=10, n_init=10, random_state=13579))
+        svdn.train(train_set)
 
         # y = train_set.get_coo_matrix().data
         # print("predicting %d train ratings: " % train_set.get_coo_matrix().nnz)
@@ -63,9 +69,11 @@ class TestSvdNeighbour(unittest.TestCase):
         print("%d / %d are NaN (%f)" % ((np.isnan(pred)).sum(), pred.shape[0], (np.isnan(pred)).mean()))
         #print [(_, __) for _, __ in izip(y, pred)]
 
-        print "Test SSE: %f" % np.sum((y[~np.isnan(pred)]-pred[~np.isnan(pred)])**2)
-        print "Test MSE: %f" % np.mean((y[~np.isnan(pred)]-pred[~np.isnan(pred)])**2)
-        print "Test RMS: %f" % np.sqrt(np.mean((y[~np.isnan(pred)]-pred[~np.isnan(pred)])**2))
+        print "Test SSE: %f" % np.nansum((y-pred)**2)
+        print "Test MSE: %f" % np.nanmean((y-pred)**2)
+        print "Test RMS: %f" % np.sqrt(np.nanmean((y-pred)**2))
+        print "mean of error: %f" % np.nanmean(y-pred)
+        print "SD of error: %f" % np.nanstd(y-pred)
 
         assert True
 

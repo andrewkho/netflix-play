@@ -1994,8 +1994,8 @@ static PyObject *contiguous = 0;
 static PyObject *indirect_contiguous = 0;
 static int __pyx_memoryview_thread_locks_used;
 static PyThread_type_lock __pyx_memoryview_thread_locks[8];
-static void __pyx_f_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_svdn_predict(__Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, int, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, int __pyx_skip_dispatch); /*proto*/
-static double __pyx_f_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_svdn_predict_single(int, __Pyx_memviewslice, int, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, int __pyx_skip_dispatch); /*proto*/
+static void __pyx_f_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_svdn_predict(__Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, int, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, int __pyx_skip_dispatch); /*proto*/
+static double __pyx_f_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_svdn_predict_single(int, __Pyx_memviewslice, int, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, double, int __pyx_skip_dispatch); /*proto*/
 static struct __pyx_array_obj *__pyx_array_new(PyObject *, Py_ssize_t, char *, char *, char *); /*proto*/
 static void *__pyx_align_pointer(void *, size_t); /*proto*/
 static PyObject *__pyx_memoryview_new(PyObject *, int, int, __Pyx_TypeInfo *); /*proto*/
@@ -2101,6 +2101,8 @@ static const char __pyx_k_TypeError[] = "TypeError";
 static const char __pyx_k_enumerate[] = "enumerate";
 static const char __pyx_k_pyx_state[] = "__pyx_state";
 static const char __pyx_k_reduce_ex[] = "__reduce_ex__";
+static const char __pyx_k_row_means[] = "row_means";
+static const char __pyx_k_user_mean[] = "user_mean";
 static const char __pyx_k_IndexError[] = "IndexError";
 static const char __pyx_k_ValueError[] = "ValueError";
 static const char __pyx_k_csc_indptr[] = "csc_indptr";
@@ -2245,6 +2247,7 @@ static PyObject *__pyx_n_s_ratings;
 static PyObject *__pyx_n_s_reduce;
 static PyObject *__pyx_n_s_reduce_cython;
 static PyObject *__pyx_n_s_reduce_ex;
+static PyObject *__pyx_n_s_row_means;
 static PyObject *__pyx_n_s_setstate;
 static PyObject *__pyx_n_s_setstate_cython;
 static PyObject *__pyx_n_s_shape;
@@ -2266,9 +2269,10 @@ static PyObject *__pyx_kp_u_unknown_dtype_code_in_numpy_pxd;
 static PyObject *__pyx_n_s_unpack;
 static PyObject *__pyx_n_s_update;
 static PyObject *__pyx_n_s_user_idx;
+static PyObject *__pyx_n_s_user_mean;
 static PyObject *__pyx_n_s_val;
-static PyObject *__pyx_pf_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_svdn_predict(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_preds, __Pyx_memviewslice __pyx_v_uidxs, __Pyx_memviewslice __pyx_v_midxs, int __pyx_v_knn_k, __Pyx_memviewslice __pyx_v_correlations, __Pyx_memviewslice __pyx_v_neighbours, __Pyx_memviewslice __pyx_v_csc_indptr, __Pyx_memviewslice __pyx_v_csc_indices, __Pyx_memviewslice __pyx_v_csc_data); /* proto */
-static PyObject *__pyx_pf_7solvers_13svd_neighbour_21svd_neighbour_predict_2cy_svdn_predict_single(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_user_idx, __Pyx_memviewslice __pyx_v_correlation, int __pyx_v_knn_k, __Pyx_memviewslice __pyx_v_neighbours, __Pyx_memviewslice __pyx_v_potentials, __Pyx_memviewslice __pyx_v_ratings); /* proto */
+static PyObject *__pyx_pf_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_svdn_predict(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_preds, __Pyx_memviewslice __pyx_v_uidxs, __Pyx_memviewslice __pyx_v_midxs, int __pyx_v_knn_k, __Pyx_memviewslice __pyx_v_correlations, __Pyx_memviewslice __pyx_v_neighbours, __Pyx_memviewslice __pyx_v_csc_indptr, __Pyx_memviewslice __pyx_v_csc_indices, __Pyx_memviewslice __pyx_v_csc_data, __Pyx_memviewslice __pyx_v_row_means); /* proto */
+static PyObject *__pyx_pf_7solvers_13svd_neighbour_21svd_neighbour_predict_2cy_svdn_predict_single(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_user_idx, __Pyx_memviewslice __pyx_v_correlation, int __pyx_v_knn_k, __Pyx_memviewslice __pyx_v_neighbours, __Pyx_memviewslice __pyx_v_potentials, __Pyx_memviewslice __pyx_v_ratings, __Pyx_memviewslice __pyx_v_row_means, double __pyx_v_user_mean); /* proto */
 static PyObject *__pyx_pf_4util_10bin_search_bin_search(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_st, int __pyx_v_en, __Pyx_memviewslice __pyx_v_arr, long __pyx_v_val); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
@@ -2363,11 +2367,11 @@ static PyObject *__pyx_codeobj__35;
  * 
  * cpdef void cy_svdn_predict(             # <<<<<<<<<<<<<<
  *         double[:] preds, int[:] uidxs, int[:] midxs, int knn_k, double[:,:] correlations, long[:,:] neighbours,
- *         int[:] csc_indptr, int[:] csc_indices, double[:] csc_data) nogil:
+ *         int[:] csc_indptr, int[:] csc_indices, double[:] csc_data, double[:] row_means) nogil:
  */
 
 static PyObject *__pyx_pw_7solvers_13svd_neighbour_21svd_neighbour_predict_1cy_svdn_predict(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static void __pyx_f_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_svdn_predict(__Pyx_memviewslice __pyx_v_preds, __Pyx_memviewslice __pyx_v_uidxs, __Pyx_memviewslice __pyx_v_midxs, int __pyx_v_knn_k, __Pyx_memviewslice __pyx_v_correlations, __Pyx_memviewslice __pyx_v_neighbours, __Pyx_memviewslice __pyx_v_csc_indptr, __Pyx_memviewslice __pyx_v_csc_indices, __Pyx_memviewslice __pyx_v_csc_data, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static void __pyx_f_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_svdn_predict(__Pyx_memviewslice __pyx_v_preds, __Pyx_memviewslice __pyx_v_uidxs, __Pyx_memviewslice __pyx_v_midxs, int __pyx_v_knn_k, __Pyx_memviewslice __pyx_v_correlations, __Pyx_memviewslice __pyx_v_neighbours, __Pyx_memviewslice __pyx_v_csc_indptr, __Pyx_memviewslice __pyx_v_csc_indices, __Pyx_memviewslice __pyx_v_csc_data, __Pyx_memviewslice __pyx_v_row_means, CYTHON_UNUSED int __pyx_skip_dispatch) {
   int __pyx_v_i;
   int __pyx_v_user_idx;
   int __pyx_v_movie_idx;
@@ -2386,6 +2390,7 @@ static void __pyx_f_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_svdn_pre
   __Pyx_memviewslice __pyx_t_11 = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_t_12 = { 0, 0, { 0 }, { 0 }, { 0 } };
   Py_ssize_t __pyx_t_13;
+  Py_ssize_t __pyx_t_14;
 
   /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":18
  *     cdef int[:] potentials
@@ -2491,8 +2496,8 @@ __PYX_XDEC_MEMVIEW(&__pyx_v_potential_ratings, 0);
     /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":26
  * 
  *         preds[i] = cy_svdn_predict_single(user_idx, correlations, knn_k,
- *                                           neighbours[user_idx, :], potentials, potential_ratings)             # <<<<<<<<<<<<<<
- * 
+ *                                           neighbours[user_idx, :], potentials, potential_ratings,             # <<<<<<<<<<<<<<
+ *                                           row_means, row_means[user_idx])
  * 
  */
     __pyx_t_12.data = __pyx_v_neighbours.data;
@@ -2521,16 +2526,17 @@ __pyx_t_12.shape[0] = __pyx_v_neighbours.shape[1];
 __pyx_t_12.strides[0] = __pyx_v_neighbours.strides[1];
     __pyx_t_12.suboffsets[0] = -1;
 
-__pyx_t_13 = __pyx_v_i;
+__pyx_t_13 = __pyx_v_user_idx;
 
     /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":25
  *         potential_ratings = csc_data[csc_indptr[movie_idx]:csc_indptr[movie_idx+1]]
  * 
  *         preds[i] = cy_svdn_predict_single(user_idx, correlations, knn_k,             # <<<<<<<<<<<<<<
- *                                           neighbours[user_idx, :], potentials, potential_ratings)
- * 
+ *                                           neighbours[user_idx, :], potentials, potential_ratings,
+ *                                           row_means, row_means[user_idx])
  */
-    *((double *) ( /* dim=0 */ (__pyx_v_preds.data + __pyx_t_13 * __pyx_v_preds.strides[0]) )) = __pyx_f_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_svdn_predict_single(__pyx_v_user_idx, __pyx_v_correlations, __pyx_v_knn_k, __pyx_t_12, __pyx_v_potentials, __pyx_v_potential_ratings, 0);
+    __pyx_t_14 = __pyx_v_i;
+    *((double *) ( /* dim=0 */ (__pyx_v_preds.data + __pyx_t_14 * __pyx_v_preds.strides[0]) )) = __pyx_f_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_svdn_predict_single(__pyx_v_user_idx, __pyx_v_correlations, __pyx_v_knn_k, __pyx_t_12, __pyx_v_potentials, __pyx_v_potential_ratings, __pyx_v_row_means, (*((double *) ( /* dim=0 */ (__pyx_v_row_means.data + __pyx_t_13 * __pyx_v_row_means.strides[0]) ))), 0);
     __PYX_XDEC_MEMVIEW(&__pyx_t_12, 0);
     __pyx_t_12.memview = NULL;
     __pyx_t_12.data = NULL;
@@ -2541,7 +2547,7 @@ __pyx_t_13 = __pyx_v_i;
  * 
  * cpdef void cy_svdn_predict(             # <<<<<<<<<<<<<<
  *         double[:] preds, int[:] uidxs, int[:] midxs, int knn_k, double[:,:] correlations, long[:,:] neighbours,
- *         int[:] csc_indptr, int[:] csc_indices, double[:] csc_data) nogil:
+ *         int[:] csc_indptr, int[:] csc_indices, double[:] csc_data, double[:] row_means) nogil:
  */
 
   /* function exit code */
@@ -2568,16 +2574,19 @@ static PyObject *__pyx_pw_7solvers_13svd_neighbour_21svd_neighbour_predict_1cy_s
   __Pyx_memviewslice __pyx_v_csc_indptr = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_csc_indices = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_csc_data = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_memviewslice __pyx_v_row_means = { 0, 0, { 0 }, { 0 }, { 0 } };
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("cy_svdn_predict (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_preds,&__pyx_n_s_uidxs,&__pyx_n_s_midxs,&__pyx_n_s_knn_k,&__pyx_n_s_correlations,&__pyx_n_s_neighbours,&__pyx_n_s_csc_indptr,&__pyx_n_s_csc_indices,&__pyx_n_s_csc_data,0};
-    PyObject* values[9] = {0,0,0,0,0,0,0,0,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_preds,&__pyx_n_s_uidxs,&__pyx_n_s_midxs,&__pyx_n_s_knn_k,&__pyx_n_s_correlations,&__pyx_n_s_neighbours,&__pyx_n_s_csc_indptr,&__pyx_n_s_csc_indices,&__pyx_n_s_csc_data,&__pyx_n_s_row_means,0};
+    PyObject* values[10] = {0,0,0,0,0,0,0,0,0,0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
+        case 10: values[9] = PyTuple_GET_ITEM(__pyx_args, 9);
+        CYTHON_FALLTHROUGH;
         case  9: values[8] = PyTuple_GET_ITEM(__pyx_args, 8);
         CYTHON_FALLTHROUGH;
         case  8: values[7] = PyTuple_GET_ITEM(__pyx_args, 7);
@@ -2608,55 +2617,61 @@ static PyObject *__pyx_pw_7solvers_13svd_neighbour_21svd_neighbour_predict_1cy_s
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_uidxs)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("cy_svdn_predict", 1, 9, 9, 1); __PYX_ERR(0, 10, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("cy_svdn_predict", 1, 10, 10, 1); __PYX_ERR(0, 10, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_midxs)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("cy_svdn_predict", 1, 9, 9, 2); __PYX_ERR(0, 10, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("cy_svdn_predict", 1, 10, 10, 2); __PYX_ERR(0, 10, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_knn_k)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("cy_svdn_predict", 1, 9, 9, 3); __PYX_ERR(0, 10, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("cy_svdn_predict", 1, 10, 10, 3); __PYX_ERR(0, 10, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_correlations)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("cy_svdn_predict", 1, 9, 9, 4); __PYX_ERR(0, 10, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("cy_svdn_predict", 1, 10, 10, 4); __PYX_ERR(0, 10, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
         if (likely((values[5] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_neighbours)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("cy_svdn_predict", 1, 9, 9, 5); __PYX_ERR(0, 10, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("cy_svdn_predict", 1, 10, 10, 5); __PYX_ERR(0, 10, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  6:
         if (likely((values[6] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_csc_indptr)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("cy_svdn_predict", 1, 9, 9, 6); __PYX_ERR(0, 10, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("cy_svdn_predict", 1, 10, 10, 6); __PYX_ERR(0, 10, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  7:
         if (likely((values[7] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_csc_indices)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("cy_svdn_predict", 1, 9, 9, 7); __PYX_ERR(0, 10, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("cy_svdn_predict", 1, 10, 10, 7); __PYX_ERR(0, 10, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  8:
         if (likely((values[8] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_csc_data)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("cy_svdn_predict", 1, 9, 9, 8); __PYX_ERR(0, 10, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("cy_svdn_predict", 1, 10, 10, 8); __PYX_ERR(0, 10, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  9:
+        if (likely((values[9] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_row_means)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("cy_svdn_predict", 1, 10, 10, 9); __PYX_ERR(0, 10, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "cy_svdn_predict") < 0)) __PYX_ERR(0, 10, __pyx_L3_error)
       }
-    } else if (PyTuple_GET_SIZE(__pyx_args) != 9) {
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 10) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
@@ -2668,6 +2683,7 @@ static PyObject *__pyx_pw_7solvers_13svd_neighbour_21svd_neighbour_predict_1cy_s
       values[6] = PyTuple_GET_ITEM(__pyx_args, 6);
       values[7] = PyTuple_GET_ITEM(__pyx_args, 7);
       values[8] = PyTuple_GET_ITEM(__pyx_args, 8);
+      values[9] = PyTuple_GET_ITEM(__pyx_args, 9);
     }
     __pyx_v_preds = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[0]); if (unlikely(!__pyx_v_preds.memview)) __PYX_ERR(0, 11, __pyx_L3_error)
     __pyx_v_uidxs = __Pyx_PyObject_to_MemoryviewSlice_ds_int(values[1]); if (unlikely(!__pyx_v_uidxs.memview)) __PYX_ERR(0, 11, __pyx_L3_error)
@@ -2678,23 +2694,24 @@ static PyObject *__pyx_pw_7solvers_13svd_neighbour_21svd_neighbour_predict_1cy_s
     __pyx_v_csc_indptr = __Pyx_PyObject_to_MemoryviewSlice_ds_int(values[6]); if (unlikely(!__pyx_v_csc_indptr.memview)) __PYX_ERR(0, 12, __pyx_L3_error)
     __pyx_v_csc_indices = __Pyx_PyObject_to_MemoryviewSlice_ds_int(values[7]); if (unlikely(!__pyx_v_csc_indices.memview)) __PYX_ERR(0, 12, __pyx_L3_error)
     __pyx_v_csc_data = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[8]); if (unlikely(!__pyx_v_csc_data.memview)) __PYX_ERR(0, 12, __pyx_L3_error)
+    __pyx_v_row_means = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[9]); if (unlikely(!__pyx_v_row_means.memview)) __PYX_ERR(0, 12, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("cy_svdn_predict", 1, 9, 9, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 10, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("cy_svdn_predict", 1, 10, 10, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 10, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("solvers.svd_neighbour.svd_neighbour_predict.cy_svdn_predict", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_svdn_predict(__pyx_self, __pyx_v_preds, __pyx_v_uidxs, __pyx_v_midxs, __pyx_v_knn_k, __pyx_v_correlations, __pyx_v_neighbours, __pyx_v_csc_indptr, __pyx_v_csc_indices, __pyx_v_csc_data);
+  __pyx_r = __pyx_pf_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_svdn_predict(__pyx_self, __pyx_v_preds, __pyx_v_uidxs, __pyx_v_midxs, __pyx_v_knn_k, __pyx_v_correlations, __pyx_v_neighbours, __pyx_v_csc_indptr, __pyx_v_csc_indices, __pyx_v_csc_data, __pyx_v_row_means);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_svdn_predict(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_preds, __Pyx_memviewslice __pyx_v_uidxs, __Pyx_memviewslice __pyx_v_midxs, int __pyx_v_knn_k, __Pyx_memviewslice __pyx_v_correlations, __Pyx_memviewslice __pyx_v_neighbours, __Pyx_memviewslice __pyx_v_csc_indptr, __Pyx_memviewslice __pyx_v_csc_indices, __Pyx_memviewslice __pyx_v_csc_data) {
+static PyObject *__pyx_pf_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_svdn_predict(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_preds, __Pyx_memviewslice __pyx_v_uidxs, __Pyx_memviewslice __pyx_v_midxs, int __pyx_v_knn_k, __Pyx_memviewslice __pyx_v_correlations, __Pyx_memviewslice __pyx_v_neighbours, __Pyx_memviewslice __pyx_v_csc_indptr, __Pyx_memviewslice __pyx_v_csc_indices, __Pyx_memviewslice __pyx_v_csc_data, __Pyx_memviewslice __pyx_v_row_means) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -2708,7 +2725,8 @@ static PyObject *__pyx_pf_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_sv
   if (unlikely(!__pyx_v_csc_indptr.memview)) { __Pyx_RaiseUnboundLocalError("csc_indptr"); __PYX_ERR(0, 10, __pyx_L1_error) }
   if (unlikely(!__pyx_v_csc_indices.memview)) { __Pyx_RaiseUnboundLocalError("csc_indices"); __PYX_ERR(0, 10, __pyx_L1_error) }
   if (unlikely(!__pyx_v_csc_data.memview)) { __Pyx_RaiseUnboundLocalError("csc_data"); __PYX_ERR(0, 10, __pyx_L1_error) }
-  __pyx_t_1 = __Pyx_void_to_None(__pyx_f_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_svdn_predict(__pyx_v_preds, __pyx_v_uidxs, __pyx_v_midxs, __pyx_v_knn_k, __pyx_v_correlations, __pyx_v_neighbours, __pyx_v_csc_indptr, __pyx_v_csc_indices, __pyx_v_csc_data, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 10, __pyx_L1_error)
+  if (unlikely(!__pyx_v_row_means.memview)) { __Pyx_RaiseUnboundLocalError("row_means"); __PYX_ERR(0, 10, __pyx_L1_error) }
+  __pyx_t_1 = __Pyx_void_to_None(__pyx_f_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_svdn_predict(__pyx_v_preds, __pyx_v_uidxs, __pyx_v_midxs, __pyx_v_knn_k, __pyx_v_correlations, __pyx_v_neighbours, __pyx_v_csc_indptr, __pyx_v_csc_indices, __pyx_v_csc_data, __pyx_v_row_means, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 10, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2728,21 +2746,22 @@ static PyObject *__pyx_pf_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_sv
   __PYX_XDEC_MEMVIEW(&__pyx_v_csc_indptr, 1);
   __PYX_XDEC_MEMVIEW(&__pyx_v_csc_indices, 1);
   __PYX_XDEC_MEMVIEW(&__pyx_v_csc_data, 1);
+  __PYX_XDEC_MEMVIEW(&__pyx_v_row_means, 1);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "solvers/svd_neighbour/svd_neighbour_predict.pyx":29
+/* "solvers/svd_neighbour/svd_neighbour_predict.pyx":30
  * 
  * 
  * cpdef double cy_svdn_predict_single(int user_idx, double[:,:] correlation, int knn_k,             # <<<<<<<<<<<<<<
- *                       long[:] neighbours, int[:] potentials, double[:] ratings) nogil:
- *     cdef int counter = 0
+ *                       long[:] neighbours, int[:] potentials, double[:] ratings, double[:] row_means,
+ *                       double user_mean) nogil:
  */
 
 static PyObject *__pyx_pw_7solvers_13svd_neighbour_21svd_neighbour_predict_3cy_svdn_predict_single(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static double __pyx_f_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_svdn_predict_single(int __pyx_v_user_idx, __Pyx_memviewslice __pyx_v_correlation, int __pyx_v_knn_k, __Pyx_memviewslice __pyx_v_neighbours, __Pyx_memviewslice __pyx_v_potentials, __Pyx_memviewslice __pyx_v_ratings, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static double __pyx_f_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_svdn_predict_single(int __pyx_v_user_idx, __Pyx_memviewslice __pyx_v_correlation, int __pyx_v_knn_k, __Pyx_memviewslice __pyx_v_neighbours, __Pyx_memviewslice __pyx_v_potentials, __Pyx_memviewslice __pyx_v_ratings, __Pyx_memviewslice __pyx_v_row_means, double __pyx_v_user_mean, CYTHON_UNUSED int __pyx_skip_dispatch) {
   int __pyx_v_counter;
   double __pyx_v_tot;
   double __pyx_v_denom;
@@ -2762,18 +2781,19 @@ static double __pyx_f_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_svdn_p
   Py_ssize_t __pyx_t_9;
   Py_ssize_t __pyx_t_10;
   Py_ssize_t __pyx_t_11;
+  Py_ssize_t __pyx_t_12;
 
-  /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":31
- * cpdef double cy_svdn_predict_single(int user_idx, double[:,:] correlation, int knn_k,
- *                       long[:] neighbours, int[:] potentials, double[:] ratings) nogil:
+  /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":33
+ *                       long[:] neighbours, int[:] potentials, double[:] ratings, double[:] row_means,
+ *                       double user_mean) nogil:
  *     cdef int counter = 0             # <<<<<<<<<<<<<<
  *     cdef double tot = 0.
  *     cdef double denom = 0.
  */
   __pyx_v_counter = 0;
 
-  /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":32
- *                       long[:] neighbours, int[:] potentials, double[:] ratings) nogil:
+  /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":34
+ *                       double user_mean) nogil:
  *     cdef int counter = 0
  *     cdef double tot = 0.             # <<<<<<<<<<<<<<
  *     cdef double denom = 0.
@@ -2781,7 +2801,7 @@ static double __pyx_f_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_svdn_p
  */
   __pyx_v_tot = 0.;
 
-  /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":33
+  /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":35
  *     cdef int counter = 0
  *     cdef double tot = 0.
  *     cdef double denom = 0.             # <<<<<<<<<<<<<<
@@ -2790,42 +2810,42 @@ static double __pyx_f_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_svdn_p
  */
   __pyx_v_denom = 0.;
 
-  /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":38
+  /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":40
  *     cdef double rating
  * 
  *     for j in range(neighbours.shape[0]):             # <<<<<<<<<<<<<<
  *         nei_idx = neighbours[j]
- *         ## Do binary search
+ *         i = bin_search(0, potentials.shape[0], potentials, nei_idx)
  */
   __pyx_t_1 = (__pyx_v_neighbours.shape[0]);
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_j = __pyx_t_2;
 
-    /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":39
+    /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":41
  * 
  *     for j in range(neighbours.shape[0]):
  *         nei_idx = neighbours[j]             # <<<<<<<<<<<<<<
- *         ## Do binary search
  *         i = bin_search(0, potentials.shape[0], potentials, nei_idx)
+ *         if i >= potentials.shape[0] or potentials[i] != nei_idx:
  */
     __pyx_t_3 = __pyx_v_j;
     __pyx_v_nei_idx = (*((long *) ( /* dim=0 */ (__pyx_v_neighbours.data + __pyx_t_3 * __pyx_v_neighbours.strides[0]) )));
 
-    /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":41
+    /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":42
+ *     for j in range(neighbours.shape[0]):
  *         nei_idx = neighbours[j]
- *         ## Do binary search
  *         i = bin_search(0, potentials.shape[0], potentials, nei_idx)             # <<<<<<<<<<<<<<
  *         if i >= potentials.shape[0] or potentials[i] != nei_idx:
  *             continue
  */
     __pyx_v_i = __pyx_f_4util_10bin_search_bin_search(0, (__pyx_v_potentials.shape[0]), __pyx_v_potentials, __pyx_v_nei_idx, 0);
 
-    /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":42
- *         ## Do binary search
+    /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":43
+ *         nei_idx = neighbours[j]
  *         i = bin_search(0, potentials.shape[0], potentials, nei_idx)
  *         if i >= potentials.shape[0] or potentials[i] != nei_idx:             # <<<<<<<<<<<<<<
  *             continue
- *         rating = ratings[i]
+ *         rating = ratings[i] - row_means[i]
  */
     __pyx_t_5 = ((__pyx_v_i >= (__pyx_v_potentials.shape[0])) != 0);
     if (!__pyx_t_5) {
@@ -2839,66 +2859,67 @@ static double __pyx_f_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_svdn_p
     __pyx_L6_bool_binop_done:;
     if (__pyx_t_4) {
 
-      /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":43
+      /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":44
  *         i = bin_search(0, potentials.shape[0], potentials, nei_idx)
  *         if i >= potentials.shape[0] or potentials[i] != nei_idx:
  *             continue             # <<<<<<<<<<<<<<
- *         rating = ratings[i]
+ *         rating = ratings[i] - row_means[i]
  *         counter += 1
  */
       goto __pyx_L3_continue;
 
-      /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":42
- *         ## Do binary search
+      /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":43
+ *         nei_idx = neighbours[j]
  *         i = bin_search(0, potentials.shape[0], potentials, nei_idx)
  *         if i >= potentials.shape[0] or potentials[i] != nei_idx:             # <<<<<<<<<<<<<<
  *             continue
- *         rating = ratings[i]
+ *         rating = ratings[i] - row_means[i]
  */
     }
 
-    /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":44
+    /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":45
  *         if i >= potentials.shape[0] or potentials[i] != nei_idx:
  *             continue
- *         rating = ratings[i]             # <<<<<<<<<<<<<<
+ *         rating = ratings[i] - row_means[i]             # <<<<<<<<<<<<<<
  *         counter += 1
  *         tot += rating * correlation[user_idx, nei_idx]
  */
     __pyx_t_7 = __pyx_v_i;
-    __pyx_v_rating = (*((double *) ( /* dim=0 */ (__pyx_v_ratings.data + __pyx_t_7 * __pyx_v_ratings.strides[0]) )));
+    __pyx_t_8 = __pyx_v_i;
+    __pyx_v_rating = ((*((double *) ( /* dim=0 */ (__pyx_v_ratings.data + __pyx_t_7 * __pyx_v_ratings.strides[0]) ))) - (*((double *) ( /* dim=0 */ (__pyx_v_row_means.data + __pyx_t_8 * __pyx_v_row_means.strides[0]) ))));
 
-    /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":45
+    /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":46
  *             continue
- *         rating = ratings[i]
+ *         rating = ratings[i] - row_means[i]
  *         counter += 1             # <<<<<<<<<<<<<<
  *         tot += rating * correlation[user_idx, nei_idx]
  *         denom += correlation[user_idx, nei_idx]
  */
     __pyx_v_counter = (__pyx_v_counter + 1);
 
-    /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":46
- *         rating = ratings[i]
+    /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":47
+ *         rating = ratings[i] - row_means[i]
  *         counter += 1
  *         tot += rating * correlation[user_idx, nei_idx]             # <<<<<<<<<<<<<<
  *         denom += correlation[user_idx, nei_idx]
  *         if counter >= knn_k:
  */
-    __pyx_t_8 = __pyx_v_user_idx;
-    __pyx_t_9 = __pyx_v_nei_idx;
-    __pyx_v_tot = (__pyx_v_tot + (__pyx_v_rating * (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_correlation.data + __pyx_t_8 * __pyx_v_correlation.strides[0]) ) + __pyx_t_9 * __pyx_v_correlation.strides[1]) )))));
+    __pyx_t_9 = __pyx_v_user_idx;
+    __pyx_t_10 = __pyx_v_nei_idx;
+    __pyx_v_tot = (__pyx_v_tot + (__pyx_v_rating * (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_correlation.data + __pyx_t_9 * __pyx_v_correlation.strides[0]) ) + __pyx_t_10 * __pyx_v_correlation.strides[1]) )))));
 
-    /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":47
+    /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":48
  *         counter += 1
  *         tot += rating * correlation[user_idx, nei_idx]
  *         denom += correlation[user_idx, nei_idx]             # <<<<<<<<<<<<<<
  *         if counter >= knn_k:
  *             break
  */
-    __pyx_t_10 = __pyx_v_user_idx;
-    __pyx_t_11 = __pyx_v_nei_idx;
-    __pyx_v_denom = (__pyx_v_denom + (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_correlation.data + __pyx_t_10 * __pyx_v_correlation.strides[0]) ) + __pyx_t_11 * __pyx_v_correlation.strides[1]) ))));
+    __pyx_t_11 = __pyx_v_user_idx;
+    __pyx_t_12 = __pyx_v_nei_idx;
+    __pyx_v_denom = (__pyx_v_denom + (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_correlation.data + __pyx_t_11 * __pyx_v_correlation.strides[0]) ) + __pyx_t_12 * __pyx_v_correlation.strides[1]) ))));
 
-    /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":48
+    /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":49
  *         tot += rating * correlation[user_idx, nei_idx]
  *         denom += correlation[user_idx, nei_idx]
  *         if counter >= knn_k:             # <<<<<<<<<<<<<<
@@ -2908,7 +2929,7 @@ static double __pyx_f_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_svdn_p
     __pyx_t_4 = ((__pyx_v_counter >= __pyx_v_knn_k) != 0);
     if (__pyx_t_4) {
 
-      /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":49
+      /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":50
  *         denom += correlation[user_idx, nei_idx]
  *         if counter >= knn_k:
  *             break             # <<<<<<<<<<<<<<
@@ -2917,7 +2938,7 @@ static double __pyx_f_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_svdn_p
  */
       goto __pyx_L4_break;
 
-      /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":48
+      /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":49
  *         tot += rating * correlation[user_idx, nei_idx]
  *         denom += correlation[user_idx, nei_idx]
  *         if counter >= knn_k:             # <<<<<<<<<<<<<<
@@ -2929,18 +2950,27 @@ static double __pyx_f_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_svdn_p
   }
   __pyx_L4_break:;
 
-  /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":51
+  /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":52
  *             break
  * 
  *     tot /= denom             # <<<<<<<<<<<<<<
+ *     tot += user_mean
  *     return tot
- * 
  */
   __pyx_v_tot = (__pyx_v_tot / __pyx_v_denom);
 
-  /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":52
+  /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":53
  * 
  *     tot /= denom
+ *     tot += user_mean             # <<<<<<<<<<<<<<
+ *     return tot
+ * 
+ */
+  __pyx_v_tot = (__pyx_v_tot + __pyx_v_user_mean);
+
+  /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":54
+ *     tot /= denom
+ *     tot += user_mean
  *     return tot             # <<<<<<<<<<<<<<
  * 
  * 
@@ -2948,12 +2978,12 @@ static double __pyx_f_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_svdn_p
   __pyx_r = __pyx_v_tot;
   goto __pyx_L0;
 
-  /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":29
+  /* "solvers/svd_neighbour/svd_neighbour_predict.pyx":30
  * 
  * 
  * cpdef double cy_svdn_predict_single(int user_idx, double[:,:] correlation, int knn_k,             # <<<<<<<<<<<<<<
- *                       long[:] neighbours, int[:] potentials, double[:] ratings) nogil:
- *     cdef int counter = 0
+ *                       long[:] neighbours, int[:] potentials, double[:] ratings, double[:] row_means,
+ *                       double user_mean) nogil:
  */
 
   /* function exit code */
@@ -2970,16 +3000,22 @@ static PyObject *__pyx_pw_7solvers_13svd_neighbour_21svd_neighbour_predict_3cy_s
   __Pyx_memviewslice __pyx_v_neighbours = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_potentials = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_ratings = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_memviewslice __pyx_v_row_means = { 0, 0, { 0 }, { 0 }, { 0 } };
+  double __pyx_v_user_mean;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("cy_svdn_predict_single (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_user_idx,&__pyx_n_s_correlation,&__pyx_n_s_knn_k,&__pyx_n_s_neighbours,&__pyx_n_s_potentials,&__pyx_n_s_ratings,0};
-    PyObject* values[6] = {0,0,0,0,0,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_user_idx,&__pyx_n_s_correlation,&__pyx_n_s_knn_k,&__pyx_n_s_neighbours,&__pyx_n_s_potentials,&__pyx_n_s_ratings,&__pyx_n_s_row_means,&__pyx_n_s_user_mean,0};
+    PyObject* values[8] = {0,0,0,0,0,0,0,0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
+        case  8: values[7] = PyTuple_GET_ITEM(__pyx_args, 7);
+        CYTHON_FALLTHROUGH;
+        case  7: values[6] = PyTuple_GET_ITEM(__pyx_args, 6);
+        CYTHON_FALLTHROUGH;
         case  6: values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
         CYTHON_FALLTHROUGH;
         case  5: values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
@@ -3004,37 +3040,49 @@ static PyObject *__pyx_pw_7solvers_13svd_neighbour_21svd_neighbour_predict_3cy_s
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_correlation)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("cy_svdn_predict_single", 1, 6, 6, 1); __PYX_ERR(0, 29, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("cy_svdn_predict_single", 1, 8, 8, 1); __PYX_ERR(0, 30, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_knn_k)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("cy_svdn_predict_single", 1, 6, 6, 2); __PYX_ERR(0, 29, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("cy_svdn_predict_single", 1, 8, 8, 2); __PYX_ERR(0, 30, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_neighbours)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("cy_svdn_predict_single", 1, 6, 6, 3); __PYX_ERR(0, 29, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("cy_svdn_predict_single", 1, 8, 8, 3); __PYX_ERR(0, 30, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_potentials)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("cy_svdn_predict_single", 1, 6, 6, 4); __PYX_ERR(0, 29, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("cy_svdn_predict_single", 1, 8, 8, 4); __PYX_ERR(0, 30, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
         if (likely((values[5] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_ratings)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("cy_svdn_predict_single", 1, 6, 6, 5); __PYX_ERR(0, 29, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("cy_svdn_predict_single", 1, 8, 8, 5); __PYX_ERR(0, 30, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  6:
+        if (likely((values[6] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_row_means)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("cy_svdn_predict_single", 1, 8, 8, 6); __PYX_ERR(0, 30, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  7:
+        if (likely((values[7] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_user_mean)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("cy_svdn_predict_single", 1, 8, 8, 7); __PYX_ERR(0, 30, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "cy_svdn_predict_single") < 0)) __PYX_ERR(0, 29, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "cy_svdn_predict_single") < 0)) __PYX_ERR(0, 30, __pyx_L3_error)
       }
-    } else if (PyTuple_GET_SIZE(__pyx_args) != 6) {
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 8) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
@@ -3043,40 +3091,45 @@ static PyObject *__pyx_pw_7solvers_13svd_neighbour_21svd_neighbour_predict_3cy_s
       values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
       values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
       values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
+      values[6] = PyTuple_GET_ITEM(__pyx_args, 6);
+      values[7] = PyTuple_GET_ITEM(__pyx_args, 7);
     }
-    __pyx_v_user_idx = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_user_idx == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 29, __pyx_L3_error)
-    __pyx_v_correlation = __Pyx_PyObject_to_MemoryviewSlice_dsds_double(values[1]); if (unlikely(!__pyx_v_correlation.memview)) __PYX_ERR(0, 29, __pyx_L3_error)
-    __pyx_v_knn_k = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_knn_k == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 29, __pyx_L3_error)
-    __pyx_v_neighbours = __Pyx_PyObject_to_MemoryviewSlice_ds_long(values[3]); if (unlikely(!__pyx_v_neighbours.memview)) __PYX_ERR(0, 30, __pyx_L3_error)
-    __pyx_v_potentials = __Pyx_PyObject_to_MemoryviewSlice_ds_int(values[4]); if (unlikely(!__pyx_v_potentials.memview)) __PYX_ERR(0, 30, __pyx_L3_error)
-    __pyx_v_ratings = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[5]); if (unlikely(!__pyx_v_ratings.memview)) __PYX_ERR(0, 30, __pyx_L3_error)
+    __pyx_v_user_idx = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_user_idx == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 30, __pyx_L3_error)
+    __pyx_v_correlation = __Pyx_PyObject_to_MemoryviewSlice_dsds_double(values[1]); if (unlikely(!__pyx_v_correlation.memview)) __PYX_ERR(0, 30, __pyx_L3_error)
+    __pyx_v_knn_k = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_knn_k == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 30, __pyx_L3_error)
+    __pyx_v_neighbours = __Pyx_PyObject_to_MemoryviewSlice_ds_long(values[3]); if (unlikely(!__pyx_v_neighbours.memview)) __PYX_ERR(0, 31, __pyx_L3_error)
+    __pyx_v_potentials = __Pyx_PyObject_to_MemoryviewSlice_ds_int(values[4]); if (unlikely(!__pyx_v_potentials.memview)) __PYX_ERR(0, 31, __pyx_L3_error)
+    __pyx_v_ratings = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[5]); if (unlikely(!__pyx_v_ratings.memview)) __PYX_ERR(0, 31, __pyx_L3_error)
+    __pyx_v_row_means = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[6]); if (unlikely(!__pyx_v_row_means.memview)) __PYX_ERR(0, 31, __pyx_L3_error)
+    __pyx_v_user_mean = __pyx_PyFloat_AsDouble(values[7]); if (unlikely((__pyx_v_user_mean == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 32, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("cy_svdn_predict_single", 1, 6, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 29, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("cy_svdn_predict_single", 1, 8, 8, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 30, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("solvers.svd_neighbour.svd_neighbour_predict.cy_svdn_predict_single", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7solvers_13svd_neighbour_21svd_neighbour_predict_2cy_svdn_predict_single(__pyx_self, __pyx_v_user_idx, __pyx_v_correlation, __pyx_v_knn_k, __pyx_v_neighbours, __pyx_v_potentials, __pyx_v_ratings);
+  __pyx_r = __pyx_pf_7solvers_13svd_neighbour_21svd_neighbour_predict_2cy_svdn_predict_single(__pyx_self, __pyx_v_user_idx, __pyx_v_correlation, __pyx_v_knn_k, __pyx_v_neighbours, __pyx_v_potentials, __pyx_v_ratings, __pyx_v_row_means, __pyx_v_user_mean);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7solvers_13svd_neighbour_21svd_neighbour_predict_2cy_svdn_predict_single(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_user_idx, __Pyx_memviewslice __pyx_v_correlation, int __pyx_v_knn_k, __Pyx_memviewslice __pyx_v_neighbours, __Pyx_memviewslice __pyx_v_potentials, __Pyx_memviewslice __pyx_v_ratings) {
+static PyObject *__pyx_pf_7solvers_13svd_neighbour_21svd_neighbour_predict_2cy_svdn_predict_single(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_user_idx, __Pyx_memviewslice __pyx_v_correlation, int __pyx_v_knn_k, __Pyx_memviewslice __pyx_v_neighbours, __Pyx_memviewslice __pyx_v_potentials, __Pyx_memviewslice __pyx_v_ratings, __Pyx_memviewslice __pyx_v_row_means, double __pyx_v_user_mean) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("cy_svdn_predict_single", 0);
   __Pyx_XDECREF(__pyx_r);
-  if (unlikely(!__pyx_v_correlation.memview)) { __Pyx_RaiseUnboundLocalError("correlation"); __PYX_ERR(0, 29, __pyx_L1_error) }
-  if (unlikely(!__pyx_v_neighbours.memview)) { __Pyx_RaiseUnboundLocalError("neighbours"); __PYX_ERR(0, 29, __pyx_L1_error) }
-  if (unlikely(!__pyx_v_potentials.memview)) { __Pyx_RaiseUnboundLocalError("potentials"); __PYX_ERR(0, 29, __pyx_L1_error) }
-  if (unlikely(!__pyx_v_ratings.memview)) { __Pyx_RaiseUnboundLocalError("ratings"); __PYX_ERR(0, 29, __pyx_L1_error) }
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_svdn_predict_single(__pyx_v_user_idx, __pyx_v_correlation, __pyx_v_knn_k, __pyx_v_neighbours, __pyx_v_potentials, __pyx_v_ratings, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 29, __pyx_L1_error)
+  if (unlikely(!__pyx_v_correlation.memview)) { __Pyx_RaiseUnboundLocalError("correlation"); __PYX_ERR(0, 30, __pyx_L1_error) }
+  if (unlikely(!__pyx_v_neighbours.memview)) { __Pyx_RaiseUnboundLocalError("neighbours"); __PYX_ERR(0, 30, __pyx_L1_error) }
+  if (unlikely(!__pyx_v_potentials.memview)) { __Pyx_RaiseUnboundLocalError("potentials"); __PYX_ERR(0, 30, __pyx_L1_error) }
+  if (unlikely(!__pyx_v_ratings.memview)) { __Pyx_RaiseUnboundLocalError("ratings"); __PYX_ERR(0, 30, __pyx_L1_error) }
+  if (unlikely(!__pyx_v_row_means.memview)) { __Pyx_RaiseUnboundLocalError("row_means"); __PYX_ERR(0, 30, __pyx_L1_error) }
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_7solvers_13svd_neighbour_21svd_neighbour_predict_cy_svdn_predict_single(__pyx_v_user_idx, __pyx_v_correlation, __pyx_v_knn_k, __pyx_v_neighbours, __pyx_v_potentials, __pyx_v_ratings, __pyx_v_row_means, __pyx_v_user_mean, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 30, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3092,6 +3145,7 @@ static PyObject *__pyx_pf_7solvers_13svd_neighbour_21svd_neighbour_predict_2cy_s
   __PYX_XDEC_MEMVIEW(&__pyx_v_neighbours, 1);
   __PYX_XDEC_MEMVIEW(&__pyx_v_potentials, 1);
   __PYX_XDEC_MEMVIEW(&__pyx_v_ratings, 1);
+  __PYX_XDEC_MEMVIEW(&__pyx_v_row_means, 1);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -19530,6 +19584,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_reduce, __pyx_k_reduce, sizeof(__pyx_k_reduce), 0, 0, 1, 1},
   {&__pyx_n_s_reduce_cython, __pyx_k_reduce_cython, sizeof(__pyx_k_reduce_cython), 0, 0, 1, 1},
   {&__pyx_n_s_reduce_ex, __pyx_k_reduce_ex, sizeof(__pyx_k_reduce_ex), 0, 0, 1, 1},
+  {&__pyx_n_s_row_means, __pyx_k_row_means, sizeof(__pyx_k_row_means), 0, 0, 1, 1},
   {&__pyx_n_s_setstate, __pyx_k_setstate, sizeof(__pyx_k_setstate), 0, 0, 1, 1},
   {&__pyx_n_s_setstate_cython, __pyx_k_setstate_cython, sizeof(__pyx_k_setstate_cython), 0, 0, 1, 1},
   {&__pyx_n_s_shape, __pyx_k_shape, sizeof(__pyx_k_shape), 0, 0, 1, 1},
@@ -19551,6 +19606,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_unpack, __pyx_k_unpack, sizeof(__pyx_k_unpack), 0, 0, 1, 1},
   {&__pyx_n_s_update, __pyx_k_update, sizeof(__pyx_k_update), 0, 0, 1, 1},
   {&__pyx_n_s_user_idx, __pyx_k_user_idx, sizeof(__pyx_k_user_idx), 0, 0, 1, 1},
+  {&__pyx_n_s_user_mean, __pyx_k_user_mean, sizeof(__pyx_k_user_mean), 0, 0, 1, 1},
   {&__pyx_n_s_val, __pyx_k_val, sizeof(__pyx_k_val), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };

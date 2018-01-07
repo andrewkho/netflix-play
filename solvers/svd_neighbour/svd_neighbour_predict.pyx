@@ -9,7 +9,7 @@ from util.bin_search cimport bin_search
 
 cpdef void cy_svdn_predict(
         double[:] preds, int[:] uidxs, int[:] midxs, int knn_k, double[:,:] correlations, long[:,:] neighbours,
-        int[:] csc_indptr, int[:] csc_indices, double[:] csc_data) nogil:
+        int[:] csc_indptr, int[:] csc_indices, double[:] csc_data, double[:] row_means) nogil:
 
     cdef int i
     cdef int user_idx, movie_idx
@@ -23,11 +23,13 @@ cpdef void cy_svdn_predict(
         potential_ratings = csc_data[csc_indptr[movie_idx]:csc_indptr[movie_idx+1]]
 
         preds[i] = cy_svdn_predict_single(user_idx, correlations, knn_k,
-                                          neighbours[user_idx, :], potentials, potential_ratings)
+                                          neighbours[user_idx, :], potentials, potential_ratings,
+                                          row_means, row_means[user_idx])
 
 
 cpdef double cy_svdn_predict_single(int user_idx, double[:,:] correlation, int knn_k,
-                      long[:] neighbours, int[:] potentials, double[:] ratings) nogil:
+                      long[:] neighbours, int[:] potentials, double[:] ratings, double[:] row_means,
+                      double user_mean) nogil:
     cdef int counter = 0
     cdef double tot = 0.
     cdef double denom = 0.
@@ -40,7 +42,7 @@ cpdef double cy_svdn_predict_single(int user_idx, double[:,:] correlation, int k
         i = bin_search(0, potentials.shape[0], potentials, nei_idx)
         if i >= potentials.shape[0] or potentials[i] != nei_idx:
             continue
-        rating = ratings[i]
+        rating = ratings[i] - row_means[i]
         counter += 1
         tot += rating * correlation[user_idx, nei_idx]
         denom += correlation[user_idx, nei_idx]
@@ -48,6 +50,7 @@ cpdef double cy_svdn_predict_single(int user_idx, double[:,:] correlation, int k
             break
 
     tot /= denom
+    tot += user_mean
     return tot
 
 
