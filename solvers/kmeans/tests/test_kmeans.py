@@ -28,8 +28,6 @@ class TestKmeansClustering(unittest.TestCase):
         else:
             print ("Couldn't find " + saved_data + ", regenerating")
             fd = FlixData(flix_data_root)
-            #self.ratings = FlixDataSubsampler.popularity_sample(12345, 1e2, 1e3, fd)
-            #self.ratings = FlixDataSubsampler.random_sample_users(12345, 1e3, fd)
             self.ratings = FlixDataSubsampler.random_sample_movies(fd, seed=12345, N=int(2e4), M=int(1e3))
             self.kfolds = KFolds(self.ratings.size, 10, 12345)
 

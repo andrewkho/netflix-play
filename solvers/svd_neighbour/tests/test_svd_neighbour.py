@@ -29,10 +29,7 @@ class TestSvdNeighbour(unittest.TestCase):
             print ("Couldn't find " + saved_data + ", regenerating")
             fd = FlixData(flix_data_root)
             print "total ratings: %d" % fd.numratings
-            #self.ratings = FlixDataSubsampler.popularity_sample(fd, 12345, int(1e2), int(1e4))
-            #self.ratings = FlixDataSubsampler.random_sample(fd, 12345, int(1e4))
-            #self.ratings = FlixDataSubsampler.random_sample_users(fd, 12345, int(1e6), int(1e4), 9)
-            self.ratings = FlixDataSubsampler.random_sample_movies(fd, seed=12345, N=int(2e4), M=int(1e3), minratings=9)
+            self.ratings = FlixDataSubsampler.random_sample_movies(fd, seed=12345, N=int(2e4), M=int(1e3))
             self.kfolds = KFolds(self.ratings.size, 10, 12345)
 
             with open(saved_data, "wb") as f:
@@ -43,7 +40,7 @@ class TestSvdNeighbour(unittest.TestCase):
         test, train = self.kfolds.get(0)
         test_set = self.ratings.get_index_split(test)
         train_set = self.ratings.get_index_split(train)
-        svdn = SvdNeighbourSolver(svd_k=6, knn_k=15)
+        svdn = SvdNeighbourSolver(svd_k=10, knn_k=15)
         svdn.train(train_set, seed=54321)
 
         #y = train_set.get_coo_matrix().data
