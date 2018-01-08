@@ -3,6 +3,7 @@ import scipy.sparse
 import scipy.sparse.linalg
 
 from sklearn.cluster import KMeans
+from sklearn.linear_model import LinearRegression
 
 from itertools import izip
 
@@ -32,6 +33,8 @@ class SvdNeighbourSolver(RecommenderAlgorithm):
         self._svd_vt = None # type: np.ndarray
         self._eigenratings = None # type:np.ndarray
         self.kmeans = kmeans_estimator
+
+        self._regr = None
 
     def train(self, ratings, keep_intermed=False):
         # type: (Ratings) -> None
@@ -98,6 +101,32 @@ class SvdNeighbourSolver(RecommenderAlgorithm):
 
         return pred
 
+    def predict_regr(self, testratings):
+        # type: (Ratings) -> np.array
+        if False:
+            return self.predict_cy(testratings)
+
+        n = testratings.get_coo_matrix().nnz
+        pred = np.zeros(n)
+        rat_mat = self._ratings.get_coo_matrix().tolil()
+        csc_mat = self._ratings.get_csc_matrix()
+        csr_mat = self._ratings.get_csr_matrix()
+
+        row_means = np.squeeze(np.array(csr_mat.sum(axis=1) / (csr_mat>0).sum(axis=1)))
+
+        for i in range(n):
+            print "  %d" % i
+            if i > 50:
+                break
+            uidx = testratings.get_coo_matrix().row[i]
+            midx = testratings.get_coo_matrix().col[i]
+
+            uid, mid = testratings.reverse_translate(uidx, midx)
+            #pred[i] = self.predict_single(uid, mid, csc_mat, row_means)
+            pred[i] = self.predict_single_regression(uid, mid, csc_mat, csr_mat, row_means)
+
+        return pred
+
     def predict_cy(self, testratings):
         # type: (Ratings) -> np.array
         n = testratings.get_coo_matrix().nnz
@@ -147,4 +176,66 @@ class SvdNeighbourSolver(RecommenderAlgorithm):
                                       self._neighbours[cluster][mapped_user_idx, :], mapped_potentials, potential_ratings,
                                       mapped_row_means, mapped_user_mean)
 
+
+    def predict_single_regression(self, uid, mid, csc_mat, csr_mat, row_means):
+        # type: (int, int, scipy.sparse.csc_matrix) -> float
+
+        try:
+            user_idx, movie_idx = self._ratings.translate(uid, mid)
+        except KeyError:
+            return None
+
+        # Solve the matrix R^T w = r where R^t is the transpose of the ratings matrix,
+        #   with valid entries mean centered by row. w is the weights to use instead of coefficients.
+        #   r is the known ratings of user uid.
+
+        users_who_rated_mid = csc_mat.indices[csc_mat.indptr[movie_idx]:csc_mat.indptr[movie_idx+1]]
+        users_who_rated_mid_ratings = csc_mat.data[csc_mat.indptr[movie_idx]:csc_mat.indptr[movie_idx+1]]
+        movies_rated_by_uid = csr_mat.indices[csr_mat.indptr[user_idx]:csr_mat.indptr[user_idx+1]]
+
+        neighbours = list()
+        neighbour_means = list()
+        for nei in users_who_rated_mid:
+            if nei == user_idx:
+                continue
+            nei_movies = csr_mat.indices[csr_mat.indptr[nei]:csr_mat.indptr[nei+1]]
+            for m in nei_movies:
+                i = np.searchsorted(movies_rated_by_uid, m)
+                if i >= movies_rated_by_uid.size or movies_rated_by_uid[i] != m:
+                    continue
+                neighbours.append(nei)
+                neighbour_means.append(row_means[nei])
+                break
+
+        if len(neighbours) == 0:
+            return None
+        neighbours = np.array(neighbours, dtype=np.int32)
+
+        exist_ratings = csr_mat.data[csr_mat.indptr[user_idx]:csr_mat.indptr[user_idx+1]]
+        exist_ratings = exist_ratings - row_means[user_idx]
+
+        subratings = csr_mat[neighbours, :][:, movies_rated_by_uid]
+        for j in range(subratings.shape[0]):
+            subratings[j,:] -= (subratings[j,:] > 0)*neighbour_means[j]  # Subtract row means for each neighbour row
+
+        if self._regr is None:
+            self._regr = LinearRegression(fit_intercept=False)
+        self._regr.fit(subratings.transpose(), exist_ratings)
+
+        nei_ratings = list()
+        i, j, c = 0, 0, 0
+        while True:
+            if neighbours[i] < users_who_rated_mid[j]:
+                i += 1
+            elif neighbours[i] > users_who_rated_mid[j]:
+                j += 1
+            else:
+                nei_ratings.append(users_who_rated_mid_ratings[j])
+                i += 1
+                j += 1
+                c += 1
+            if i >= neighbours.size or j >= users_who_rated_mid.size:
+                break
+
+        return self._regr.predict(np.array(nei_ratings).reshape(1,-1)) + row_means[user_idx]
 

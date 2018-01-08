@@ -21,6 +21,10 @@ ext_modules = [Extension("solvers.svd_neighbour.svd_neighbour_predict",
                          ["util/incomplete_projection.pyx"],
                          include_dirs=[numpy.get_include()],
                          ),
+               Extension("solvers.svd.svd_train_feature",
+                         ["solvers/svd/svd_train_feature.pyx"],
+                         include_dirs=[numpy.get_include()],
+                         ),
                ]
 
 core.setup(

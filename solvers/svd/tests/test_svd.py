@@ -13,13 +13,13 @@ from core.flixdata import FlixData
 from core.flixdata_subsampler import FlixDataSubsampler
 from core.ratings import Ratings
 from solvers.kFoldsCrossValidator import KFolds
-from solvers.svd_neighbour.svd_neighbour_solver import SvdNeighbourSolver
+from solvers.svd.svd_solver import SvdSolver
 
 flix_data_root = "../../../data/arrays/"
 saved_data = "ratings_test.pkl"
 
 
-class TestSvdNeighbour(unittest.TestCase):
+class TestSvd(unittest.TestCase):
 
     def setUp(self):
         if os.path.isfile(saved_data):
@@ -45,9 +45,8 @@ class TestSvdNeighbour(unittest.TestCase):
         test_set = self.ratings.get_index_split(test)
         train_set = self.ratings.get_index_split(train)
         print "Training SvdNeighbourSolver..."
-        svdn = SvdNeighbourSolver(svd_k=30, knn_k=40,
-                                  kmeans_estimator=KMeans(n_clusters=10, n_init=10, random_state=13579))
-        svdn.train(train_set)
+        svd = SvdSolver(10, learning_rate=0.0002, epsilon=1e-4, maxiters=2000)
+        svd.train(train_set)
 
         # y = train_set.get_coo_matrix().data
         # print("predicting %d train ratings: " % train_set.get_coo_matrix().nnz)
@@ -59,7 +58,7 @@ class TestSvdNeighbour(unittest.TestCase):
         # print "Train RMS: %f" % np.sqrt(np.mean((y-pred)**2))
 
         print("predicting %d testratings: " % test_set.get_coo_matrix().nnz)
-        pred = svdn.predict(test_set)
+        pred = svd.predict(test_set)
         #pred = svdn.predict_regr(test_set)
         print "Done!"
         print("len(pred): " + str(len(pred)))
