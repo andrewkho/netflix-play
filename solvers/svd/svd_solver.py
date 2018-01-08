@@ -22,25 +22,26 @@ class SvdSolver(RecommenderAlgorithm):
 
     """
 
-    def __init__(self, num_features, learning_rate = 0.001, epsilon=1e-7, maxiters=1000):
+    def __init__(self, num_features, learning_rate = 0.001, epsilon=1e-7, maxiters=1000, gamma = 0.02):
         # type: (int) -> None
         self.k = num_features
         self.learning_rate = learning_rate
         self.eps = epsilon
         self.maxiters = maxiters
+        self.gamma = gamma
 
         self._left = None
         self._right = None
 
     def train(self, ratings, keep_intermed=False):
         # type: (Ratings) -> None
-        if True:
+        if False:
             return self.train_all(ratings)
 
         self._ratings = ratings
 
-        self._left = 0.1*np.ones(shape=(self._ratings.shape[0], self.k), dtype=np.float32)
-        self._right = 0.1*np.ones(shape=(self._ratings.shape[1], self.k), dtype=np.float32)
+        self._left = 0.1*np.ones(shape=(self._ratings.shape[0], self.k), dtype=np.float64)
+        self._right = 0.1*np.ones(shape=(self._ratings.shape[1], self.k), dtype=np.float64)
 
         coo_mat = ratings.get_coo_matrix()
         y = coo_mat.data
@@ -51,18 +52,18 @@ class SvdSolver(RecommenderAlgorithm):
             ## Initialize residual
             resid = y.astype(dtype=np.float32)
             for i in range(resid.shape[0]):
-                resid[i] -= self._left[coo_mat.row[i], :k].dot(self._right[coo_mat.col[i], :k].transpose()).astype(np.float32)
+                resid[i] -= self._left[coo_mat.row[i], :].dot(self._right[coo_mat.col[i], :].transpose()).astype(np.float32)
 
             svd_train_feature(self._left, self._right, resid, k,
                               coo_mat.row, coo_mat.col, coo_mat.data,
-                              self.learning_rate, self.eps, self.maxiters)
+                              self.learning_rate, self.eps, self.maxiters, self.gamma)
             print "  done. %f remaining residual" % np.sum(resid*resid)
 
     def train_all(self, ratings):
         self._ratings = ratings
 
-        self._left = 0.1*np.ones(shape=(self._ratings.shape[0], self.k), dtype=np.float32)
-        self._right = 0.1*np.ones(shape=(self._ratings.shape[1], self.k), dtype=np.float32)
+        self._left = 0.1*np.ones(shape=(self._ratings.shape[0], self.k), dtype=np.float64)
+        self._right = 0.1*np.ones(shape=(self._ratings.shape[1], self.k), dtype=np.float64)
 
         csr_mat = ratings.get_csr_matrix()
         indicator = csr_mat > 0

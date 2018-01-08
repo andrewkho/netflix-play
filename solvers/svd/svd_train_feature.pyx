@@ -3,40 +3,44 @@
 #cython: cdivision=True
 #cython: nonecheck=False
 
+from libc.math cimport abs
+
 import numpy as np
 cimport numpy as np
 
-def svd_train_feature(float[:,:] left, float[:,:] right, float[:] resid, int k,
+def svd_train_feature(double[:,:] left, double[:,:] right, float[:] resid, int k,
                       int[:] uids, int[:] mids, double[:] ratings, double rate, double eps,
-                      int maxiters):
-    _svd_train_feature(left, right, resid, k, uids, mids, ratings, rate, eps, maxiters)
+                      int maxiters, double gamma):
+    _svd_train_feature(left, right, resid, k, uids, mids, ratings, rate, eps, maxiters, gamma)
 
-cdef void _svd_train_feature(float[:,:] left, float[:,:] right, float[:] resid, int k,
+cdef void _svd_train_feature(double[:,:] left, double[:,:] right, float[:] resid, int k,
                              int[:] uids, int[:] mids, double[:] ratings, double rate, double eps,
-                             int maxiters):
+                             int maxiters, double gamma):
 
     cdef double max_change, dleft, dright, dresid
-    cdef double rat, yhat, err
+    cdef double rat, yhat, err, total_err, old_resid
     cdef int uid, mid, ob, iter
 
     max_change = eps + 1
     iter = 0
-    while max_change > eps*rate*rate:
+    while True:
         max_change = 0
+        total_err = 0
         for ob in range(uids.shape[0]):
             uid = uids[ob]
             mid = mids[ob]
             rat = ratings[ob]
 
-            yhat = 0
-            for k_ in range(k+1):
-                yhat += left[uid, k_] * right[mid, k_]
-            err = rat - yhat
-            #err = resid[ob] - left[uid,k] * right[mid,k]
+            #yhat = 0
+            #for k_ in range(left.shape[1]):
+            #    yhat += left[uid, k_] * right[mid, k_]
+            #err = rat - yhat
 
+            err = resid[ob] - left[uid,k] * right[mid,k]
+            total_err += err*err
 
-            dleft = err * right[mid, k]
-            dright = err * left[uid, k]
+            dleft = err * right[mid, k] - gamma * left[uid, k]  ## gamma controls regularization
+            dright = err * left[uid, k] - gamma * right[mid, k]
             left[uid, k] += rate * dleft
             right[mid, k] += rate * dright
 
@@ -46,10 +50,11 @@ cdef void _svd_train_feature(float[:,:] left, float[:,:] right, float[:] resid, 
                 max_change = rate*rate*dright*dright
 
         iter += 1
-        if iter > maxiters:
-            break
         if iter % 100 == 0:
-            print "  max_change %e, eps: %e" % (max_change, eps)
+            print "  max_change %e, eps: %e, resid: %e" % (max_change, eps, total_err)
+        if abs(old_resid - total_err)/total_err < eps or iter > maxiters:
+            break
+        old_resid = total_err
 
 
 

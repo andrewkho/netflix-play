@@ -45,21 +45,11 @@ class TestSvd(unittest.TestCase):
         test_set = self.ratings.get_index_split(test)
         train_set = self.ratings.get_index_split(train)
         print "Training SvdNeighbourSolver..."
-        svd = SvdSolver(10, learning_rate=0.0002, epsilon=1e-4, maxiters=2000)
+        svd = SvdSolver(30, learning_rate=0.005, epsilon=1e-7, maxiters=5000, gamma=0.15)
         svd.train(train_set)
-
-        # y = train_set.get_coo_matrix().data
-        # print("predicting %d train ratings: " % train_set.get_coo_matrix().nnz)
-        # pred = svdn.predict(train_set)
-        # print "Done!"
-        #
-        # print "Train SSE: %f" % np.sum((y-pred)**2)
-        # print "Train MSE: %f" % np.mean((y-pred)**2)
-        # print "Train RMS: %f" % np.sqrt(np.mean((y-pred)**2))
 
         print("predicting %d testratings: " % test_set.get_coo_matrix().nnz)
         pred = svd.predict(test_set)
-        #pred = svdn.predict_regr(test_set)
         print "Done!"
         print("len(pred): " + str(len(pred)))
 

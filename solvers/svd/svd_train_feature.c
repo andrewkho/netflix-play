@@ -539,6 +539,7 @@ static CYTHON_INLINE float __PYX_NAN() {
 
 #define __PYX_HAVE__solvers__svd__svd_train_feature
 #define __PYX_HAVE_API__solvers__svd__svd_train_feature
+#include <math.h>
 #include <string.h>
 #include <stdio.h>
 #include "numpy/arrayobject.h"
@@ -1768,7 +1769,7 @@ static int __Pyx_ValidateAndInit_memviewslice(
                 PyObject *original_obj);
 
 /* ObjectToMemviewSlice.proto */
-static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dsds_float(PyObject *);
+static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dsds_double(PyObject *);
 
 /* ObjectToMemviewSlice.proto */
 static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_float(PyObject *);
@@ -1778,9 +1779,6 @@ static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_int
 
 /* ObjectToMemviewSlice.proto */
 static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_double(PyObject *);
-
-/* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
 
 /* Print.proto */
 static int __Pyx_Print(PyObject*, PyObject *, int);
@@ -1903,11 +1901,14 @@ __pyx_memoryview_copy_new_contig(const __Pyx_memviewslice *from_mvs,
 /* CIntFromPy.proto */
 static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
 
+/* PrintOne.proto */
+static int __Pyx_PrintOne(PyObject* stream, PyObject *o);
+
 /* CIntFromPy.proto */
 static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *);
 
-/* PrintOne.proto */
-static int __Pyx_PrintOne(PyObject* stream, PyObject *o);
+/* CIntToPy.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE char __Pyx_PyInt_As_char(PyObject *);
@@ -1956,6 +1957,8 @@ static PyObject *__pyx_memoryview_assign_item_from_object(struct __pyx_memoryvie
 static PyObject *__pyx_memoryviewslice_convert_item_to_object(struct __pyx_memoryviewslice_obj *__pyx_v_self, char *__pyx_v_itemp); /* proto*/
 static PyObject *__pyx_memoryviewslice_assign_item_from_object(struct __pyx_memoryviewslice_obj *__pyx_v_self, char *__pyx_v_itemp, PyObject *__pyx_v_value); /* proto*/
 
+/* Module declarations from 'libc.math' */
+
 /* Module declarations from 'cpython.buffer' */
 
 /* Module declarations from 'libc.string' */
@@ -1997,7 +2000,7 @@ static PyObject *contiguous = 0;
 static PyObject *indirect_contiguous = 0;
 static int __pyx_memoryview_thread_locks_used;
 static PyThread_type_lock __pyx_memoryview_thread_locks[8];
-static void __pyx_f_7solvers_3svd_17svd_train_feature__svd_train_feature(__Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, int, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, double, double, int); /*proto*/
+static void __pyx_f_7solvers_3svd_17svd_train_feature__svd_train_feature(__Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, int, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, double, double, int, double); /*proto*/
 static struct __pyx_array_obj *__pyx_array_new(PyObject *, Py_ssize_t, char *, char *, char *); /*proto*/
 static void *__pyx_align_pointer(void *, size_t); /*proto*/
 static PyObject *__pyx_memoryview_new(PyObject *, int, int, __Pyx_TypeInfo *); /*proto*/
@@ -2031,9 +2034,9 @@ static void __pyx_memoryview_refcount_objects_in_slice(char *, Py_ssize_t *, Py_
 static void __pyx_memoryview_slice_assign_scalar(__Pyx_memviewslice *, int, size_t, void *, int); /*proto*/
 static void __pyx_memoryview__slice_assign_scalar(char *, Py_ssize_t *, Py_ssize_t *, int, size_t, void *); /*proto*/
 static PyObject *__pyx_unpickle_Enum__set_state(struct __pyx_MemviewEnum_obj *, PyObject *); /*proto*/
+static __Pyx_TypeInfo __Pyx_TypeInfo_double = { "double", NULL, sizeof(double), { 0 }, 0, 'R', 0, 0 };
 static __Pyx_TypeInfo __Pyx_TypeInfo_float = { "float", NULL, sizeof(float), { 0 }, 0, 'R', 0, 0 };
 static __Pyx_TypeInfo __Pyx_TypeInfo_int = { "int", NULL, sizeof(int), { 0 }, 0, IS_UNSIGNED(int) ? 'U' : 'I', IS_UNSIGNED(int), 0 };
-static __Pyx_TypeInfo __Pyx_TypeInfo_double = { "double", NULL, sizeof(double), { 0 }, 0, 'R', 0, 0 };
 #define __Pyx_MODULE_NAME "solvers.svd.svd_train_feature"
 extern int __pyx_module_is_main_solvers__svd__svd_train_feature;
 int __pyx_module_is_main_solvers__svd__svd_train_feature = 0;
@@ -2078,6 +2081,7 @@ static const char __pyx_k_ASCII[] = "ASCII";
 static const char __pyx_k_class[] = "__class__";
 static const char __pyx_k_error[] = "error";
 static const char __pyx_k_flags[] = "flags";
+static const char __pyx_k_gamma[] = "gamma";
 static const char __pyx_k_numpy[] = "numpy";
 static const char __pyx_k_print[] = "print";
 static const char __pyx_k_range[] = "range";
@@ -2127,7 +2131,6 @@ static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
 static const char __pyx_k_pyx_unpickle_Enum[] = "__pyx_unpickle_Enum";
 static const char __pyx_k_svd_train_feature[] = "svd_train_feature";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
-static const char __pyx_k_max_change_e_eps_e[] = "  max_change %e, eps: %e";
 static const char __pyx_k_strided_and_direct[] = "<strided and direct>";
 static const char __pyx_k_strided_and_indirect[] = "<strided and indirect>";
 static const char __pyx_k_contiguous_and_direct[] = "<contiguous and direct>";
@@ -2136,6 +2139,7 @@ static const char __pyx_k_MemoryView_of_r_at_0x_x[] = "<MemoryView of %r at 0x%x
 static const char __pyx_k_contiguous_and_indirect[] = "<contiguous and indirect>";
 static const char __pyx_k_Cannot_index_with_type_s[] = "Cannot index with type '%s'";
 static const char __pyx_k_Invalid_shape_in_axis_d_d[] = "Invalid shape in axis %d: %d.";
+static const char __pyx_k_max_change_e_eps_e_resid_e[] = "  max_change %e, eps: %e, resid: %e";
 static const char __pyx_k_itemsize_0_for_cython_array[] = "itemsize <= 0 for cython.array";
 static const char __pyx_k_ndarray_is_not_C_contiguous[] = "ndarray is not C contiguous";
 static const char __pyx_k_solvers_svd_svd_train_feature[] = "solvers.svd.svd_train_feature";
@@ -2206,6 +2210,7 @@ static PyObject *__pyx_n_s_flags;
 static PyObject *__pyx_n_s_format;
 static PyObject *__pyx_n_s_fortran;
 static PyObject *__pyx_n_u_fortran;
+static PyObject *__pyx_n_s_gamma;
 static PyObject *__pyx_n_s_getstate;
 static PyObject *__pyx_kp_s_got_differing_extents_in_dimensi;
 static PyObject *__pyx_n_s_id;
@@ -2215,7 +2220,7 @@ static PyObject *__pyx_kp_s_itemsize_0_for_cython_array;
 static PyObject *__pyx_n_s_k;
 static PyObject *__pyx_n_s_left;
 static PyObject *__pyx_n_s_main;
-static PyObject *__pyx_kp_s_max_change_e_eps_e;
+static PyObject *__pyx_kp_s_max_change_e_eps_e_resid_e;
 static PyObject *__pyx_n_s_maxiters;
 static PyObject *__pyx_n_s_memview;
 static PyObject *__pyx_n_s_mids;
@@ -2273,7 +2278,7 @@ static PyObject *__pyx_kp_s_unable_to_allocate_shape_and_str;
 static PyObject *__pyx_kp_u_unknown_dtype_code_in_numpy_pxd;
 static PyObject *__pyx_n_s_unpack;
 static PyObject *__pyx_n_s_update;
-static PyObject *__pyx_pf_7solvers_3svd_17svd_train_feature_svd_train_feature(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_left, __Pyx_memviewslice __pyx_v_right, __Pyx_memviewslice __pyx_v_resid, int __pyx_v_k, __Pyx_memviewslice __pyx_v_uids, __Pyx_memviewslice __pyx_v_mids, __Pyx_memviewslice __pyx_v_ratings, double __pyx_v_rate, double __pyx_v_eps, int __pyx_v_maxiters); /* proto */
+static PyObject *__pyx_pf_7solvers_3svd_17svd_train_feature_svd_train_feature(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_left, __Pyx_memviewslice __pyx_v_right, __Pyx_memviewslice __pyx_v_resid, int __pyx_v_k, __Pyx_memviewslice __pyx_v_uids, __Pyx_memviewslice __pyx_v_mids, __Pyx_memviewslice __pyx_v_ratings, double __pyx_v_rate, double __pyx_v_eps, int __pyx_v_maxiters, double __pyx_v_gamma); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array___cinit__(struct __pyx_array_obj *__pyx_v_self, PyObject *__pyx_v_shape, Py_ssize_t __pyx_v_itemsize, PyObject *__pyx_v_format, PyObject *__pyx_v_mode, int __pyx_v_allocate_buffer); /* proto */
@@ -2364,12 +2369,12 @@ static PyObject *__pyx_tuple__36;
 static PyObject *__pyx_codeobj__30;
 static PyObject *__pyx_codeobj__37;
 
-/* "solvers/svd/svd_train_feature.pyx":9
+/* "solvers/svd/svd_train_feature.pyx":11
  * cimport numpy as np
  * 
- * def svd_train_feature(float[:,:] left, float[:,:] right, float[:] resid, int k,             # <<<<<<<<<<<<<<
+ * def svd_train_feature(double[:,:] left, double[:,:] right, float[:] resid, int k,             # <<<<<<<<<<<<<<
  *                       int[:] uids, int[:] mids, double[:] ratings, double rate, double eps,
- *                       int maxiters):
+ *                       int maxiters, double gamma):
  */
 
 /* Python wrapper */
@@ -2386,16 +2391,19 @@ static PyObject *__pyx_pw_7solvers_3svd_17svd_train_feature_1svd_train_feature(P
   double __pyx_v_rate;
   double __pyx_v_eps;
   int __pyx_v_maxiters;
+  double __pyx_v_gamma;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("svd_train_feature (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_left,&__pyx_n_s_right,&__pyx_n_s_resid,&__pyx_n_s_k,&__pyx_n_s_uids,&__pyx_n_s_mids,&__pyx_n_s_ratings,&__pyx_n_s_rate,&__pyx_n_s_eps,&__pyx_n_s_maxiters,0};
-    PyObject* values[10] = {0,0,0,0,0,0,0,0,0,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_left,&__pyx_n_s_right,&__pyx_n_s_resid,&__pyx_n_s_k,&__pyx_n_s_uids,&__pyx_n_s_mids,&__pyx_n_s_ratings,&__pyx_n_s_rate,&__pyx_n_s_eps,&__pyx_n_s_maxiters,&__pyx_n_s_gamma,0};
+    PyObject* values[11] = {0,0,0,0,0,0,0,0,0,0,0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
+        case 11: values[10] = PyTuple_GET_ITEM(__pyx_args, 10);
+        CYTHON_FALLTHROUGH;
         case 10: values[9] = PyTuple_GET_ITEM(__pyx_args, 9);
         CYTHON_FALLTHROUGH;
         case  9: values[8] = PyTuple_GET_ITEM(__pyx_args, 8);
@@ -2428,61 +2436,67 @@ static PyObject *__pyx_pw_7solvers_3svd_17svd_train_feature_1svd_train_feature(P
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_right)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("svd_train_feature", 1, 10, 10, 1); __PYX_ERR(0, 9, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("svd_train_feature", 1, 11, 11, 1); __PYX_ERR(0, 11, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_resid)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("svd_train_feature", 1, 10, 10, 2); __PYX_ERR(0, 9, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("svd_train_feature", 1, 11, 11, 2); __PYX_ERR(0, 11, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_k)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("svd_train_feature", 1, 10, 10, 3); __PYX_ERR(0, 9, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("svd_train_feature", 1, 11, 11, 3); __PYX_ERR(0, 11, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_uids)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("svd_train_feature", 1, 10, 10, 4); __PYX_ERR(0, 9, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("svd_train_feature", 1, 11, 11, 4); __PYX_ERR(0, 11, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
         if (likely((values[5] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_mids)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("svd_train_feature", 1, 10, 10, 5); __PYX_ERR(0, 9, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("svd_train_feature", 1, 11, 11, 5); __PYX_ERR(0, 11, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  6:
         if (likely((values[6] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_ratings)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("svd_train_feature", 1, 10, 10, 6); __PYX_ERR(0, 9, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("svd_train_feature", 1, 11, 11, 6); __PYX_ERR(0, 11, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  7:
         if (likely((values[7] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_rate)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("svd_train_feature", 1, 10, 10, 7); __PYX_ERR(0, 9, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("svd_train_feature", 1, 11, 11, 7); __PYX_ERR(0, 11, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  8:
         if (likely((values[8] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_eps)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("svd_train_feature", 1, 10, 10, 8); __PYX_ERR(0, 9, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("svd_train_feature", 1, 11, 11, 8); __PYX_ERR(0, 11, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  9:
         if (likely((values[9] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_maxiters)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("svd_train_feature", 1, 10, 10, 9); __PYX_ERR(0, 9, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("svd_train_feature", 1, 11, 11, 9); __PYX_ERR(0, 11, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case 10:
+        if (likely((values[10] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_gamma)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("svd_train_feature", 1, 11, 11, 10); __PYX_ERR(0, 11, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "svd_train_feature") < 0)) __PYX_ERR(0, 9, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "svd_train_feature") < 0)) __PYX_ERR(0, 11, __pyx_L3_error)
       }
-    } else if (PyTuple_GET_SIZE(__pyx_args) != 10) {
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 11) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
@@ -2495,53 +2509,55 @@ static PyObject *__pyx_pw_7solvers_3svd_17svd_train_feature_1svd_train_feature(P
       values[7] = PyTuple_GET_ITEM(__pyx_args, 7);
       values[8] = PyTuple_GET_ITEM(__pyx_args, 8);
       values[9] = PyTuple_GET_ITEM(__pyx_args, 9);
+      values[10] = PyTuple_GET_ITEM(__pyx_args, 10);
     }
-    __pyx_v_left = __Pyx_PyObject_to_MemoryviewSlice_dsds_float(values[0]); if (unlikely(!__pyx_v_left.memview)) __PYX_ERR(0, 9, __pyx_L3_error)
-    __pyx_v_right = __Pyx_PyObject_to_MemoryviewSlice_dsds_float(values[1]); if (unlikely(!__pyx_v_right.memview)) __PYX_ERR(0, 9, __pyx_L3_error)
-    __pyx_v_resid = __Pyx_PyObject_to_MemoryviewSlice_ds_float(values[2]); if (unlikely(!__pyx_v_resid.memview)) __PYX_ERR(0, 9, __pyx_L3_error)
-    __pyx_v_k = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_k == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 9, __pyx_L3_error)
-    __pyx_v_uids = __Pyx_PyObject_to_MemoryviewSlice_ds_int(values[4]); if (unlikely(!__pyx_v_uids.memview)) __PYX_ERR(0, 10, __pyx_L3_error)
-    __pyx_v_mids = __Pyx_PyObject_to_MemoryviewSlice_ds_int(values[5]); if (unlikely(!__pyx_v_mids.memview)) __PYX_ERR(0, 10, __pyx_L3_error)
-    __pyx_v_ratings = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[6]); if (unlikely(!__pyx_v_ratings.memview)) __PYX_ERR(0, 10, __pyx_L3_error)
-    __pyx_v_rate = __pyx_PyFloat_AsDouble(values[7]); if (unlikely((__pyx_v_rate == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 10, __pyx_L3_error)
-    __pyx_v_eps = __pyx_PyFloat_AsDouble(values[8]); if (unlikely((__pyx_v_eps == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 10, __pyx_L3_error)
-    __pyx_v_maxiters = __Pyx_PyInt_As_int(values[9]); if (unlikely((__pyx_v_maxiters == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 11, __pyx_L3_error)
+    __pyx_v_left = __Pyx_PyObject_to_MemoryviewSlice_dsds_double(values[0]); if (unlikely(!__pyx_v_left.memview)) __PYX_ERR(0, 11, __pyx_L3_error)
+    __pyx_v_right = __Pyx_PyObject_to_MemoryviewSlice_dsds_double(values[1]); if (unlikely(!__pyx_v_right.memview)) __PYX_ERR(0, 11, __pyx_L3_error)
+    __pyx_v_resid = __Pyx_PyObject_to_MemoryviewSlice_ds_float(values[2]); if (unlikely(!__pyx_v_resid.memview)) __PYX_ERR(0, 11, __pyx_L3_error)
+    __pyx_v_k = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_k == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 11, __pyx_L3_error)
+    __pyx_v_uids = __Pyx_PyObject_to_MemoryviewSlice_ds_int(values[4]); if (unlikely(!__pyx_v_uids.memview)) __PYX_ERR(0, 12, __pyx_L3_error)
+    __pyx_v_mids = __Pyx_PyObject_to_MemoryviewSlice_ds_int(values[5]); if (unlikely(!__pyx_v_mids.memview)) __PYX_ERR(0, 12, __pyx_L3_error)
+    __pyx_v_ratings = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[6]); if (unlikely(!__pyx_v_ratings.memview)) __PYX_ERR(0, 12, __pyx_L3_error)
+    __pyx_v_rate = __pyx_PyFloat_AsDouble(values[7]); if (unlikely((__pyx_v_rate == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 12, __pyx_L3_error)
+    __pyx_v_eps = __pyx_PyFloat_AsDouble(values[8]); if (unlikely((__pyx_v_eps == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 12, __pyx_L3_error)
+    __pyx_v_maxiters = __Pyx_PyInt_As_int(values[9]); if (unlikely((__pyx_v_maxiters == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 13, __pyx_L3_error)
+    __pyx_v_gamma = __pyx_PyFloat_AsDouble(values[10]); if (unlikely((__pyx_v_gamma == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 13, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("svd_train_feature", 1, 10, 10, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 9, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("svd_train_feature", 1, 11, 11, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 11, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("solvers.svd.svd_train_feature.svd_train_feature", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7solvers_3svd_17svd_train_feature_svd_train_feature(__pyx_self, __pyx_v_left, __pyx_v_right, __pyx_v_resid, __pyx_v_k, __pyx_v_uids, __pyx_v_mids, __pyx_v_ratings, __pyx_v_rate, __pyx_v_eps, __pyx_v_maxiters);
+  __pyx_r = __pyx_pf_7solvers_3svd_17svd_train_feature_svd_train_feature(__pyx_self, __pyx_v_left, __pyx_v_right, __pyx_v_resid, __pyx_v_k, __pyx_v_uids, __pyx_v_mids, __pyx_v_ratings, __pyx_v_rate, __pyx_v_eps, __pyx_v_maxiters, __pyx_v_gamma);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7solvers_3svd_17svd_train_feature_svd_train_feature(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_left, __Pyx_memviewslice __pyx_v_right, __Pyx_memviewslice __pyx_v_resid, int __pyx_v_k, __Pyx_memviewslice __pyx_v_uids, __Pyx_memviewslice __pyx_v_mids, __Pyx_memviewslice __pyx_v_ratings, double __pyx_v_rate, double __pyx_v_eps, int __pyx_v_maxiters) {
+static PyObject *__pyx_pf_7solvers_3svd_17svd_train_feature_svd_train_feature(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_left, __Pyx_memviewslice __pyx_v_right, __Pyx_memviewslice __pyx_v_resid, int __pyx_v_k, __Pyx_memviewslice __pyx_v_uids, __Pyx_memviewslice __pyx_v_mids, __Pyx_memviewslice __pyx_v_ratings, double __pyx_v_rate, double __pyx_v_eps, int __pyx_v_maxiters, double __pyx_v_gamma) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("svd_train_feature", 0);
 
-  /* "solvers/svd/svd_train_feature.pyx":12
+  /* "solvers/svd/svd_train_feature.pyx":14
  *                       int[:] uids, int[:] mids, double[:] ratings, double rate, double eps,
- *                       int maxiters):
- *     _svd_train_feature(left, right, resid, k, uids, mids, ratings, rate, eps, maxiters)             # <<<<<<<<<<<<<<
+ *                       int maxiters, double gamma):
+ *     _svd_train_feature(left, right, resid, k, uids, mids, ratings, rate, eps, maxiters, gamma)             # <<<<<<<<<<<<<<
  * 
- * cdef void _svd_train_feature(float[:,:] left, float[:,:] right, float[:] resid, int k,
+ * cdef void _svd_train_feature(double[:,:] left, double[:,:] right, float[:] resid, int k,
  */
-  __pyx_f_7solvers_3svd_17svd_train_feature__svd_train_feature(__pyx_v_left, __pyx_v_right, __pyx_v_resid, __pyx_v_k, __pyx_v_uids, __pyx_v_mids, __pyx_v_ratings, __pyx_v_rate, __pyx_v_eps, __pyx_v_maxiters);
+  __pyx_f_7solvers_3svd_17svd_train_feature__svd_train_feature(__pyx_v_left, __pyx_v_right, __pyx_v_resid, __pyx_v_k, __pyx_v_uids, __pyx_v_mids, __pyx_v_ratings, __pyx_v_rate, __pyx_v_eps, __pyx_v_maxiters, __pyx_v_gamma);
 
-  /* "solvers/svd/svd_train_feature.pyx":9
+  /* "solvers/svd/svd_train_feature.pyx":11
  * cimport numpy as np
  * 
- * def svd_train_feature(float[:,:] left, float[:,:] right, float[:] resid, int k,             # <<<<<<<<<<<<<<
+ * def svd_train_feature(double[:,:] left, double[:,:] right, float[:] resid, int k,             # <<<<<<<<<<<<<<
  *                       int[:] uids, int[:] mids, double[:] ratings, double rate, double eps,
- *                       int maxiters):
+ *                       int maxiters, double gamma):
  */
 
   /* function exit code */
@@ -2557,35 +2573,35 @@ static PyObject *__pyx_pf_7solvers_3svd_17svd_train_feature_svd_train_feature(CY
   return __pyx_r;
 }
 
-/* "solvers/svd/svd_train_feature.pyx":14
- *     _svd_train_feature(left, right, resid, k, uids, mids, ratings, rate, eps, maxiters)
+/* "solvers/svd/svd_train_feature.pyx":16
+ *     _svd_train_feature(left, right, resid, k, uids, mids, ratings, rate, eps, maxiters, gamma)
  * 
- * cdef void _svd_train_feature(float[:,:] left, float[:,:] right, float[:] resid, int k,             # <<<<<<<<<<<<<<
+ * cdef void _svd_train_feature(double[:,:] left, double[:,:] right, float[:] resid, int k,             # <<<<<<<<<<<<<<
  *                              int[:] uids, int[:] mids, double[:] ratings, double rate, double eps,
- *                              int maxiters):
+ *                              int maxiters, double gamma):
  */
 
-static void __pyx_f_7solvers_3svd_17svd_train_feature__svd_train_feature(__Pyx_memviewslice __pyx_v_left, __Pyx_memviewslice __pyx_v_right, CYTHON_UNUSED __Pyx_memviewslice __pyx_v_resid, int __pyx_v_k, __Pyx_memviewslice __pyx_v_uids, __Pyx_memviewslice __pyx_v_mids, __Pyx_memviewslice __pyx_v_ratings, double __pyx_v_rate, double __pyx_v_eps, int __pyx_v_maxiters) {
+static void __pyx_f_7solvers_3svd_17svd_train_feature__svd_train_feature(__Pyx_memviewslice __pyx_v_left, __Pyx_memviewslice __pyx_v_right, __Pyx_memviewslice __pyx_v_resid, int __pyx_v_k, __Pyx_memviewslice __pyx_v_uids, __Pyx_memviewslice __pyx_v_mids, __Pyx_memviewslice __pyx_v_ratings, double __pyx_v_rate, double __pyx_v_eps, int __pyx_v_maxiters, double __pyx_v_gamma) {
   double __pyx_v_max_change;
   double __pyx_v_dleft;
   double __pyx_v_dright;
-  double __pyx_v_rat;
-  double __pyx_v_yhat;
+  CYTHON_UNUSED double __pyx_v_rat;
   double __pyx_v_err;
+  double __pyx_v_total_err;
+  double __pyx_v_old_resid;
   int __pyx_v_uid;
   int __pyx_v_mid;
   int __pyx_v_ob;
   int __pyx_v_iter;
-  long __pyx_v_k_;
   __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  Py_ssize_t __pyx_t_2;
-  int __pyx_t_3;
+  Py_ssize_t __pyx_t_1;
+  int __pyx_t_2;
+  Py_ssize_t __pyx_t_3;
   Py_ssize_t __pyx_t_4;
   Py_ssize_t __pyx_t_5;
   Py_ssize_t __pyx_t_6;
-  long __pyx_t_7;
-  long __pyx_t_8;
+  Py_ssize_t __pyx_t_7;
+  Py_ssize_t __pyx_t_8;
   Py_ssize_t __pyx_t_9;
   Py_ssize_t __pyx_t_10;
   Py_ssize_t __pyx_t_11;
@@ -2598,188 +2614,184 @@ static void __pyx_f_7solvers_3svd_17svd_train_feature__svd_train_feature(__Pyx_m
   Py_ssize_t __pyx_t_18;
   Py_ssize_t __pyx_t_19;
   Py_ssize_t __pyx_t_20;
-  PyObject *__pyx_t_21 = NULL;
-  PyObject *__pyx_t_22 = NULL;
-  PyObject *__pyx_t_23 = NULL;
+  Py_ssize_t __pyx_t_21;
+  Py_ssize_t __pyx_t_22;
+  int __pyx_t_23;
+  PyObject *__pyx_t_24 = NULL;
+  PyObject *__pyx_t_25 = NULL;
+  PyObject *__pyx_t_26 = NULL;
+  PyObject *__pyx_t_27 = NULL;
+  int __pyx_t_28;
   __Pyx_RefNannySetupContext("_svd_train_feature", 0);
 
-  /* "solvers/svd/svd_train_feature.pyx":22
+  /* "solvers/svd/svd_train_feature.pyx":24
  *     cdef int uid, mid, ob, iter
  * 
  *     max_change = eps + 1             # <<<<<<<<<<<<<<
  *     iter = 0
- *     while max_change > eps*rate*rate:
+ *     while True:
  */
   __pyx_v_max_change = (__pyx_v_eps + 1.0);
 
-  /* "solvers/svd/svd_train_feature.pyx":23
+  /* "solvers/svd/svd_train_feature.pyx":25
  * 
  *     max_change = eps + 1
  *     iter = 0             # <<<<<<<<<<<<<<
- *     while max_change > eps*rate*rate:
+ *     while True:
  *         max_change = 0
  */
   __pyx_v_iter = 0;
 
-  /* "solvers/svd/svd_train_feature.pyx":24
+  /* "solvers/svd/svd_train_feature.pyx":26
  *     max_change = eps + 1
  *     iter = 0
- *     while max_change > eps*rate*rate:             # <<<<<<<<<<<<<<
+ *     while True:             # <<<<<<<<<<<<<<
  *         max_change = 0
- *         for ob in range(uids.shape[0]):
+ *         total_err = 0
  */
   while (1) {
-    __pyx_t_1 = ((__pyx_v_max_change > ((__pyx_v_eps * __pyx_v_rate) * __pyx_v_rate)) != 0);
-    if (!__pyx_t_1) break;
 
-    /* "solvers/svd/svd_train_feature.pyx":25
+    /* "solvers/svd/svd_train_feature.pyx":27
  *     iter = 0
- *     while max_change > eps*rate*rate:
+ *     while True:
  *         max_change = 0             # <<<<<<<<<<<<<<
+ *         total_err = 0
  *         for ob in range(uids.shape[0]):
- *             uid = uids[ob]
  */
     __pyx_v_max_change = 0.0;
 
-    /* "solvers/svd/svd_train_feature.pyx":26
- *     while max_change > eps*rate*rate:
+    /* "solvers/svd/svd_train_feature.pyx":28
+ *     while True:
  *         max_change = 0
+ *         total_err = 0             # <<<<<<<<<<<<<<
+ *         for ob in range(uids.shape[0]):
+ *             uid = uids[ob]
+ */
+    __pyx_v_total_err = 0.0;
+
+    /* "solvers/svd/svd_train_feature.pyx":29
+ *         max_change = 0
+ *         total_err = 0
  *         for ob in range(uids.shape[0]):             # <<<<<<<<<<<<<<
  *             uid = uids[ob]
  *             mid = mids[ob]
  */
-    __pyx_t_2 = (__pyx_v_uids.shape[0]);
-    for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
-      __pyx_v_ob = __pyx_t_3;
+    __pyx_t_1 = (__pyx_v_uids.shape[0]);
+    for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
+      __pyx_v_ob = __pyx_t_2;
 
-      /* "solvers/svd/svd_train_feature.pyx":27
- *         max_change = 0
+      /* "solvers/svd/svd_train_feature.pyx":30
+ *         total_err = 0
  *         for ob in range(uids.shape[0]):
  *             uid = uids[ob]             # <<<<<<<<<<<<<<
  *             mid = mids[ob]
  *             rat = ratings[ob]
  */
-      __pyx_t_4 = __pyx_v_ob;
-      __pyx_v_uid = (*((int *) ( /* dim=0 */ (__pyx_v_uids.data + __pyx_t_4 * __pyx_v_uids.strides[0]) )));
+      __pyx_t_3 = __pyx_v_ob;
+      __pyx_v_uid = (*((int *) ( /* dim=0 */ (__pyx_v_uids.data + __pyx_t_3 * __pyx_v_uids.strides[0]) )));
 
-      /* "solvers/svd/svd_train_feature.pyx":28
+      /* "solvers/svd/svd_train_feature.pyx":31
  *         for ob in range(uids.shape[0]):
  *             uid = uids[ob]
  *             mid = mids[ob]             # <<<<<<<<<<<<<<
  *             rat = ratings[ob]
  * 
  */
-      __pyx_t_5 = __pyx_v_ob;
-      __pyx_v_mid = (*((int *) ( /* dim=0 */ (__pyx_v_mids.data + __pyx_t_5 * __pyx_v_mids.strides[0]) )));
+      __pyx_t_4 = __pyx_v_ob;
+      __pyx_v_mid = (*((int *) ( /* dim=0 */ (__pyx_v_mids.data + __pyx_t_4 * __pyx_v_mids.strides[0]) )));
 
-      /* "solvers/svd/svd_train_feature.pyx":29
+      /* "solvers/svd/svd_train_feature.pyx":32
  *             uid = uids[ob]
  *             mid = mids[ob]
  *             rat = ratings[ob]             # <<<<<<<<<<<<<<
  * 
- *             yhat = 0
+ *             #yhat = 0
  */
-      __pyx_t_6 = __pyx_v_ob;
-      __pyx_v_rat = (*((double *) ( /* dim=0 */ (__pyx_v_ratings.data + __pyx_t_6 * __pyx_v_ratings.strides[0]) )));
-
-      /* "solvers/svd/svd_train_feature.pyx":31
- *             rat = ratings[ob]
- * 
- *             yhat = 0             # <<<<<<<<<<<<<<
- *             for k_ in range(k+1):
- *                 yhat += left[uid, k_] * right[mid, k_]
- */
-      __pyx_v_yhat = 0.0;
-
-      /* "solvers/svd/svd_train_feature.pyx":32
- * 
- *             yhat = 0
- *             for k_ in range(k+1):             # <<<<<<<<<<<<<<
- *                 yhat += left[uid, k_] * right[mid, k_]
- *             err = rat - yhat
- */
-      __pyx_t_7 = (__pyx_v_k + 1);
-      for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
-        __pyx_v_k_ = __pyx_t_8;
-
-        /* "solvers/svd/svd_train_feature.pyx":33
- *             yhat = 0
- *             for k_ in range(k+1):
- *                 yhat += left[uid, k_] * right[mid, k_]             # <<<<<<<<<<<<<<
- *             err = rat - yhat
- *             #err = resid[ob] - left[uid,k] * right[mid,k]
- */
-        __pyx_t_9 = __pyx_v_uid;
-        __pyx_t_10 = __pyx_v_k_;
-        __pyx_t_11 = __pyx_v_mid;
-        __pyx_t_12 = __pyx_v_k_;
-        __pyx_v_yhat = (__pyx_v_yhat + ((*((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_left.data + __pyx_t_9 * __pyx_v_left.strides[0]) ) + __pyx_t_10 * __pyx_v_left.strides[1]) ))) * (*((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_right.data + __pyx_t_11 * __pyx_v_right.strides[0]) ) + __pyx_t_12 * __pyx_v_right.strides[1]) )))));
-      }
-
-      /* "solvers/svd/svd_train_feature.pyx":34
- *             for k_ in range(k+1):
- *                 yhat += left[uid, k_] * right[mid, k_]
- *             err = rat - yhat             # <<<<<<<<<<<<<<
- *             #err = resid[ob] - left[uid,k] * right[mid,k]
- * 
- */
-      __pyx_v_err = (__pyx_v_rat - __pyx_v_yhat);
-
-      /* "solvers/svd/svd_train_feature.pyx":38
- * 
- * 
- *             dleft = err * right[mid, k]             # <<<<<<<<<<<<<<
- *             dright = err * left[uid, k]
- *             left[uid, k] += rate * dleft
- */
-      __pyx_t_13 = __pyx_v_mid;
-      __pyx_t_14 = __pyx_v_k;
-      __pyx_v_dleft = (__pyx_v_err * (*((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_right.data + __pyx_t_13 * __pyx_v_right.strides[0]) ) + __pyx_t_14 * __pyx_v_right.strides[1]) ))));
+      __pyx_t_5 = __pyx_v_ob;
+      __pyx_v_rat = (*((double *) ( /* dim=0 */ (__pyx_v_ratings.data + __pyx_t_5 * __pyx_v_ratings.strides[0]) )));
 
       /* "solvers/svd/svd_train_feature.pyx":39
+ *             #err = rat - yhat
  * 
- *             dleft = err * right[mid, k]
- *             dright = err * left[uid, k]             # <<<<<<<<<<<<<<
+ *             err = resid[ob] - left[uid,k] * right[mid,k]             # <<<<<<<<<<<<<<
+ *             total_err += err*err
+ * 
+ */
+      __pyx_t_6 = __pyx_v_ob;
+      __pyx_t_7 = __pyx_v_uid;
+      __pyx_t_8 = __pyx_v_k;
+      __pyx_t_9 = __pyx_v_mid;
+      __pyx_t_10 = __pyx_v_k;
+      __pyx_v_err = ((*((float *) ( /* dim=0 */ (__pyx_v_resid.data + __pyx_t_6 * __pyx_v_resid.strides[0]) ))) - ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_left.data + __pyx_t_7 * __pyx_v_left.strides[0]) ) + __pyx_t_8 * __pyx_v_left.strides[1]) ))) * (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_right.data + __pyx_t_9 * __pyx_v_right.strides[0]) ) + __pyx_t_10 * __pyx_v_right.strides[1]) )))));
+
+      /* "solvers/svd/svd_train_feature.pyx":40
+ * 
+ *             err = resid[ob] - left[uid,k] * right[mid,k]
+ *             total_err += err*err             # <<<<<<<<<<<<<<
+ * 
+ *             dleft = err * right[mid, k] - gamma * left[uid, k]  ## gamma controls regularization
+ */
+      __pyx_v_total_err = (__pyx_v_total_err + (__pyx_v_err * __pyx_v_err));
+
+      /* "solvers/svd/svd_train_feature.pyx":42
+ *             total_err += err*err
+ * 
+ *             dleft = err * right[mid, k] - gamma * left[uid, k]  ## gamma controls regularization             # <<<<<<<<<<<<<<
+ *             dright = err * left[uid, k] - gamma * right[mid, k]
+ *             left[uid, k] += rate * dleft
+ */
+      __pyx_t_11 = __pyx_v_mid;
+      __pyx_t_12 = __pyx_v_k;
+      __pyx_t_13 = __pyx_v_uid;
+      __pyx_t_14 = __pyx_v_k;
+      __pyx_v_dleft = ((__pyx_v_err * (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_right.data + __pyx_t_11 * __pyx_v_right.strides[0]) ) + __pyx_t_12 * __pyx_v_right.strides[1]) )))) - (__pyx_v_gamma * (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_left.data + __pyx_t_13 * __pyx_v_left.strides[0]) ) + __pyx_t_14 * __pyx_v_left.strides[1]) )))));
+
+      /* "solvers/svd/svd_train_feature.pyx":43
+ * 
+ *             dleft = err * right[mid, k] - gamma * left[uid, k]  ## gamma controls regularization
+ *             dright = err * left[uid, k] - gamma * right[mid, k]             # <<<<<<<<<<<<<<
  *             left[uid, k] += rate * dleft
  *             right[mid, k] += rate * dright
  */
       __pyx_t_15 = __pyx_v_uid;
       __pyx_t_16 = __pyx_v_k;
-      __pyx_v_dright = (__pyx_v_err * (*((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_left.data + __pyx_t_15 * __pyx_v_left.strides[0]) ) + __pyx_t_16 * __pyx_v_left.strides[1]) ))));
+      __pyx_t_17 = __pyx_v_mid;
+      __pyx_t_18 = __pyx_v_k;
+      __pyx_v_dright = ((__pyx_v_err * (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_left.data + __pyx_t_15 * __pyx_v_left.strides[0]) ) + __pyx_t_16 * __pyx_v_left.strides[1]) )))) - (__pyx_v_gamma * (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_right.data + __pyx_t_17 * __pyx_v_right.strides[0]) ) + __pyx_t_18 * __pyx_v_right.strides[1]) )))));
 
-      /* "solvers/svd/svd_train_feature.pyx":40
- *             dleft = err * right[mid, k]
- *             dright = err * left[uid, k]
+      /* "solvers/svd/svd_train_feature.pyx":44
+ *             dleft = err * right[mid, k] - gamma * left[uid, k]  ## gamma controls regularization
+ *             dright = err * left[uid, k] - gamma * right[mid, k]
  *             left[uid, k] += rate * dleft             # <<<<<<<<<<<<<<
  *             right[mid, k] += rate * dright
  * 
  */
-      __pyx_t_17 = __pyx_v_uid;
-      __pyx_t_18 = __pyx_v_k;
-      *((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_left.data + __pyx_t_17 * __pyx_v_left.strides[0]) ) + __pyx_t_18 * __pyx_v_left.strides[1]) )) += (__pyx_v_rate * __pyx_v_dleft);
+      __pyx_t_19 = __pyx_v_uid;
+      __pyx_t_20 = __pyx_v_k;
+      *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_left.data + __pyx_t_19 * __pyx_v_left.strides[0]) ) + __pyx_t_20 * __pyx_v_left.strides[1]) )) += (__pyx_v_rate * __pyx_v_dleft);
 
-      /* "solvers/svd/svd_train_feature.pyx":41
- *             dright = err * left[uid, k]
+      /* "solvers/svd/svd_train_feature.pyx":45
+ *             dright = err * left[uid, k] - gamma * right[mid, k]
  *             left[uid, k] += rate * dleft
  *             right[mid, k] += rate * dright             # <<<<<<<<<<<<<<
  * 
  *             if rate*rate*dleft*dleft > max_change:
  */
-      __pyx_t_19 = __pyx_v_mid;
-      __pyx_t_20 = __pyx_v_k;
-      *((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_right.data + __pyx_t_19 * __pyx_v_right.strides[0]) ) + __pyx_t_20 * __pyx_v_right.strides[1]) )) += (__pyx_v_rate * __pyx_v_dright);
+      __pyx_t_21 = __pyx_v_mid;
+      __pyx_t_22 = __pyx_v_k;
+      *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_right.data + __pyx_t_21 * __pyx_v_right.strides[0]) ) + __pyx_t_22 * __pyx_v_right.strides[1]) )) += (__pyx_v_rate * __pyx_v_dright);
 
-      /* "solvers/svd/svd_train_feature.pyx":43
+      /* "solvers/svd/svd_train_feature.pyx":47
  *             right[mid, k] += rate * dright
  * 
  *             if rate*rate*dleft*dleft > max_change:             # <<<<<<<<<<<<<<
  *                 max_change = rate*rate*dleft*dleft
  *             if rate*rate*dright*dright > max_change:
  */
-      __pyx_t_1 = (((((__pyx_v_rate * __pyx_v_rate) * __pyx_v_dleft) * __pyx_v_dleft) > __pyx_v_max_change) != 0);
-      if (__pyx_t_1) {
+      __pyx_t_23 = (((((__pyx_v_rate * __pyx_v_rate) * __pyx_v_dleft) * __pyx_v_dleft) > __pyx_v_max_change) != 0);
+      if (__pyx_t_23) {
 
-        /* "solvers/svd/svd_train_feature.pyx":44
+        /* "solvers/svd/svd_train_feature.pyx":48
  * 
  *             if rate*rate*dleft*dleft > max_change:
  *                 max_change = rate*rate*dleft*dleft             # <<<<<<<<<<<<<<
@@ -2788,7 +2800,7 @@ static void __pyx_f_7solvers_3svd_17svd_train_feature__svd_train_feature(__Pyx_m
  */
         __pyx_v_max_change = (((__pyx_v_rate * __pyx_v_rate) * __pyx_v_dleft) * __pyx_v_dleft);
 
-        /* "solvers/svd/svd_train_feature.pyx":43
+        /* "solvers/svd/svd_train_feature.pyx":47
  *             right[mid, k] += rate * dright
  * 
  *             if rate*rate*dleft*dleft > max_change:             # <<<<<<<<<<<<<<
@@ -2797,17 +2809,17 @@ static void __pyx_f_7solvers_3svd_17svd_train_feature__svd_train_feature(__Pyx_m
  */
       }
 
-      /* "solvers/svd/svd_train_feature.pyx":45
+      /* "solvers/svd/svd_train_feature.pyx":49
  *             if rate*rate*dleft*dleft > max_change:
  *                 max_change = rate*rate*dleft*dleft
  *             if rate*rate*dright*dright > max_change:             # <<<<<<<<<<<<<<
  *                 max_change = rate*rate*dright*dright
  * 
  */
-      __pyx_t_1 = (((((__pyx_v_rate * __pyx_v_rate) * __pyx_v_dright) * __pyx_v_dright) > __pyx_v_max_change) != 0);
-      if (__pyx_t_1) {
+      __pyx_t_23 = (((((__pyx_v_rate * __pyx_v_rate) * __pyx_v_dright) * __pyx_v_dright) > __pyx_v_max_change) != 0);
+      if (__pyx_t_23) {
 
-        /* "solvers/svd/svd_train_feature.pyx":46
+        /* "solvers/svd/svd_train_feature.pyx":50
  *                 max_change = rate*rate*dleft*dleft
  *             if rate*rate*dright*dright > max_change:
  *                 max_change = rate*rate*dright*dright             # <<<<<<<<<<<<<<
@@ -2816,7 +2828,7 @@ static void __pyx_f_7solvers_3svd_17svd_train_feature__svd_train_feature(__Pyx_m
  */
         __pyx_v_max_change = (((__pyx_v_rate * __pyx_v_rate) * __pyx_v_dright) * __pyx_v_dright);
 
-        /* "solvers/svd/svd_train_feature.pyx":45
+        /* "solvers/svd/svd_train_feature.pyx":49
  *             if rate*rate*dleft*dleft > max_change:
  *                 max_change = rate*rate*dleft*dleft
  *             if rate*rate*dright*dright > max_change:             # <<<<<<<<<<<<<<
@@ -2826,103 +2838,126 @@ static void __pyx_f_7solvers_3svd_17svd_train_feature__svd_train_feature(__Pyx_m
       }
     }
 
-    /* "solvers/svd/svd_train_feature.pyx":48
+    /* "solvers/svd/svd_train_feature.pyx":52
  *                 max_change = rate*rate*dright*dright
  * 
  *         iter += 1             # <<<<<<<<<<<<<<
- *         if iter > maxiters:
- *             break
+ *         if iter % 100 == 0:
+ *             print "  max_change %e, eps: %e, resid: %e" % (max_change, eps, total_err)
  */
     __pyx_v_iter = (__pyx_v_iter + 1);
 
-    /* "solvers/svd/svd_train_feature.pyx":49
+    /* "solvers/svd/svd_train_feature.pyx":53
  * 
  *         iter += 1
- *         if iter > maxiters:             # <<<<<<<<<<<<<<
- *             break
- *         if iter % 100 == 0:
+ *         if iter % 100 == 0:             # <<<<<<<<<<<<<<
+ *             print "  max_change %e, eps: %e, resid: %e" % (max_change, eps, total_err)
+ *         if abs(old_resid - total_err)/total_err < eps or iter > maxiters:
  */
-    __pyx_t_1 = ((__pyx_v_iter > __pyx_v_maxiters) != 0);
-    if (__pyx_t_1) {
+    __pyx_t_23 = (((__pyx_v_iter % 0x64) == 0) != 0);
+    if (__pyx_t_23) {
 
-      /* "solvers/svd/svd_train_feature.pyx":50
+      /* "solvers/svd/svd_train_feature.pyx":54
  *         iter += 1
- *         if iter > maxiters:
- *             break             # <<<<<<<<<<<<<<
  *         if iter % 100 == 0:
- *             print "  max_change %e, eps: %e" % (max_change, eps)
+ *             print "  max_change %e, eps: %e, resid: %e" % (max_change, eps, total_err)             # <<<<<<<<<<<<<<
+ *         if abs(old_resid - total_err)/total_err < eps or iter > maxiters:
+ *             break
+ */
+      __pyx_t_24 = PyFloat_FromDouble(__pyx_v_max_change); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 54, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_24);
+      __pyx_t_25 = PyFloat_FromDouble(__pyx_v_eps); if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 54, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_25);
+      __pyx_t_26 = PyFloat_FromDouble(__pyx_v_total_err); if (unlikely(!__pyx_t_26)) __PYX_ERR(0, 54, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_26);
+      __pyx_t_27 = PyTuple_New(3); if (unlikely(!__pyx_t_27)) __PYX_ERR(0, 54, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_27);
+      __Pyx_GIVEREF(__pyx_t_24);
+      PyTuple_SET_ITEM(__pyx_t_27, 0, __pyx_t_24);
+      __Pyx_GIVEREF(__pyx_t_25);
+      PyTuple_SET_ITEM(__pyx_t_27, 1, __pyx_t_25);
+      __Pyx_GIVEREF(__pyx_t_26);
+      PyTuple_SET_ITEM(__pyx_t_27, 2, __pyx_t_26);
+      __pyx_t_24 = 0;
+      __pyx_t_25 = 0;
+      __pyx_t_26 = 0;
+      __pyx_t_26 = __Pyx_PyString_Format(__pyx_kp_s_max_change_e_eps_e_resid_e, __pyx_t_27); if (unlikely(!__pyx_t_26)) __PYX_ERR(0, 54, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_26);
+      __Pyx_DECREF(__pyx_t_27); __pyx_t_27 = 0;
+      if (__Pyx_PrintOne(0, __pyx_t_26) < 0) __PYX_ERR(0, 54, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_26); __pyx_t_26 = 0;
+
+      /* "solvers/svd/svd_train_feature.pyx":53
+ * 
+ *         iter += 1
+ *         if iter % 100 == 0:             # <<<<<<<<<<<<<<
+ *             print "  max_change %e, eps: %e, resid: %e" % (max_change, eps, total_err)
+ *         if abs(old_resid - total_err)/total_err < eps or iter > maxiters:
+ */
+    }
+
+    /* "solvers/svd/svd_train_feature.pyx":55
+ *         if iter % 100 == 0:
+ *             print "  max_change %e, eps: %e, resid: %e" % (max_change, eps, total_err)
+ *         if abs(old_resid - total_err)/total_err < eps or iter > maxiters:             # <<<<<<<<<<<<<<
+ *             break
+ *         old_resid = total_err
+ */
+    __pyx_t_28 = (((fabs((__pyx_v_old_resid - __pyx_v_total_err)) / __pyx_v_total_err) < __pyx_v_eps) != 0);
+    if (!__pyx_t_28) {
+    } else {
+      __pyx_t_23 = __pyx_t_28;
+      goto __pyx_L11_bool_binop_done;
+    }
+    __pyx_t_28 = ((__pyx_v_iter > __pyx_v_maxiters) != 0);
+    __pyx_t_23 = __pyx_t_28;
+    __pyx_L11_bool_binop_done:;
+    if (__pyx_t_23) {
+
+      /* "solvers/svd/svd_train_feature.pyx":56
+ *             print "  max_change %e, eps: %e, resid: %e" % (max_change, eps, total_err)
+ *         if abs(old_resid - total_err)/total_err < eps or iter > maxiters:
+ *             break             # <<<<<<<<<<<<<<
+ *         old_resid = total_err
+ * 
  */
       goto __pyx_L4_break;
 
-      /* "solvers/svd/svd_train_feature.pyx":49
- * 
- *         iter += 1
- *         if iter > maxiters:             # <<<<<<<<<<<<<<
- *             break
+      /* "solvers/svd/svd_train_feature.pyx":55
  *         if iter % 100 == 0:
+ *             print "  max_change %e, eps: %e, resid: %e" % (max_change, eps, total_err)
+ *         if abs(old_resid - total_err)/total_err < eps or iter > maxiters:             # <<<<<<<<<<<<<<
+ *             break
+ *         old_resid = total_err
  */
     }
 
-    /* "solvers/svd/svd_train_feature.pyx":51
- *         if iter > maxiters:
+    /* "solvers/svd/svd_train_feature.pyx":57
+ *         if abs(old_resid - total_err)/total_err < eps or iter > maxiters:
  *             break
- *         if iter % 100 == 0:             # <<<<<<<<<<<<<<
- *             print "  max_change %e, eps: %e" % (max_change, eps)
- * 
- */
-    __pyx_t_1 = (((__pyx_v_iter % 0x64) == 0) != 0);
-    if (__pyx_t_1) {
-
-      /* "solvers/svd/svd_train_feature.pyx":52
- *             break
- *         if iter % 100 == 0:
- *             print "  max_change %e, eps: %e" % (max_change, eps)             # <<<<<<<<<<<<<<
+ *         old_resid = total_err             # <<<<<<<<<<<<<<
  * 
  * 
  */
-      __pyx_t_21 = PyFloat_FromDouble(__pyx_v_max_change); if (unlikely(!__pyx_t_21)) __PYX_ERR(0, 52, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_21);
-      __pyx_t_22 = PyFloat_FromDouble(__pyx_v_eps); if (unlikely(!__pyx_t_22)) __PYX_ERR(0, 52, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_22);
-      __pyx_t_23 = PyTuple_New(2); if (unlikely(!__pyx_t_23)) __PYX_ERR(0, 52, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_23);
-      __Pyx_GIVEREF(__pyx_t_21);
-      PyTuple_SET_ITEM(__pyx_t_23, 0, __pyx_t_21);
-      __Pyx_GIVEREF(__pyx_t_22);
-      PyTuple_SET_ITEM(__pyx_t_23, 1, __pyx_t_22);
-      __pyx_t_21 = 0;
-      __pyx_t_22 = 0;
-      __pyx_t_22 = __Pyx_PyString_Format(__pyx_kp_s_max_change_e_eps_e, __pyx_t_23); if (unlikely(!__pyx_t_22)) __PYX_ERR(0, 52, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_22);
-      __Pyx_DECREF(__pyx_t_23); __pyx_t_23 = 0;
-      if (__Pyx_PrintOne(0, __pyx_t_22) < 0) __PYX_ERR(0, 52, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
-
-      /* "solvers/svd/svd_train_feature.pyx":51
- *         if iter > maxiters:
- *             break
- *         if iter % 100 == 0:             # <<<<<<<<<<<<<<
- *             print "  max_change %e, eps: %e" % (max_change, eps)
- * 
- */
-    }
+    __pyx_v_old_resid = __pyx_v_total_err;
   }
   __pyx_L4_break:;
 
-  /* "solvers/svd/svd_train_feature.pyx":14
- *     _svd_train_feature(left, right, resid, k, uids, mids, ratings, rate, eps, maxiters)
+  /* "solvers/svd/svd_train_feature.pyx":16
+ *     _svd_train_feature(left, right, resid, k, uids, mids, ratings, rate, eps, maxiters, gamma)
  * 
- * cdef void _svd_train_feature(float[:,:] left, float[:,:] right, float[:] resid, int k,             # <<<<<<<<<<<<<<
+ * cdef void _svd_train_feature(double[:,:] left, double[:,:] right, float[:] resid, int k,             # <<<<<<<<<<<<<<
  *                              int[:] uids, int[:] mids, double[:] ratings, double rate, double eps,
- *                              int maxiters):
+ *                              int maxiters, double gamma):
  */
 
   /* function exit code */
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_21);
-  __Pyx_XDECREF(__pyx_t_22);
-  __Pyx_XDECREF(__pyx_t_23);
+  __Pyx_XDECREF(__pyx_t_24);
+  __Pyx_XDECREF(__pyx_t_25);
+  __Pyx_XDECREF(__pyx_t_26);
+  __Pyx_XDECREF(__pyx_t_27);
   __Pyx_WriteUnraisable("solvers.svd.svd_train_feature._svd_train_feature", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -19071,6 +19106,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_format, __pyx_k_format, sizeof(__pyx_k_format), 0, 0, 1, 1},
   {&__pyx_n_s_fortran, __pyx_k_fortran, sizeof(__pyx_k_fortran), 0, 0, 1, 1},
   {&__pyx_n_u_fortran, __pyx_k_fortran, sizeof(__pyx_k_fortran), 0, 1, 0, 1},
+  {&__pyx_n_s_gamma, __pyx_k_gamma, sizeof(__pyx_k_gamma), 0, 0, 1, 1},
   {&__pyx_n_s_getstate, __pyx_k_getstate, sizeof(__pyx_k_getstate), 0, 0, 1, 1},
   {&__pyx_kp_s_got_differing_extents_in_dimensi, __pyx_k_got_differing_extents_in_dimensi, sizeof(__pyx_k_got_differing_extents_in_dimensi), 0, 0, 1, 0},
   {&__pyx_n_s_id, __pyx_k_id, sizeof(__pyx_k_id), 0, 0, 1, 1},
@@ -19080,7 +19116,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_k, __pyx_k_k, sizeof(__pyx_k_k), 0, 0, 1, 1},
   {&__pyx_n_s_left, __pyx_k_left, sizeof(__pyx_k_left), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
-  {&__pyx_kp_s_max_change_e_eps_e, __pyx_k_max_change_e_eps_e, sizeof(__pyx_k_max_change_e_eps_e), 0, 0, 1, 0},
+  {&__pyx_kp_s_max_change_e_eps_e_resid_e, __pyx_k_max_change_e_eps_e_resid_e, sizeof(__pyx_k_max_change_e_eps_e_resid_e), 0, 0, 1, 0},
   {&__pyx_n_s_maxiters, __pyx_k_maxiters, sizeof(__pyx_k_maxiters), 0, 0, 1, 1},
   {&__pyx_n_s_memview, __pyx_k_memview, sizeof(__pyx_k_memview), 0, 0, 1, 1},
   {&__pyx_n_s_mids, __pyx_k_mids, sizeof(__pyx_k_mids), 0, 0, 1, 1},
@@ -19141,7 +19177,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 26, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 29, __pyx_L1_error)
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(1, 235, __pyx_L1_error)
   __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) __PYX_ERR(1, 823, __pyx_L1_error)
   __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(1, 1013, __pyx_L1_error)
@@ -19460,17 +19496,17 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__28);
   __Pyx_GIVEREF(__pyx_tuple__28);
 
-  /* "solvers/svd/svd_train_feature.pyx":9
+  /* "solvers/svd/svd_train_feature.pyx":11
  * cimport numpy as np
  * 
- * def svd_train_feature(float[:,:] left, float[:,:] right, float[:] resid, int k,             # <<<<<<<<<<<<<<
+ * def svd_train_feature(double[:,:] left, double[:,:] right, float[:] resid, int k,             # <<<<<<<<<<<<<<
  *                       int[:] uids, int[:] mids, double[:] ratings, double rate, double eps,
- *                       int maxiters):
+ *                       int maxiters, double gamma):
  */
-  __pyx_tuple__29 = PyTuple_Pack(10, __pyx_n_s_left, __pyx_n_s_right, __pyx_n_s_resid, __pyx_n_s_k, __pyx_n_s_uids, __pyx_n_s_mids, __pyx_n_s_ratings, __pyx_n_s_rate, __pyx_n_s_eps, __pyx_n_s_maxiters); if (unlikely(!__pyx_tuple__29)) __PYX_ERR(0, 9, __pyx_L1_error)
+  __pyx_tuple__29 = PyTuple_Pack(11, __pyx_n_s_left, __pyx_n_s_right, __pyx_n_s_resid, __pyx_n_s_k, __pyx_n_s_uids, __pyx_n_s_mids, __pyx_n_s_ratings, __pyx_n_s_rate, __pyx_n_s_eps, __pyx_n_s_maxiters, __pyx_n_s_gamma); if (unlikely(!__pyx_tuple__29)) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__29);
   __Pyx_GIVEREF(__pyx_tuple__29);
-  __pyx_codeobj__30 = (PyObject*)__Pyx_PyCode_New(10, 0, 10, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__29, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_solvers_svd_svd_train_feature_py, __pyx_n_s_svd_train_feature, 9, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__30)) __PYX_ERR(0, 9, __pyx_L1_error)
+  __pyx_codeobj__30 = (PyObject*)__Pyx_PyCode_New(11, 0, 11, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__29, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_solvers_svd_svd_train_feature_py, __pyx_n_s_svd_train_feature, 11, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__30)) __PYX_ERR(0, 11, __pyx_L1_error)
 
   /* "View.MemoryView":284
  *         return self.name
@@ -19751,28 +19787,28 @@ static int __pyx_pymod_exec_svd_train_feature(PyObject *__pyx_pyinit_module)
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "solvers/svd/svd_train_feature.pyx":6
- * #cython: nonecheck=False
+  /* "solvers/svd/svd_train_feature.pyx":8
+ * from libc.math cimport abs
  * 
  * import numpy as np             # <<<<<<<<<<<<<<
  * cimport numpy as np
  * 
  */
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_numpy, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 6, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_numpy, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 8, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 8, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "solvers/svd/svd_train_feature.pyx":9
+  /* "solvers/svd/svd_train_feature.pyx":11
  * cimport numpy as np
  * 
- * def svd_train_feature(float[:,:] left, float[:,:] right, float[:] resid, int k,             # <<<<<<<<<<<<<<
+ * def svd_train_feature(double[:,:] left, double[:,:] right, float[:] resid, int k,             # <<<<<<<<<<<<<<
  *                       int[:] uids, int[:] mids, double[:] ratings, double rate, double eps,
- *                       int maxiters):
+ *                       int maxiters, double gamma):
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7solvers_3svd_17svd_train_feature_1svd_train_feature, NULL, __pyx_n_s_solvers_svd_svd_train_feature); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 9, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7solvers_3svd_17svd_train_feature_1svd_train_feature, NULL, __pyx_n_s_solvers_svd_svd_train_feature); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_svd_train_feature, __pyx_t_1) < 0) __PYX_ERR(0, 9, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_svd_train_feature, __pyx_t_1) < 0) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "solvers/svd/svd_train_feature.pyx":1
@@ -22598,7 +22634,7 @@ no_fail:
 }
 
 /* ObjectToMemviewSlice */
-      static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dsds_float(PyObject *obj) {
+      static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dsds_double(PyObject *obj) {
     __Pyx_memviewslice result = { 0, 0, { 0 }, { 0 }, { 0 } };
     __Pyx_BufFmt_StackElem stack[1];
     int axes_specs[] = { (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_STRIDED), (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_STRIDED) };
@@ -22609,7 +22645,7 @@ no_fail:
     }
     retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, 0,
                                                  PyBUF_RECORDS, 2,
-                                                 &__Pyx_TypeInfo_float, stack,
+                                                 &__Pyx_TypeInfo_double, stack,
                                                  &result, obj);
     if (unlikely(retcode == -1))
         goto __pyx_fail;
@@ -22709,37 +22745,6 @@ __pyx_fail:
     result.memview = NULL;
     result.data = NULL;
     return result;
-}
-
-/* CIntToPy */
-      static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
-    const long neg_one = (long) -1, const_zero = (long) 0;
-    const int is_unsigned = neg_one > const_zero;
-    if (is_unsigned) {
-        if (sizeof(long) < sizeof(long)) {
-            return PyInt_FromLong((long) value);
-        } else if (sizeof(long) <= sizeof(unsigned long)) {
-            return PyLong_FromUnsignedLong((unsigned long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
-            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
-#endif
-        }
-    } else {
-        if (sizeof(long) <= sizeof(long)) {
-            return PyInt_FromLong((long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
-            return PyLong_FromLongLong((PY_LONG_LONG) value);
-#endif
-        }
-    }
-    {
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(long),
-                                     little, !is_unsigned);
-    }
 }
 
 /* Print */
@@ -23476,6 +23481,43 @@ raise_neg_overflow:
     return (int) -1;
 }
 
+/* PrintOne */
+      #if !CYTHON_COMPILING_IN_PYPY && PY_MAJOR_VERSION < 3
+static int __Pyx_PrintOne(PyObject* f, PyObject *o) {
+    if (!f) {
+        if (!(f = __Pyx_GetStdout()))
+            return -1;
+    }
+    Py_INCREF(f);
+    if (PyFile_SoftSpace(f, 0)) {
+        if (PyFile_WriteString(" ", f) < 0)
+            goto error;
+    }
+    if (PyFile_WriteObject(o, f, Py_PRINT_RAW) < 0)
+        goto error;
+    if (PyFile_WriteString("\n", f) < 0)
+        goto error;
+    Py_DECREF(f);
+    return 0;
+error:
+    Py_DECREF(f);
+    return -1;
+    /* the line below is just to avoid C compiler
+     * warnings about unused functions */
+    return __Pyx_Print(f, NULL, 0);
+}
+#else
+static int __Pyx_PrintOne(PyObject* stream, PyObject *o) {
+    int res;
+    PyObject* arg_tuple = PyTuple_Pack(1, o);
+    if (unlikely(!arg_tuple))
+        return -1;
+    res = __Pyx_Print(stream, arg_tuple, 1);
+    Py_DECREF(arg_tuple);
+    return res;
+}
+#endif
+
 /* CIntFromPy */
       static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
     const long neg_one = (long) -1, const_zero = (long) 0;
@@ -23665,42 +23707,36 @@ raise_neg_overflow:
     return (long) -1;
 }
 
-/* PrintOne */
-      #if !CYTHON_COMPILING_IN_PYPY && PY_MAJOR_VERSION < 3
-static int __Pyx_PrintOne(PyObject* f, PyObject *o) {
-    if (!f) {
-        if (!(f = __Pyx_GetStdout()))
-            return -1;
-    }
-    Py_INCREF(f);
-    if (PyFile_SoftSpace(f, 0)) {
-        if (PyFile_WriteString(" ", f) < 0)
-            goto error;
-    }
-    if (PyFile_WriteObject(o, f, Py_PRINT_RAW) < 0)
-        goto error;
-    if (PyFile_WriteString("\n", f) < 0)
-        goto error;
-    Py_DECREF(f);
-    return 0;
-error:
-    Py_DECREF(f);
-    return -1;
-    /* the line below is just to avoid C compiler
-     * warnings about unused functions */
-    return __Pyx_Print(f, NULL, 0);
-}
-#else
-static int __Pyx_PrintOne(PyObject* stream, PyObject *o) {
-    int res;
-    PyObject* arg_tuple = PyTuple_Pack(1, o);
-    if (unlikely(!arg_tuple))
-        return -1;
-    res = __Pyx_Print(stream, arg_tuple, 1);
-    Py_DECREF(arg_tuple);
-    return res;
-}
+/* CIntToPy */
+      static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
+    const long neg_one = (long) -1, const_zero = (long) 0;
+    const int is_unsigned = neg_one > const_zero;
+    if (is_unsigned) {
+        if (sizeof(long) < sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(long) <= sizeof(unsigned long)) {
+            return PyLong_FromUnsignedLong((unsigned long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
+            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
 #endif
+        }
+    } else {
+        if (sizeof(long) <= sizeof(long)) {
+            return PyInt_FromLong((long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
+            return PyLong_FromLongLong((PY_LONG_LONG) value);
+#endif
+        }
+    }
+    {
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        unsigned char *bytes = (unsigned char *)&value;
+        return _PyLong_FromByteArray(bytes, sizeof(long),
+                                     little, !is_unsigned);
+    }
+}
 
 /* CIntFromPy */
       static CYTHON_INLINE char __Pyx_PyInt_As_char(PyObject *x) {
