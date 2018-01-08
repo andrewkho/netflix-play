@@ -1,3 +1,4 @@
+import logging
 import numpy as np
 
 from itertools import izip
@@ -6,6 +7,7 @@ from scipy.sparse import coo_matrix, csc_matrix, csr_matrix
 
 from .ratings import Ratings
 from .flixdata import FlixData
+
 
 class FlixDataSubsampler(object):
     """
@@ -22,7 +24,7 @@ class FlixDataSubsampler(object):
         :param flixdata: the FlixData to sample from
         :return: a new ratings object
         """
-        print "  Building full ratings object..."
+        logging.info("  Building full ratings object...")
         return Ratings(flixdata.userIDsForUsers,
                        flixdata.movieIDs,
                        flixdata.userRatings)
@@ -63,8 +65,8 @@ class FlixDataSubsampler(object):
         M = int(M)
         N = int(N)
 
-        print "  random sample of %d users, %d movies, minratings: %d" % (N, M, minratings)
-        print "  building csc_matrix"
+        logging.info("  random sample of %d users, %d movies, minratings: %d" % (N, M, minratings))
+        logging.info("  building csc_matrix")
         all_csc = csc_matrix((flixdata.userRatings, (flixdata.userIDsForUsers, flixdata.movieIDs)),
                              shape=(flixdata.numusers, flixdata.nummovies))
         all_csc.sort_indices()
@@ -76,21 +78,21 @@ class FlixDataSubsampler(object):
         movies.sort()
         users = []
 
-        print "  building user set"
+        logging.info("  building user set")
         for movie in movies:
             users.extend(all_csc.indices[all_csc.indptr[movie]:all_csc.indptr[movie+1]])
 
-        print "  counting user set"
+        logging.info("  counting user set")
         usercounts = np.bincount(users)
         users = np.where(usercounts > minratings)[0]
         users = np.random.choice(users, size=N, replace=False)
 
-        print "  Building index set"
+        logging.info("  Building index set")
         user_idxs = np.isin(flixdata.userIDsForUsers, users)
         movie_idxs = np.isin(flixdata.movieIDs, movies)
         idxs = np.logical_and(user_idxs, movie_idxs)
 
-        print "  building new Ratings object"
+        logging.info("  building new Ratings object")
         return Ratings(flixdata.userIDsForUsers[idxs],
                        flixdata.movieIDs[idxs],
                        flixdata.userRatings[idxs])
@@ -126,13 +128,13 @@ class FlixDataSubsampler(object):
             try:
                 uindexes = np.random.choice(np.arange(all_csr.indptr[user],all_csr.indptr[user+1]), size=minratings, replace=False)
             except ValueError as e:
-                print "bad user: %d, %d ratings" % (user, all_csr.indptr[user+1]-all_csr.indptr[user])
+                logging.error("bad user: %d, %d ratings" % (user, all_csr.indptr[user+1]-all_csr.indptr[user]))
                 raise e
             idxs.extend(uindexes)
 
         remain = N - len(idxs)
         if remain < 0:
-            print "Warning: we already exceeded N (it should be greater than nusers*minratings)"
+            logging.error("Warning: we already exceeded N (it should be greater than nusers*minratings)")
 
         all_idxs = np.isin(flixdata.userIDsForUsers, users)
         chosen_idxs = np.isin(np.arange(flixdata.numratings), np.array(idxs))
@@ -142,6 +144,7 @@ class FlixDataSubsampler(object):
         idxs.extend(sample_remain)
         dupe_check = set(idxs)
         if len(dupe_check) != len(idxs):
+            logging.error("generated indexes has non-unique values! orig: %d, unique %d" % (len(idxs), len(dupe_check)))
             raise RuntimeError("generated indexes has non-unique values! orig: %d, unique %d" % (len(idxs), len(dupe_check)))
         idxs = np.array(idxs)
         idxs.sort()
@@ -171,17 +174,17 @@ class FlixDataSubsampler(object):
         mat = coo_matrix((flixdata.userRatings, (flixdata.userIDsForUsers, flixdata.movieIDs)),
                          shape=(flixdata.numusers, flixdata.nummovies), dtype=np.float16)
 
-        print("getting top movies")
+        logging.info("getting top movies")
         mat_csc = mat.tocsc()  # type: csc_matrix
         col_sizes = mat_csc.indptr[1:] - mat_csc.indptr[:-1]  # Get number of ratings in each movie
         top_movies = set(np.argsort(col_sizes)[-top_n_movies:][::-1])
 
-        print("getting top users")
+        logging.info("getting top users")
         mat_csr = mat.tocsr()  # type: csr_matrix
         row_sizes = mat_csr.indptr[1:] - mat_csr.indptr[:-1]  # Get number of ratings by each user
         top_users = np.argsort(col_sizes)[-top_n_users:][::-1]
 
-        print("finding ratings for %d users, %d movies" % (top_n_users, top_n_movies))
+        logging.info("finding ratings for %d users, %d movies" % (top_n_users, top_n_movies))
         I = []
         J = []
         R = []
@@ -194,9 +197,9 @@ class FlixDataSubsampler(object):
                     J.append(mid)
                     R.append(rating)
 
-        print("found %d ratings" % len(I))
+        logging.info("found %d ratings" % len(I))
 
-        print("Generating Ratings matrix")
+        logging.info("Generating Ratings matrix")
         return Ratings(np.array(I, dtype=np.int32),
                        np.array(J, dtype=np.int32),
                        np.array(R, dtype=np.int32))

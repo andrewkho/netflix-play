@@ -7,3 +7,5 @@ data
 *.o
 build/
 *.prof
+log/*
+*.log

@@ -1,3 +1,5 @@
+import logging
+
 from enum import Enum
 import numpy as np
 import scipy.sparse
@@ -59,9 +61,9 @@ class SvdSolver(RecommenderAlgorithm):
             raise ValueError("Unknown solver %s!" % self.solver)
 
     def train_stochastic(self, ratings):
-        print "  Mean centering all ratings (generates a new ratings matrix for myself)"
+        logging.info("  Mean centering all ratings (generates a new ratings matrix for myself)")
         self._total_mean = ratings.get_coo_matrix().sum() / ratings.get_coo_matrix().nnz
-        print "  total_mean: %f" % self._total_mean
+        logging.info("  total_mean: %f" % self._total_mean)
         ratings.get_coo_matrix().data -= self._total_mean
         self._ratings = ratings
 
@@ -81,12 +83,12 @@ class SvdSolver(RecommenderAlgorithm):
                       self.learning_rate, self.eps, self.maxiters, self.gamma,
                       self.include_bias)
 
-        print "  done. %f remaining residual" % np.sum(resid*resid)
+        logging.info("  done. %f remaining residual" % np.sum(resid*resid))
 
     def train_incremental(self, ratings):
-        print "  Mean centering all ratings (generates a new ratings matrix for myself)"
+        logging.info("  Mean centering all ratings (generates a new ratings matrix for myself)")
         self._total_mean = ratings.get_coo_matrix().sum() / ratings.get_coo_matrix().nnz
-        print "  total_mean: %f" % self._total_mean
+        logging.info("  total_mean: %f" % self._total_mean)
         ratings.get_coo_matrix().data -= self._total_mean
         self._ratings = ratings
 
@@ -107,7 +109,7 @@ class SvdSolver(RecommenderAlgorithm):
             if self.include_bias and k == 1:
                 ignore_right = True
 
-            print "  training feature %d" % k
+            logging.info("  training feature %d" % k)
             resid = y.astype(dtype=np.float32)
             for i in range(resid.shape[0]):
                 resid[i] -= self._left[coo_mat.row[i], :].dot(self._right[coo_mat.col[i], :].transpose()).astype(np.float32)
@@ -116,7 +118,7 @@ class SvdSolver(RecommenderAlgorithm):
                               coo_mat.row, coo_mat.col, coo_mat.data,
                               self.learning_rate, self.eps, self.maxiters, self.gamma,
                               ignore_left, ignore_right)
-            print "  done. %f remaining residual" % np.sum(resid*resid)
+            logging.info("  done. %f remaining residual" % np.sum(resid*resid))
 
     def train_all(self, ratings):
         self._ratings = ratings
@@ -126,10 +128,10 @@ class SvdSolver(RecommenderAlgorithm):
 
         csr_mat = ratings.get_csr_matrix()
         indicator = csr_mat > 0
-        print csr_mat.shape
-        print indicator.shape
-        print type (indicator)
-        print (self._left.dot(self._right.transpose())).shape
+        logging.debug(csr_mat.shape)
+        logging.debug(indicator.shape)
+        logging.debug(type (indicator))
+        logging.debug((self._left.dot(self._right.transpose())).shape)
 
         left = scipy.sparse.csr_matrix(self._left)
         right = scipy.sparse.csr_matrix(self._right)
@@ -140,7 +142,7 @@ class SvdSolver(RecommenderAlgorithm):
             E = csr_mat - left.dot(right.transpose()).multiply(indicator)
             resid = (E.multiply(E)).sum()
             #if counter % 10 == 0:
-            print "resid: %e" % resid
+            logging.info("  resid: %e" % resid)
             U = left + E.dot(right).multiply(self.learning_rate)
             V = right + E.transpose().dot(left).multiply(self.learning_rate)
 
