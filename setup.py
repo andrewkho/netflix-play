@@ -25,6 +25,10 @@ ext_modules = [Extension("solvers.svd_neighbour.svd_neighbour_predict",
                          ["solvers/svd/svd_train_feature.pyx"],
                          include_dirs=[numpy.get_include()],
                          ),
+               Extension("solvers.svd.svd_train_stochastic",
+                         ["solvers/svd/svd_train_stochastic.pyx"],
+                         include_dirs=[numpy.get_include()],
+                         ),
                ]
 
 core.setup(

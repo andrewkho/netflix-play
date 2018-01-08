@@ -14,6 +14,7 @@ from core.flixdata_subsampler import FlixDataSubsampler
 from core.ratings import Ratings
 from solvers.kFoldsCrossValidator import KFolds
 from solvers.svd.svd_solver import SvdSolver
+from solvers.svd.svd_solver import GradientDescentMethod
 
 flix_data_root = "../../../data/arrays/"
 saved_data = "ratings_test.pkl"
@@ -32,8 +33,8 @@ class TestSvd(unittest.TestCase):
             fd = FlixData(flix_data_root)
             print "total ratings: %d" % fd.numratings
             #self.ratings = FlixDataSubsampler.get_all(fd)
-            self.ratings = FlixDataSubsampler.random_sample_movies(fd, seed=12345, N=int(1e4), M=int(1e3))
-            self.kfolds = KFolds(self.ratings.size, 40, 12345)
+            self.ratings = FlixDataSubsampler.random_sample_movies(fd, seed=12345, N=int(1e5), M=int(3e3))
+            self.kfolds = KFolds(self.ratings.size, 10, 12345)
 
             with open(saved_data, "wb") as f:
                 cPickle.dump((self.ratings, self.kfolds), f, cPickle.HIGHEST_PROTOCOL)
@@ -45,8 +46,17 @@ class TestSvd(unittest.TestCase):
         test_set = self.ratings.get_index_split(test)
         train_set = self.ratings.get_index_split(train)
         print "Training SvdNeighbourSolver..."
-        svd = SvdSolver(30, learning_rate=0.005, epsilon=1e-7, maxiters=5000, gamma=0.15)
+        svd = SvdSolver(32,
+                        learning_rate=0.005,
+                        epsilon=1e-7,
+                        solver=GradientDescentMethod.stochastic,
+                        maxiters=10000,
+                        gamma=0.05,
+                        include_bias=True)
         svd.train(train_set)
+
+        print svd._left
+        print svd._right
 
         print("predicting %d testratings: " % test_set.get_coo_matrix().nnz)
         pred = svd.predict(test_set)
