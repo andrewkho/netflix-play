@@ -51,8 +51,8 @@ class TestSvd(object):
             logging.info("Finished fold %d with rmse: %e" % (fold, rmse))
 
         logging.info("Finished Cross Validation")
-        logging.info("RMS: %s" + str(errs))
-        logging.info("NaNs: %d" + np.isnan(rmse).sum())
+        logging.info("RMS: %s" % str(errs))
+        logging.info("NaNs: %d" % np.isnan(rmse).sum())
         logging.info("mean: %e, max: %e, min: %e, sd: %e" % (np.nanmean(errs),
                                                              np.nanmax(errs),
                                                              np.nanmin(errs),
@@ -73,8 +73,8 @@ class TestSvd(object):
                         include_bias=True)
         svd.train(train_set)
 
-        logging.info(svd._left)
-        logging.info(svd._right)
+        #logging.info(svd._left)
+        #logging.info(svd._right)
 
         logging.info("predicting %d testratings: " % test_set.get_coo_matrix().nnz)
         pred = svd.predict(test_set)
