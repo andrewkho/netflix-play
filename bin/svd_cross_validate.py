@@ -23,6 +23,16 @@ saved_data = "cross_valid_svd.pkl"
 
 class TestSvd(object):
 
+    def __init__(self, k, learning_rate, gamma, epsilon=1e-7,
+                 solver=GradientDescentMethod.stochastic, maxiters=10000, include_bias=True):
+        self.k = k
+        self.learning_rate = learning_rate
+        self.gamma = gamma
+        self.epsilon = epsilon
+        self.solver = solver
+        self.maxiters = maxiters
+        self.include_bias = include_bias
+
     def setUp(self):
         if os.path.isfile(saved_data):
             logging.info("Trying to read existing data from " + saved_data)
@@ -35,7 +45,7 @@ class TestSvd(object):
             logging.info("total ratings: %d" % fd.numratings)
             #self.ratings = FlixDataSubsampler.get_all(fd)
             self.ratings = FlixDataSubsampler.random_sample_movies(fd, seed=12345, N=int(2e4), M=int(1e3))
-            self.kfolds = KFolds(self.ratings.size, 10, 12345)
+            self.kfolds = KFolds(self.ratings.size, 5, 12345)
 
             with open(saved_data, "wb") as f:
                 cPickle.dump((self.ratings, self.kfolds), f, cPickle.HIGHEST_PROTOCOL)
@@ -43,6 +53,16 @@ class TestSvd(object):
 
 
     def test_perform_cv(self):
+        logging.info("######################################")
+        logging.info("Starting cross validation with params:")
+        logging.info("  k:        %d" % self.k)
+        logging.info("  learn:    %f" % self.learning_rate)
+        logging.info("  gamma:    %f" % self.gamma)
+        logging.info("  epsilon:  %e" % self.epsilon)
+        logging.info("  solver:   %s" % str(self.solver))
+        logging.info("  maxiters: %d" % self.maxiters)
+        logging.info("  bias:     %s" % str(self.include_bias))
+
         errs = list()
         for fold in range(self.kfolds.k):
             logging.info("Starting fold %d " % fold)
@@ -53,10 +73,11 @@ class TestSvd(object):
         logging.info("Finished Cross Validation")
         logging.info("RMS: %s" % str(errs))
         logging.info("NaNs: %d" % np.isnan(rmse).sum())
-        logging.info("mean: %e, max: %e, min: %e, sd: %e" % (np.nanmean(errs),
-                                                             np.nanmax(errs),
-                                                             np.nanmin(errs),
-                                                             np.nanstd(errs)))
+        err_summary = (np.nanmean(errs), np.nanmax(errs), np.nanmin(errs), np.nanstd(errs))
+
+        logging.info("mean: %e, max: %e, min: %e, sd: %e" % err_summary)
+
+        return err_summary
 
     def perform_one_fold(self, k):
         logging.info("Splitting data into train, test")
@@ -64,17 +85,15 @@ class TestSvd(object):
         test_set = self.ratings.get_index_split(test)
         train_set = self.ratings.get_index_split(train)
         logging.info("Training SvdNeighbourSolver...")
-        svd = SvdSolver(32,
-                        learning_rate=0.005,
-                        epsilon=1e-7,
-                        solver=GradientDescentMethod.stochastic,
-                        maxiters=10000,
-                        gamma=0.05,
-                        include_bias=True)
-        svd.train(train_set)
+        svd = SvdSolver(self.k,
+                        learning_rate=self.learning_rate,
+                        epsilon=self.epsilon,
+                        solver=self.solver,
+                        maxiters=self.maxiters,
+                        gamma=self.gamma,
+                        include_bias=self.include_bias)
 
-        #logging.info(svd._left)
-        #logging.info(svd._right)
+        svd.train(train_set)
 
         logging.info("predicting %d testratings: " % test_set.get_coo_matrix().nnz)
         pred = svd.predict(test_set)
@@ -98,18 +117,37 @@ class TestSvd(object):
 
 
 if __name__ == '__main__':
-    logging.basicConfig(filename="svd_cross_validate.log",
+    logging.basicConfig(filename="svd_cross_validate_grid.log",
                         format='%(asctime)s %(levelname)s %(message)s',
                         level=logging.DEBUG)
     logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
 
     logging.info("*******************************************")
-    logging.info("Starting run of Cross Validation with params")
+    logging.info("Starting run of Cross Validation")
 
-    test_svd = TestSvd()
-    test_svd.setUp()
-    test_svd.test_perform_cv()
+    ks = [20, 25, 30, 40, 50]
+    gammas = [0.01, 0.03, 0.1, 0.2]
+
+    err_summaries = []
+
+    for k in ks:
+        for gamma in gammas:
+            lrn = 0.005
+
+            test_svd = TestSvd(k, lrn, gamma)
+            test_svd.setUp()
+            es = test_svd.test_perform_cv()
+            err_summaries.append(es)
 
     logging.info("Finished run of Cross Validation")
+
+    i = 0
+    for k in ks:
+        for gamma in gammas:
+            logging.info("  error summaries:")
+            logging.info("    k: %d, gamma: %d -- " % (k, gamma))
+            logging.info("            mean: %e, max: %e, min: %e, sd: %e" % err_summaries[i])
+            i += 1
+
     logging.info("*******************************************")
 
